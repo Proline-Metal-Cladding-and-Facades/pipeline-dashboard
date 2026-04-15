@@ -89,10 +89,10 @@
 .lk.on{background:#c5cad3;color:#fff;border-color:#b5bbc6}
 .sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
 .sr{display:contents}
-.sr>div{padding:2px 6px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
-.sr .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
+.sr>div{padding:2px 6px;font-size:10px;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
+.sr .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:10px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
 .sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
-.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:9px;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right;font-family:var(--mn)}
+.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:10px;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right;font-family:var(--mn)}
 .sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
 /* Weeks row */
 .wk-row{display:flex;align-items:center;margin:6px 0;padding:4px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:4px}
@@ -114,7 +114,7 @@
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
 
 .sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
-.slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
+.slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:10px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
 .sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
 .sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-size:9px;padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
 
@@ -363,7 +363,7 @@ return<div className="pg" key={p.i}>
 {vis.map(m=><div key={m} className={(hovR===p.nm?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR(p.nm);sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc"/></div>)}</div>)}
 <div className="rg"><div className="rl">Gross Profit</div><div/><div/><div/>
 <div style={{fontFamily:"var(--mn)",color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div><div/><div/>
-{vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovR===p.nm?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR(p.nm);sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
+{vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovR===p.nm?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR(p.nm);sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:10,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
 </>}
 </div>})}
 </div></div>

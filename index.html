@@ -100,10 +100,10 @@
 .wk-vals{display:flex;gap:0;flex:1}
 .wk-v{width:72px;text-align:center;font-family:var(--mn);font-size:11px;font-weight:700;color:var(--am);padding:2px 0}
 /* VO */
-.vw{border:1px solid var(--bd);border-radius:4px;background:#fff;overflow:hidden}
-.vhd{padding:6px 12px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:6px}
+.vw{background:#fff;overflow:hidden;border:none;margin:-10px -12px;padding:0}
+.vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
-.vsc{overflow-x:auto;max-height:60vh;overflow-y:auto}
+.vsc{overflow-x:auto;max-height:calc(100vh - 80px);overflow-y:auto}
 .vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn)}
 .vt th{text-align:left;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
@@ -194,6 +194,21 @@
 .rh.ch{background:#cddaf0!important}
 
 .cl-wk{color:var(--tx)!important;text-align:center!important;font-weight:700}
+
+.vt th:first-child,.vt td:first-child{position:sticky;left:0;z-index:2}
+.vt th:first-child{z-index:3;background:var(--s2)}
+.vt td:first-child{background:#fff}
+.vt tr:nth-child(even) td:first-child{background:#f8f9fb}
+.vt tr:hover td:first-child{background:rgba(68,114,196,.08)}
+
+/* Column separators - light grey gridlines */
+.gh>div{border-right:1px solid #e8eaef}
+.pr>div{border-right:1px solid #e8eaef}
+.rw>div{border-right:1px solid #e8eaef}
+.rg>div{border-right:1px solid #e8eaef}
+.sr>div{border-right:1px solid #e8eaef}
+.sr-t>div{border-right:1px solid #e8eaef}
+.sr-w>div{border-right:1px solid #e8eaef}
 /* Cell selection + status bar */
 .cl.sel{outline:1px solid var(--ac);background:rgba(91,141,239,.12)!important}
 .stat-bar{position:fixed;bottom:0;left:0;right:0;background:var(--s2);border-top:1px solid var(--bd);padding:3px 12px;display:flex;gap:16px;align-items:center;justify-content:flex-end;font-size:9px;color:var(--t2);font-family:var(--mn);z-index:40;height:22px}

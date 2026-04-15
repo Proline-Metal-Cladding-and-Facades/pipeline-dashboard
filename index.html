@@ -9,85 +9,87 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0e13;--s1:#131720;--s2:#1b2030;--s3:#252b3d;--bd:#2d3450;--tx:#e6eaf2;--t2:#7d89a6;--ac:#5b8def;--a2:#3d6fd9;--gn:#34d399;--am:#fbbf24;--rd:#f87171;--pu:#a78bfa;--gr:#6b7280;--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--tx);font-family:var(--font)}
-.np-ov{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100}
-.np-cd{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:36px;max-width:400px;width:90%;text-align:center}
-.np-cd h2{font-size:22px;font-weight:800;margin:14px 0 6px}.np-cd p{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px}
-.np-in{width:100%;padding:12px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--font);font-size:16px;text-align:center;outline:none;margin-bottom:12px}
-.np-in:focus{border-color:var(--ac)}.np-in::placeholder{color:#4a5270}
-.np-bt{width:100%;padding:12px;border-radius:10px;border:none;background:var(--a2);color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer}
-.np-bt:hover:not(:disabled){background:var(--ac)}.np-bt:disabled{opacity:.35}
-.app{padding:12px 14px}.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.hd-l{display:flex;align-items:center;gap:8px}.hd-l h1{font-size:18px;font-weight:800;letter-spacing:-.5px}
-.dot{width:7px;height:7px;border-radius:50%;animation:pul 2s infinite}@keyframes pul{0%,100%{opacity:1}50%{opacity:.4}}
-.dtx{font-size:10px;font-weight:600}.hd-r{display:flex;align-items:center;gap:8px}
-.ub{background:var(--s2);border:1px solid var(--bd);padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600}
-.svt{font-size:9px;color:var(--t2)}.rbtn{padding:4px 10px;border-radius:5px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-family:var(--font);font-size:10px;font-weight:600;cursor:pointer}
-.rbtn:hover{color:var(--tx);border-color:var(--ac)}
-.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-bottom:10px}
-.stc{background:var(--s1);border:1px solid var(--bd);border-radius:7px;padding:8px 11px}
-.stc .lb{font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.stc .vl{font-size:17px;font-weight:800;font-family:var(--mono);margin-top:1px}.stc .sb{font-size:9px;color:var(--t2)}
-.selm{background:var(--s1);border:1px solid var(--pu);border-radius:7px}
-.bar{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
-.pill{padding:4px 12px;border-radius:14px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:var(--font);font-size:10px;font-weight:600;cursor:pointer;transition:.15s}
-.pill.on{background:var(--a2);border-color:var(--a2);color:#fff}.pill:hover:not(.on){border-color:var(--t2);color:var(--tx)}
-.pill.grn{border-color:var(--gn);color:var(--gn)}.pill.grn:hover{background:var(--gn);color:var(--bg)}
-.dv{width:1px;height:18px;background:var(--bd);margin:0 3px}
-.sbox{flex:1;min-width:140px;padding:5px 10px;border-radius:5px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-family:var(--font);font-size:11px;outline:none}
-.sbox:focus{border-color:var(--ac)}.sbox::placeholder{color:var(--t2)}
-.afm{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:10px;margin-bottom:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:end}
-.afm label{font-size:9px;color:var(--t2);display:block;margin-bottom:1px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
-.afm input,.afm select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:5px 8px;border-radius:5px;font-family:var(--font);font-size:11px;outline:none}
-.afm input:focus,.afm select:focus{border-color:var(--ac)}
-.hint{padding:6px 10px;background:rgba(91,141,239,.07);border:1px solid rgba(91,141,239,.18);border-radius:6px;font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.5}
-.hint b{color:var(--ac)}
-.mnav{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.mnav button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 8px;border-radius:5px;cursor:pointer;font-size:10px;font-weight:600;font-family:var(--font)}
-.mnav button:hover{color:var(--tx);border-color:var(--t2)}.mnav span{font-size:10px;color:var(--t2)}
-.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:7px;background:var(--s1)}
-.grid{display:grid;min-width:fit-content}
+:root{--bg:#0b0e13;--s1:#131720;--s2:#1b2030;--s3:#252b3d;--bd:#2d3450;--tx:#e6eaf2;--t2:#7d89a6;--ac:#5b8def;--a2:#3d6fd9;--gn:#34d399;--am:#fbbf24;--rd:#f87171;--pu:#a78bfa;--gr:#6b7280;--ft:'Outfit',sans-serif;--mn:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--tx);font-family:var(--ft)}
+.np{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100}
+.nc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
+.nc h2{font-size:22px;font-weight:800;margin:12px 0 6px}.nc p{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:14px}
+.ni{width:100%;padding:12px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--ft);font-size:16px;text-align:center;outline:none;margin-bottom:12px}
+.ni:focus{border-color:var(--ac)}.ni::placeholder{color:#4a5270}
+.nb{width:100%;padding:12px;border-radius:10px;border:none;background:var(--a2);color:#fff;font-family:var(--ft);font-size:14px;font-weight:700;cursor:pointer}
+.nb:hover:not(:disabled){background:var(--ac)}.nb:disabled{opacity:.35}
+.app{padding:10px 12px}.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.hl{display:flex;align-items:center;gap:8px}.hl h1{font-size:17px;font-weight:800;letter-spacing:-.5px}
+.dt{width:7px;height:7px;border-radius:50%;animation:pu 2s infinite}@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+.dx{font-size:10px;font-weight:600}.hr{display:flex;align-items:center;gap:6px}
+.ub{background:var(--s2);border:1px solid var(--bd);padding:3px 9px;border-radius:14px;font-size:10px;font-weight:600}
+.sv{font-size:9px;color:var(--t2)}.rb{padding:3px 8px;border-radius:4px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer}
+.rb:hover{color:var(--tx);border-color:var(--ac)}
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:8px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+.cd{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:8px 10px}
+.cd.sel{border-color:var(--pu);background:rgba(167,139,250,.05)}
+.cd .lb{font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.cd .vl{font-size:16px;font-weight:800;font-family:var(--mn);margin-top:1px}
+.cd .sb{font-size:8px;color:var(--t2);margin-top:1px}
+.br{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.pl{padding:4px 11px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer;transition:.15s}
+.pl.on{background:var(--a2);border-color:var(--a2);color:#fff}.pl:hover:not(.on){border-color:var(--t2);color:var(--tx)}
+.pl.gn{border-color:var(--gn);color:var(--gn)}.pl.gn:hover{background:var(--gn);color:var(--bg)}
+.dv{width:1px;height:16px;background:var(--bd);margin:0 2px}
+.sx{flex:1;min-width:120px;padding:4px 8px;border-radius:4px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-family:var(--ft);font-size:10px;outline:none}
+.sx:focus{border-color:var(--ac)}.sx::placeholder{color:var(--t2)}
+.af{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:8px;margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:end}
+.af label{font-size:8px;color:var(--t2);display:block;margin-bottom:1px;text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+.af input,.af select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:4px 7px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none}
+.af input:focus,.af select:focus{border-color:var(--ac)}
+.ht{padding:5px 8px;background:rgba(91,141,239,.06);border:1px solid rgba(91,141,239,.15);border-radius:5px;font-size:9px;color:var(--t2);margin-bottom:6px;line-height:1.4}
+.ht b{color:var(--ac)}
+.mn2{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
+.mn2 button:hover{color:var(--tx)}.mn2 span{font-size:9px;color:var(--t2)}
+.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:var(--s1)}
+.g{display:grid;min-width:fit-content}
 .gh{display:contents}
-.gh>div{position:sticky;top:0;z-index:3;background:var(--s2);padding:5px 7px;font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;transition:.15s}
+.gh>div{position:sticky;top:0;z-index:3;background:var(--s2);padding:4px 6px;font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;transition:.12s;user-select:none}
 .gh>div:hover{color:var(--tx);background:var(--s3)}
-.gh>div:first-child{text-align:left;position:sticky;left:0;z-index:4;min-width:170px;cursor:default}
-.gh>div.msel{color:var(--pu);background:rgba(167,139,250,.1);border-bottom-color:var(--pu)}
-.pg{display:contents}.ph{display:contents}
-.ph>div{padding:5px 7px;font-size:10px;font-weight:700;background:var(--s2);border-bottom:1px solid var(--bd);border-top:2px solid var(--bd);text-align:right;font-family:var(--mono)}
-.ph-n{text-align:left!important;font-family:var(--font)!important;position:sticky;left:0;z-index:2;background:var(--s2);display:flex;align-items:center;gap:3px;font-size:11px}
-.xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:13px;padding:0 2px;opacity:.4}.xb:hover{color:var(--rd);opacity:1}
-.row{display:contents}.row>div{padding:2px 7px;font-size:10px;border-bottom:1px solid rgba(45,52,80,.5);text-align:right}
-.rl{text-align:left!important;font-family:var(--font);font-weight:500;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:14px!important;font-size:10px}
-.rs .rl{color:var(--ac)}.rc .rl{color:var(--rd)}.rg>div{font-weight:700;border-bottom:2px solid var(--bd)}
-.cl{padding:1px 3px;min-height:18px;cursor:pointer;border-radius:2px;font-family:var(--mono);font-size:10px;text-align:right;transition:.1s}
-.cl:hover{background:rgba(91,141,239,.1)}.cl-s{color:var(--tx)}.cl-c{color:var(--rd)}
-.cl-e{color:var(--am);cursor:pointer;border-bottom:1px dashed rgba(251,191,36,.4)}.cl-e:hover{background:rgba(251,191,36,.1)}
-.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mono);font-size:10px;padding:1px 3px;border-radius:2px;outline:none;text-align:right}
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;gap:12px}
-.loading p{font-size:12px;color:var(--t2)}
-.spin{width:28px;height:28px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.err{padding:8px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;font-size:11px;color:var(--rd);margin-bottom:8px}
-.empty{text-align:center;padding:30px;color:var(--t2);font-size:12px;line-height:1.5}
-.dbg{padding:4px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:5px;font-size:9px;color:var(--t2);margin-bottom:8px;font-family:var(--mono)}
-.vw{border:1px solid var(--bd);border-radius:7px;background:var(--s1);overflow:hidden;margin-top:4px}
-.vhd{padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
-.vhd h3{font-size:13px;font-weight:700;color:var(--pu)}
-.vsc{overflow-x:auto;max-height:62vh;overflow-y:auto}
+.gh>div:first-child{text-align:left;position:sticky;left:0;z-index:4;min-width:160px;cursor:default}
+.gh>div.ms{color:var(--pu);background:rgba(167,139,250,.12);border-bottom-color:var(--pu)}
+.pg{display:contents}
+.pn{display:contents}
+.pn>div{padding:5px 6px;font-size:11px;font-weight:700;background:var(--s3);border-bottom:1px solid var(--bd);border-top:2px solid rgba(91,141,239,.3);text-align:left;font-family:var(--ft);color:var(--ac)}
+.pn>div:first-child{position:sticky;left:0;z-index:2;background:var(--s3);display:flex;align-items:center;gap:3px}
+.xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:12px;padding:0 2px;opacity:.4}.xb:hover{color:var(--rd);opacity:1}
+.rw{display:contents}.rw>div{padding:2px 6px;font-size:10px;border-bottom:1px solid rgba(45,52,80,.4);text-align:right}
+.rl{text-align:left!important;font-family:var(--ft);font-weight:500;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:14px!important;font-size:10px}
+.r0 .rl{color:var(--ac)}.r1 .rl{color:var(--rd)}.r2 .rl{color:var(--rd)}.r3 .rl{color:var(--rd)}
+.rg{display:contents}.rg>div{padding:2px 6px;font-size:10px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
+.rg .rl{color:var(--gn)!important}
+.cl{padding:1px 2px;min-height:16px;cursor:pointer;border-radius:2px;font-family:var(--mn);font-size:10px;text-align:right;transition:.1s}
+.cl:hover{background:rgba(91,141,239,.08)}.cs{color:var(--tx)}.cc{color:var(--rd)}
+.ce{color:var(--am);cursor:pointer;border-bottom:1px dashed rgba(251,191,36,.35)}.ce:hover{background:rgba(251,191,36,.08)}
+.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:10px;padding:1px 2px;border-radius:2px;outline:none;text-align:right}
+.ld{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;gap:10px}
+.ld p{font-size:11px;color:var(--t2)}.sp{width:24px;height:24px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sn .7s linear infinite}
+@keyframes sn{to{transform:rotate(360deg)}}
+.er{padding:6px 10px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:5px;font-size:10px;color:var(--rd);margin-bottom:6px}
+.em{text-align:center;padding:24px;color:var(--t2);font-size:11px}
+.db{padding:3px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:4px;font-size:8px;color:var(--t2);margin-bottom:6px;font-family:var(--mn)}
+.vw{border:1px solid var(--bd);border-radius:6px;background:var(--s1);overflow:hidden;margin-top:4px}
+.vd{padding:8px 12px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.vd h3{font-size:12px;font-weight:700;color:var(--pu)}
+.vc{overflow-x:auto;max-height:60vh;overflow-y:auto}
 .vt{width:100%;border-collapse:collapse;font-size:10px}
-.vt th{text-align:left;padding:6px 8px;font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;font-weight:700;border-bottom:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
-.vt th.gg{border-top:2px solid var(--gn)}.vt th.gy{border-top:2px solid var(--am)}.vt th.gp{border-top:2px solid var(--pu)}
-.vt td{padding:5px 8px;border-bottom:1px solid rgba(45,52,80,.5);white-space:nowrap}
+.vt th{text-align:left;padding:5px 7px;font-size:7px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
+.vt th.tg{border-top:2px solid var(--gn)}.vt th.ty{border-top:2px solid var(--am)}.vt th.tp{border-top:2px solid var(--pu)}
+.vt td{padding:4px 7px;border-bottom:1px solid rgba(45,52,80,.4);white-space:nowrap}
 .vt tr:hover td{background:rgba(91,141,239,.03)}
-.vt .mn{font-family:var(--mono);font-size:10px}.vt .rt{text-align:right}
-.vt input,.vt select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:2px 5px;border-radius:3px;font-family:var(--font);font-size:10px;outline:none}
+.vt input,.vt select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:2px 4px;border-radius:3px;font-family:var(--ft);font-size:10px;outline:none}
 .vt input:focus,.vt select:focus{border-color:var(--ac)}
-.vt input.nm{text-align:right;font-family:var(--mono);width:80px}
-.vt input.sm{width:70px}.vt input.md{width:130px}
-.st-a{background:rgba(52,211,153,.15)!important;color:var(--gn)!important;border-color:rgba(52,211,153,.3)!important}
-.st-p{background:rgba(248,113,113,.15)!important;color:var(--rd)!important;border-color:rgba(248,113,113,.3)!important}
-.st-r{background:rgba(107,114,128,.2)!important;color:var(--gr)!important;border-color:rgba(107,114,128,.3)!important}
+.vt input.nm{text-align:right;font-family:var(--mn);width:75px}.vt input.sm{width:65px}.vt input.md{width:120px}
+.sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important;border-color:rgba(52,211,153,.3)!important}
+.sp2{background:rgba(248,113,113,.15)!important;color:var(--rd)!important;border-color:rgba(248,113,113,.3)!important}
+.sr{background:rgba(107,114,128,.2)!important;color:var(--gr)!important;border-color:rgba(107,114,128,.3)!important}
 </style>
 </head>
 <body>
@@ -96,16 +98,17 @@
 const{useState,useMemo,useEffect,useCallback,useRef}=React;
 const API="https://script.google.com/macros/s/AKfycbxZSeOefNZ7nPHiq_Y7ZJNUnIGgfXe8p89KNGLQWhyNdS1SDFy0ZZu5_MdWyc1jrrpFDw/exec";
 const MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Aug-25","Sep-25","Oct-25","Nov-25","Dec-25","Jan-26","Feb-26","Mar-26","Apr-26","May-26","Jun-26","Jul-26","Aug-26","Sep-26","Oct-26","Nov-26","Dec-26"];
-const RD=["Sales","External Materials","ProFab Materials","Other Costs"];const RK=["Sales","ExtMaterials","ProfabMaterials","OtherCosts"];
-const UK="pipeline-user-v2";
+const RN=["Sales","External Materials","ProFab Materials","Other Costs"];
+const RK=["Sales","ExtMaterials","ProfabMaterials","OtherCosts"];
+const UK="pipeline-v3";
 const isAp=s=>String(s||"").toUpperCase().includes("APPROVED");
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
 const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
-const stC=s=>isAp(s)?"st-a":isPn(s)?"st-p":isRj(s)?"st-r":"";
-async function aG(a){try{const r=await fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch(e){console.error(e);return null}}
-async function aP(p){try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(p)});return true}catch(e){return false}}
+const sC=s=>isAp(s)?"sa":isPn(s)?"sp2":isRj(s)?"sr":"";
+async function aG(a){try{const r=await fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch(e){return null}}
+async function aP(p){try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(p)});return true}catch{return false}}
 const fm=v=>v?Number(v).toLocaleString("en-AU",{maximumFractionDigits:0}):"";
-const fK=v=>{if(!v)return"-";const a=Math.abs(v);return(v<0?"-":"")+"$"+(a>=1e6?(a/1e6).toFixed(1)+"M":a>=1e3?(a/1e3).toFixed(0)+"K":String(a))};
+const fK=v=>{if(!v)return"-";const a=Math.abs(v);return(v<0?"-":"")+"$"+(a>=1e6?(a/1e6).toFixed(1)+"M":a>=1e3?(a/1e3).toFixed(0)+"K":String(Math.round(a)))};
 const N=v=>Number(v)||0;
 const G=(o,...k)=>{for(const x of k)if(o[x]!==undefined&&o[x]!=="")return o[x];return""};
 
@@ -113,154 +116,172 @@ function EC({value,onChange,cls}){const[e,sE]=useState(false);const[d,sD]=useSta
 useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
 const c=()=>{sE(false);const n=parseFloat(d.replace(/,/g,""))||0;if(n!==(value||0))onChange(n)};
 if(e)return<input ref={r} className="ci" value={d} onChange={x=>sD(x.target.value)} onBlur={c} onKeyDown={x=>{if(x.key==="Enter")c();if(x.key==="Escape")sE(false)}}/>;
-return<div className={cls||"cl cl-s"} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?fm(value):""}</div>}
+return<div className={cls||"cl cs"} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?fm(value):""}</div>}
 
 function App(){
-const[un,sUn]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
+const[un,sU]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
 const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useState(null);
-const[proj,sPj]=useState([]);const[mo,sMo]=useState({});const[vos,sVo]=useState([]);
+const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);
 const[vw,sVw]=useState("grid");const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
 const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
 const[er,sEr]=useState(null);const[db,sDb]=useState("");const[sav,sSav]=useState(false);
-const[selM,sSelM]=useState(null);
-const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",dateSubmitted:"",dateApproved:"",price:0,status:"",extMat:0,pfab:0});
+const[selM,sSM]=useState([]);// multi-select months
+const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 
-const sub=nm=>{localStorage.setItem(UK,nm);sUn(nm)};
+const sub=n=>{localStorage.setItem(UK,n);sU(n)};
+const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
 
 const load=useCallback(async()=>{
-sLd(true);sEr(null);sDb("");
+sLd(true);sEr(null);
 const r=await aG("getAll");
-if(!r){sEr("No response from Google Sheets. Ensure Apps Script is deployed as NEW version.");sLd(false);return}
+if(!r){sEr("No response. Deploy Apps Script as NEW version.");sLd(false);return}
 if(r.error){sEr("Error: "+r.error);sLd(false);return}
 const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[];
-sDb(pD.length+" projects · "+mD.length+" monthly · "+vD.length+" VOs");
-sPj(pD.map(p=>({nm:String(G(p,"Project","project","Title")).trim(),cp:N(G(p,"ContractPrice","contractprice","Contract Price")),v:N(G(p,"Variations","variations")),st:G(p,"Status","status")||"Active"})));
-const mm={};mD.forEach(row=>{const pj=String(G(row,"Project","project","Title")).trim(),mn=String(G(row,"Month","month")).trim();if(!pj||!mn)return;mm[pj+"|||"+mn]={Sales:N(G(row,"Sales","sales")),ExtMaterials:N(G(row,"ExtMaterials","extmaterials","External Materials")),ProfabMaterials:N(G(row,"ProfabMaterials","profabmaterials","Profab Materials","PFab Materials","PFAB MATERIALS")),OtherCosts:N(G(row,"OtherCosts","othercosts","Other Costs"))}});sMo(mm);
-sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(G(v,"PROJECT","Project")).trim(),ty:String(G(v,"TYPE","Type")),dt:String(G(v,"DATE","Date")),vn:String(G(v,"VARIATION NO.","VARIATION NO","Variation No.")),vnm:String(G(v,"VARIATION NAME","Variation Name")),ds:String(G(v,"DATE SUBMITTED","Date Submitted")),da:String(G(v,"DATE APPROVED","Date Approved")),pr:N(G(v,"PRICE","Price","REVENUE","Revenue")),st:String(G(v,"STATUS","Status")),em:N(G(v,"EXTERNAL MATERIALS","External Materials")),pf:N(G(v,"PFAB MATERIALS","Pfab Materials")),mg:N(G(v,"MARGIN","Margin")),nm:N(G(v,"NO. OF MEN","No. of Men")),nh:N(G(v,"NORMAL HOURS","Normal Hours")),nr:N(G(v,"NORMAL RATE","Normal Rate")),oh:N(G(v,"OVERTIME HOURS","Overtime Hours")),or:N(G(v,"OVERTIME RATE","Overtime Rate"))})));
+sDb(pD.length+"p·"+mD.length+"m·"+vD.length+"v");
+sPj(pD.map(p=>({nm:String(G(p,"Project","project","Title")).trim(),cp:N(G(p,"ContractPrice","contractprice")),v:N(G(p,"Variations","variations")),st:G(p,"Status","status")||"Active"})));
+const mm={};mD.forEach(row=>{const p=String(G(row,"Project","project","Title")).trim(),m=String(G(row,"Month","month")).trim();if(!p||!m)return;mm[p+"|||"+m]={Sales:N(G(row,"Sales","sales")),ExtMaterials:N(G(row,"ExtMaterials","extmaterials","External Materials")),ProfabMaterials:N(G(row,"ProfabMaterials","profabmaterials","Profab Materials","PFAB MATERIALS")),OtherCosts:N(G(row,"OtherCosts","othercosts","Other Costs"))}});sMo(mm);
+sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(G(v,"PROJECT","Project")).trim(),ty:String(G(v,"TYPE","Type")),vn:String(G(v,"VARIATION NO.","Variation No.")),vnm:String(G(v,"VARIATION NAME","Variation Name")),ds:String(G(v,"DATE SUBMITTED","Date Submitted")),da:String(G(v,"DATE APPROVED","Date Approved")),pr:N(G(v,"PRICE","Price","REVENUE","Revenue")),st:String(G(v,"STATUS","Status")),em:N(G(v,"EXTERNAL MATERIALS","External Materials")),pf:N(G(v,"PFAB MATERIALS","Pfab Materials")),mg:N(G(v,"MARGIN","Margin")),nm:N(G(v,"NO. OF MEN","No. of Men")),nh:N(G(v,"NORMAL HOURS","Normal Hours")),nr:N(G(v,"NORMAL RATE","Normal Rate")),oh:N(G(v,"OVERTIME HOURS","Overtime Hours")),or:N(G(v,"OVERTIME RATE","Overtime Rate"))})));
 sLd(false)},[]);
 
 useEffect(()=>{if(un)load()},[un,load]);
 const gv=(p,m,c)=>mo[p+"|||"+m]?.[c]||0;
-const voP=useMemo(()=>{const m={};vos.forEach(v=>{if(isAp(v.st))m[v.pj]=(m[v.pj]||0)+v.pr});return m},[vos]);
+const voP=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[v.pj]=(m[v.pj]||0)+v.pr});return m},[vo]);
 
-const uC=useCallback(async(p,m,c,val)=>{sMo(prev=>({...prev,[p+"|||"+m]:{...(prev[p+"|||"+m]||{}),[c]:val}}));sSv(true);await aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:un,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[un]);
-const uP=useCallback(async(nm,fd,val)=>{sPj(prev=>prev.map(p=>p.nm===nm?{...p,[fd==="ContractPrice"?"cp":"v"]:val}:p));sSv(true);await aP({action:"updateProject",name:nm,field:fd,value:val});sLs(new Date());sSv(false)},[]);
-const uV=useCallback(async(vi,fd,val)=>{const vo=vos[vi];if(!vo)return;sVo(prev=>prev.map((v,i)=>i===vi?{...v,[fd]:val}:v));const fm2={"pj":"PROJECT","ty":"TYPE","dt":"DATE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","mg":"MARGIN","nm":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or":"OVERTIME RATE"};sSv(true);await aP({action:"updateVO",row:vo._r,field:fm2[fd]||fd,value:val});sLs(new Date());sSv(false)},[vos]);
+const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[p+"|||"+m]:{...(pr[p+"|||"+m]||{}),[c]:val}}));sSv(true);await aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:un,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[un]);
+const uP=useCallback(async(nm,fd,val)=>{sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fd==="ContractPrice"?"cp":"v"]:val}:p));sSv(true);await aP({action:"updateProject",name:nm,field:fd,value:val});sLs(new Date());sSv(false)},[]);
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const fm2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","mg":"MARGIN","nm":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or":"OVERTIME RATE"};sSv(true);await aP({action:"updateVO",row:v._r,field:fm2[fd]||fd,value:val});sLs(new Date());sSv(false)},[vo]);
+const addV=async()=>{if(!nvo.project)return;sSv(true);await aP({action:"addVO",project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf});sSav(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);sLs(new Date());setTimeout(load,1500)};
+const aPj=async()=>{if(!nn.trim())return;const c=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:c,variations:0});sPj(p=>[...p,{nm:nn.trim(),cp:c,v:0,st:"Active"}]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
+const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nm+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
 
-const addV=async()=>{if(!nvo.project)return;const mg=nvo.price-nvo.extMat-nvo.pfab;sSv(true);await aP({action:"addVO",project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.dateSubmitted,dateApproved:nvo.dateApproved,price:nvo.price,status:nvo.status,extMaterials:nvo.extMat,pfabMaterials:nvo.pfab,margin:mg});sSav(false);sNvo({project:"",type:"VO",varNo:"",varName:"",dateSubmitted:"",dateApproved:"",price:0,status:"",extMat:0,pfab:0});sSv(false);sLs(new Date());setTimeout(load,1500)};
-const aProj=async()=>{if(!nn.trim())return;const cp=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:cp,variations:0});sPj(p=>[...p,{nm:nn.trim(),cp,v:0,st:"Active"}]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
-const dProj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nm+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
+const comp=useMemo(()=>pj.map((p,i)=>{
+let sT=0,eT=0,pT=0,oT=0;
+MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});
+const avo=voP[p.nm]||0,tot=p.cp+p.v+avo,gp=sT-eT-pT-oT,tba=tot-sT;
+return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba}}),[pj,mo,voP]);
 
-const comp=useMemo(()=>proj.map((p,i)=>{let sT=0,eT=0,pT=0,oT=0;MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});const avo=voP[p.nm]||0;const tot=p.cp+p.v+avo;return{...p,i,sT,eT,pT,oT,avo,tot,gp:sT-eT-pT-oT,tba:tot-sT}}),[proj,mo,voP]);
 const flt=useMemo(()=>{if(!sr)return comp;const q=sr.toLowerCase();return comp.filter(p=>p.nm.toLowerCase().includes(q))},[comp,sr]);
 const vis=MO.slice(sc,sc+12);
 
-// Month-click stats
-const mStats=useMemo(()=>{
-if(!selM)return{sales:comp.reduce((s,p)=>s+p.sT,0),gp:comp.reduce((s,p)=>s+p.gp,0),pipeline:comp.reduce((s,p)=>s+p.tot,0),vo:comp.reduce((s,p)=>s+p.avo,0),tba:comp.reduce((s,p)=>s+Math.max(0,p.tba),0),label:"ALL MONTHS"};
-const sales=comp.reduce((s,p)=>s+gv(p.nm,selM,"Sales"),0);
-const ext=comp.reduce((s,p)=>s+gv(p.nm,selM,"ExtMaterials"),0);
-const pfb=comp.reduce((s,p)=>s+gv(p.nm,selM,"ProfabMaterials"),0);
-const oth=comp.reduce((s,p)=>s+gv(p.nm,selM,"OtherCosts"),0);
-return{sales,gp:sales-ext-pfb-oth,pipeline:sales,vo:0,tba:0,label:selM};
-},[selM,comp,mo]);
+// Cards data - filtered by selected months or all
+const cd=useMemo(()=>{
+const ms=selM.length>0?selM:null;
+let sal=0,ext=0,pfb=0,oth=0,con=0;
+comp.forEach(p=>{
+con+=p.cp;
+if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}
+else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});
+return{con,sal,ext,pfb,oth,costs:ext+pfb+oth,label:ms?ms.join(", "):"All months"}},[selM,comp,mo]);
 
-if(!un)return<div className="np-ov"><div className="np-cd"><div style={{fontSize:48}}>👤</div><h2>Welcome to Pipeline</h2><p>Enter your name so the team knows who made each edit.</p><input className="np-in" placeholder="e.g. Jake, Sarah..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="np-bt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter Dashboard →</button><p style={{fontSize:10,color:"var(--t2)",marginTop:12}}>Saves to your browser — one time only.</p></div></div>;
+if(!un)return<div className="np"><div className="nc"><div style={{fontSize:44}}>👤</div><h2>Welcome to Pipeline</h2><p>Enter your name so the team knows who made each edit.</p><input className="ni" placeholder="e.g. Jake, Sarah..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nb" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter Dashboard →</button><p style={{fontSize:9,color:"var(--t2)",marginTop:10}}>Saves to your browser — one time only.</p></div></div>;
 
-const gC="170px 82px 72px 76px 82px 82px 76px 72px "+vis.map(()=>"80px").join(" ");
+const gCols="160px 80px 68px 72px 80px 80px 72px "+vis.map(()=>"76px").join(" ");
 
 return<div className="app">
-<div className="hd"><div className="hd-l"><h1>Pipeline Mastersheet</h1><span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dtx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
-<div className="hd-r"><span className="ub">👤 {un}</span>{ls&&<span className="svt">Saved {ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rbtn" onClick={load}>↻ Sync</button></div></div>
+<div className="hd"><div className="hl"><h1>Pipeline Mastersheet</h1><span className="dt" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
+<div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="sv">Saved {ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={load}>↻ Sync</button></div></div>
 
-{er&&<div className="err">{er}<button className="pill" onClick={load} style={{marginLeft:6}}>Retry</button></div>}
-{db&&<div className="dbg">{db}</div>}
+{er&&<div className="er">{er}<button className="pl" onClick={load} style={{marginLeft:4}}>Retry</button></div>}
+{db&&<div className="db">{db}</div>}
 
-{ld?<div className="loading"><div className="spin"/><p>Loading from Google Sheets...</p></div>:<>
+{ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
 
-<div className="sts">
-{selM&&<div style={{gridColumn:"1/-1",fontSize:10,color:"var(--pu)",fontWeight:600,marginBottom:-2}}>Showing: {selM} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:10,fontFamily:"var(--font)"}} onClick={()=>sSelM(null)}>✕ Clear filter</button></div>}
-<div className={"stc"+(selM?" selm":"")}><div className="lb">{selM?"Month Revenue":"Total Pipeline"}</div><div className="vl" style={{color:"var(--ac)"}}>{fK(selM?mStats.sales:mStats.pipeline)}</div><div className="sb">{selM?mStats.label:comp.length+" projects"}</div></div>
-<div className="stc"><div className="lb">{selM?"Month Revenue":"Revenue Claimed"}</div><div className="vl">{fK(mStats.sales)}</div></div>
-<div className="stc"><div className="lb">{selM?"Month GP":"Gross Profit"}</div><div className="vl" style={{color:"var(--gn)"}}>{fK(mStats.gp)}</div>{!selM&&<div className="sb">{mStats.sales?((mStats.gp/mStats.sales)*100).toFixed(1):0}%</div>}</div>
-{!selM&&<div className="stc"><div className="lb">Approved VOs</div><div className="vl" style={{color:"var(--pu)"}}>{fK(mStats.vo)}</div><div className="sb">from VO Register</div></div>}
-{!selM&&<div className="stc"><div className="lb">To Allocate</div><div className="vl" style={{color:"var(--am)"}}>{fK(mStats.tba)}</div></div>}
+{selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:4}}>Filtered: {cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9,fontFamily:"var(--ft)"}} onClick={()=>sSM([])}>✕ Clear</button></div>}
+<div className="cards">
+<div className="cd"><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(cd.con)}</div><div className="sb">{comp.length} projects</div></div>
+<div className={"cd"+(selM.length?" sel":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div><div className="sb">{cd.label}</div></div>
+<div className={"cd"+(selM.length?" sel":"")}><div className="lb">External Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
+<div className={"cd"+(selM.length?" sel":"")}><div className="lb">ProFab Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
+<div className={"cd"+(selM.length?" sel":"")}><div className="lb">Other Costs</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.oth)}</div></div>
+<div className={"cd"+(selM.length?" sel":"")}><div className="lb">Total Costs</div><div className="vl" style={{color:"var(--am)"}}>{fK(cd.costs)}</div><div className="sb">Ext+PFAB+Other</div></div>
 </div>
 
-<div className="bar">
-{[["grid","Pipeline"],["vos","VO Register"]].map(([k,l])=><button key={k} className={"pill "+(vw===k?"on":"")} onClick={()=>sVw(k)}>{l}</button>)}
-<div className="dv"/>
-<button className="pill grn" onClick={()=>sSa(!sa)}>+ Project</button>
-<input className="sbox" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
+<div className="br">
+{[["grid","Pipeline"],["vos","VO Register"]].map(([k,l])=><button key={k} className={"pl "+(vw===k?"on":"")} onClick={()=>sVw(k)}>{l}</button>)}
+<div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
+<input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
 </div>
 
-{sa&&<div className="afm"><div><label>Project Name</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="2140 - Project - Client" style={{width:240}}/></div><div><label>Contract Price</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="500000" style={{width:120}}/></div><button className="pill grn" onClick={aProj}>Add</button><button className="pill" onClick={()=>sSa(false)}>Cancel</button></div>}
+{sa&&<div className="af"><div><label>Project Name</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="2140 - Project - Client" style={{width:220}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="500000" style={{width:100}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}
 
 {vw==="grid"&&<>
-<div className="hint"><b>Double-click</b> cells to edit. <span style={{color:"var(--am)"}}>Gold</span>=editable. <span style={{color:"var(--pu)"}}>Purple</span>=auto from VO Register (only "Approved" counts). Click a <b>month header</b> to filter the stats cards above.</div>
-<div className="mnav"><button onClick={()=>sSc(Math.max(0,sc-3))}>← Earlier</button><span>{vis[0]}—{vis[vis.length-1]}</span><button onClick={()=>sSc(Math.min(12,sc+3))}>Later →</button><div style={{flex:1}}/><button onClick={()=>sSc(0)}>2025</button><button onClick={()=>sSc(12)}>2026</button></div>
-<div className="gc" style={{maxHeight:"65vh",overflowY:"auto"}}><div className="grid" style={{gridTemplateColumns:gC}}>
-<div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Claimed</div><div>To Alloc.</div><div>GP</div>
-{vis.map(m=><div key={m} className={selM===m?"msel":""} onClick={()=>sSelM(selM===m?null:m)}>{m}</div>)}</div>
-{flt.map(p=>{const gpM=m=>gv(p.nm,m,"Sales")-gv(p.nm,m,"ExtMaterials")-gv(p.nm,m,"ProfabMaterials")-gv(p.nm,m,"OtherCosts");
+<div className="ht"><b>Double-click</b> to edit. <span style={{color:"var(--am)"}}>Gold</span>=editable. <span style={{color:"var(--pu)"}}>Purple</span>=auto from VO Register. Click <b>month headers</b> to multi-select and filter cards. <b>Gross Profit</b> = Sales Total - Ext - ProFab - Other (Total column only).</div>
+<div className="mn2"><button onClick={()=>sSc(Math.max(0,sc-3))}>←</button><span>{vis[0]}—{vis[vis.length-1]}</span><button onClick={()=>sSc(Math.min(12,sc+3))}>→</button><div style={{flex:1}}/><button onClick={()=>sSc(0)}>2025</button><button onClick={()=>sSc(12)}>2026</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear months</button>}</div>
+<div className="gc" style={{maxHeight:"64vh",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gCols}}>
+<div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Claimed</div><div>To Alloc.</div>
+{vis.map(m=><div key={m} className={selM.includes(m)?"ms":""} onClick={()=>togM(m)}>{m}</div>)}</div>
+
+{flt.map(p=>{
+const gpM=m=>gv(p.nm,m,"Sales")-gv(p.nm,m,"ExtMaterials")-gv(p.nm,m,"ProfabMaterials")-gv(p.nm,m,"OtherCosts");
 return<div className="pg" key={p.i}>
-<div className="ph">
-<div className="ph-n"><button className="xb" onClick={()=>dProj(p.nm)}>×</button>{p.nm}</div>
-<div><EC value={p.cp} onChange={v=>uP(p.nm,"ContractPrice",v)} cls="cl cl-e"/></div>
-<div><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl cl-e"/></div>
-<div style={{color:"var(--pu)",fontStyle:"italic",fontSize:10}}>{p.avo?fm(p.avo):"-"}</div>
-<div style={{fontWeight:800,fontSize:10}}>{fm(p.tot)}</div>
-<div style={{fontSize:10}}>{fm(p.sT)}</div>
-<div style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)",fontSize:10}}>{fm(p.tba)}</div>
-<div style={{color:"var(--gn)",fontSize:10}}>{fm(p.gp)}</div>
-{vis.map(m=><div key={m} style={{fontSize:9,color:selM===m?"var(--pu)":"var(--t2)",fontWeight:selM===m?700:400}}>{gv(p.nm,m,"Sales")?fm(gv(p.nm,m,"Sales")):""}</div>)}</div>
-{RK.map((rk,ri)=><div className={"row "+(ri===0?"rs":"rc")} key={rk}><div className="rl">{RD[ri]}</div><div/><div/><div/><div/>
-<div style={{fontFamily:"var(--mono)",fontSize:9}}>{fm([p.sT,p.eT,p.pT,p.oT][ri])||""}</div><div/><div/>
-{vis.map(m=><div key={m}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls={ri===0?"cl cl-s":"cl cl-c"}/></div>)}</div>)}
-<div className="row rg"><div className="rl" style={{color:"var(--gn)"}}>Gross Profit</div><div/><div/><div/><div/>
-<div style={{fontFamily:"var(--mono)",fontSize:9,color:"var(--gn)",fontWeight:700}}>{fm(p.gp)}</div><div/><div/>
-{vis.map(m=>{const v=gpM(m);return<div key={m} style={{fontFamily:"var(--mono)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
+{/* Project name header */}
+<div className="pn"><div><button className="xb" onClick={()=>dPj(p.nm)}>×</button>{p.nm}</div>{vis.map((m,mi)=><div key={m} style={{background:"transparent"}}/>)}<div/><div/><div/><div/><div/><div/></div>
+
+{/* Sales row */}
+<div className="rw r0"><div className="rl">{RN[0]}</div>
+<div><EC value={p.cp} onChange={v=>uP(p.nm,"ContractPrice",v)} cls="cl ce"/></div>
+<div><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl ce"/></div>
+<div style={{color:"var(--pu)",fontStyle:"italic",fontFamily:"var(--mn)",fontSize:10}}>{p.avo?fm(p.avo):"-"}</div>
+<div style={{fontWeight:700,fontFamily:"var(--mn)",fontSize:10}}>{fm(p.tot)}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10}}>{fm(p.sT)}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)"}}>{fm(p.tba)}</div>
+{vis.map(m=><div key={m}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs"/></div>)}</div>
+
+{/* Ext Materials, ProFab, Other rows */}
+{[1,2,3].map(ri=><div className={"rw r"+ri} key={ri}><div className="rl">{RN[ri]}</div>
+<div><EC value={0} onChange={()=>{}} cls="cl cc"/></div>
+<div><EC value={0} onChange={()=>{}} cls="cl cc"/></div>
+<div/>
+<div style={{fontFamily:"var(--mn)",fontSize:10,color:"var(--rd)"}}>{fm([0,p.eT,p.pT,p.oT][ri])}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,color:"var(--rd)"}}>{fm([0,p.eT,p.pT,p.oT][ri])}</div>
+<div/>
+{vis.map(m=><div key={m}><EC value={gv(p.nm,m,RK[ri])} onChange={val=>uC(p.nm,m,RK[ri],val)} cls="cl cc"/></div>)}</div>)}
+
+{/* Gross Profit row */}
+<div className="rg"><div className="rl">Gross Profit</div><div/><div/><div/>
+<div style={{fontFamily:"var(--mn)",fontSize:10,color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div>
+<div/><div/>{vis.map(m=>{const v=gpM(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
 </div>})}
 </div></div>
-{flt.length===0&&<div className="empty">{proj.length===0?"No projects yet.":"No match."}</div>}
+{flt.length===0&&<div className="em">{pj.length===0?"No projects.":"No match."}</div>}
 </>}
 
 {vw==="vos"&&<div className="vw">
-<div className="vhd"><h3>VO / DL Register</h3><div style={{display:"flex",gap:6,alignItems:"center"}}>
-<span style={{fontSize:11,color:"var(--t2)"}}>{vos.length} entries · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
-<button className="pill grn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
-{sav&&<div className="afm" style={{margin:10}}>
-<div><label>Project</label><select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{minWidth:160}}><option value="">Select...</option>{proj.map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></div>
+<div className="vd"><h3>VO / DL Register</h3><div style={{display:"flex",gap:6,alignItems:"center"}}>
+<span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} entries · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
+<button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
+{sav&&<div className="af" style={{margin:8}}>
+<div><label>Project</label><select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{minWidth:150}}><option value="">Select...</option>{pj.map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></div>
 <div><label>Type</label><select value={nvo.type} onChange={e=>sNvo({...nvo,type:e.target.value})}><option value="VO">VO</option><option value="DL">DL</option></select></div>
-<div><label>{nvo.type}- No.</label><input value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value.substring(0,10)})} placeholder="001" style={{width:80}}/></div>
-<div><label>Name</label><input value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value.substring(0,100)})} placeholder="Description..." style={{width:180}}/></div>
-<div><label>Price</label><input type="number" value={nvo.price||""} onChange={e=>sNvo({...nvo,price:N(e.target.value)})} style={{width:90}}/></div>
-<div><label>Status</label><input value={nvo.status} onChange={e=>sNvo({...nvo,status:e.target.value})} placeholder="Approved..." style={{width:120}}/></div>
-<button className="pill grn" onClick={addV}>Add</button><button className="pill" onClick={()=>sSav(false)}>Cancel</button></div>}
-{vos.length===0?<div className="empty">No entries yet. Add a "VO Register" tab in Google Sheets or click "+ Add" above.</div>:
-<div className="vsc"><table className="vt"><thead><tr>
-<th className="gg">Project</th><th className="gg">Type</th><th className="gg">Var No.</th><th className="gg">Variation Name</th>
-<th className="gg">Date Sub.</th><th className="gg">Date Appr.</th><th className="gg rt">Price</th><th className="gg">Status</th>
-<th className="gy rt">Ext. Mat.</th><th className="gy rt">PFAB Mat.</th><th className="gy rt">Margin</th>
-<th className="gp rt"># Men</th><th className="gp rt">Norm Hrs</th><th className="gp rt">Norm Rate</th><th className="gp rt">OT Hrs</th><th className="gp rt">OT Rate</th>
+<div><label>{nvo.type}- No.</label><input value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value.substring(0,10)})} placeholder="001" style={{width:70}}/></div>
+<div><label>Name</label><input value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value.substring(0,100)})} placeholder="Description" style={{width:160}}/></div>
+<div><label>Price</label><input type="number" value={nvo.price||""} onChange={e=>sNvo({...nvo,price:N(e.target.value)})} style={{width:80}}/></div>
+<div><label>Status</label><input value={nvo.status} onChange={e=>sNvo({...nvo,status:e.target.value})} placeholder="Approved" style={{width:100}}/></div>
+<button className="pl gn" onClick={addV}>Add</button><button className="pl" onClick={()=>sSav(false)}>Cancel</button></div>}
+{vo.length===0?<div className="em">No entries. Add a "VO Register" tab or click "+ Add".</div>:
+<div className="vc"><table className="vt"><thead><tr>
+<th className="tg">Project</th><th className="tg">Type</th><th className="tg">Var No.</th><th className="tg">Variation Name</th>
+<th className="tg">Date Sub.</th><th className="tg">Date Appr.</th><th className="tg rt">Price</th><th className="tg">Status</th>
+<th className="ty rt">Ext.Mat.</th><th className="ty rt">PFAB</th><th className="ty rt">Margin</th>
+<th className="tp rt">#Men</th><th className="tp rt">NormHrs</th><th className="tp rt">NormRate</th><th className="tp rt">OTHrs</th><th className="tp rt">OTRate</th>
 </tr></thead><tbody>
-{vos.map((v,vi)=>{const mg=v.pr-v.em-v.pf;return<tr key={vi}>
-<td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:130}}><option value="">—</option>{proj.map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
+{vo.map((v,vi)=>{const mg=v.pr-v.em-v.pf;return<tr key={vi}>
+<td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:120}}><option value="">—</option>{pj.map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
 <td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)}><option value="VO">VO</option><option value="DL">DL</option><option value="">—</option></select></td>
 <td><input value={v.vn} onChange={e=>uV(vi,"vn",e.target.value)} className="sm"/></td>
 <td><input value={v.vnm} onChange={e=>uV(vi,"vnm",e.target.value.substring(0,100))} className="md"/></td>
 <td><input value={v.ds} onChange={e=>uV(vi,"ds",e.target.value)} className="sm" placeholder="dd-mmm-yy"/></td>
 <td><input value={v.da} onChange={e=>uV(vi,"da",e.target.value)} className="sm" placeholder="dd-mmm-yy"/></td>
 <td className="rt"><input type="number" step="0.01" value={v.pr||""} onChange={e=>uV(vi,"pr",N(e.target.value))} className="nm"/></td>
-<td><input value={v.st} onChange={e=>uV(vi,"st",e.target.value)} className={stC(v.st)} style={{minWidth:110}}/></td>
+<td><input value={v.st} onChange={e=>uV(vi,"st",e.target.value)} className={sC(v.st)} style={{minWidth:100}}/></td>
 <td className="rt"><input type="number" step="0.01" value={v.em||""} onChange={e=>uV(vi,"em",N(e.target.value))} className="nm"/></td>
 <td className="rt"><input type="number" step="0.01" value={v.pf||""} onChange={e=>uV(vi,"pf",N(e.target.value))} className="nm"/></td>
-<td className="rt mn" style={{color:mg<0?"var(--rd)":"var(--gn)"}}>{mg?fm(mg):""}</td>
-<td className="rt mn" style={{color:"var(--pu)"}}>{v.nm||""}</td>
-<td className="rt mn" style={{color:"var(--pu)"}}>{v.nh||""}</td>
-<td className="rt mn" style={{color:"var(--pu)"}}>{v.nr||""}</td>
-<td className="rt mn" style={{color:"var(--pu)"}}>{v.oh||""}</td>
-<td className="rt mn" style={{color:"var(--pu)"}}>{v.or||""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:mg<0?"var(--rd)":"var(--gn)"}}>{mg?fm(mg):""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nm||""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nh||""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nr||""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.oh||""}</td>
+<td className="rt" style={{fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.or||""}</td>
 </tr>})}
 </tbody></table></div>}
 </div>}

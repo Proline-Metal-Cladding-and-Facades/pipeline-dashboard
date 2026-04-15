@@ -6,116 +6,115 @@
 <style>
 :root{--bg:#0b0e13;--s1:#131720;--s2:#1b2030;--s3:#252b3d;--bd:#2d3450;--tx:#e6eaf2;--t2:#7d89a6;--ac:#5b8def;--a2:#3d6fd9;--gn:#34d399;--am:#fbbf24;--rd:#f87171;--pu:#a78bfa;--ft:'Outfit',sans-serif;--mn:'JetBrains Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--tx);font-family:var(--ft)}
+/* Name prompt */
 .np{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100}
-.nc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px;max-width:360px;width:90%;text-align:center}
-.nc h2{font-size:18px;font-weight:800;margin:8px 0 4px}.nc p{font-size:10px;color:var(--t2);margin-bottom:10px}
-.nin{width:100%;padding:10px;border-radius:8px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--ft);font-size:14px;text-align:center;outline:none;margin-bottom:10px}
+.nc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
+.nc h2{font-size:22px;font-weight:800;margin:12px 0 6px}.nc p{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:14px}
+.nin{width:100%;padding:12px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--ft);font-size:16px;text-align:center;outline:none;margin-bottom:12px}
 .nin:focus{border-color:var(--ac)}.nin::placeholder{color:#4a5270}
-.nbt{width:100%;padding:10px;border-radius:8px;border:none;background:var(--a2);color:#fff;font-family:var(--ft);font-size:12px;font-weight:700;cursor:pointer}
+.nbt{width:100%;padding:12px;border-radius:10px;border:none;background:var(--a2);color:#fff;font-family:var(--ft);font-size:14px;font-weight:700;cursor:pointer}
 .nbt:hover:not(:disabled){background:var(--ac)}.nbt:disabled{opacity:.3}
-.app{padding:6px 8px}.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px}
-.hl{display:flex;align-items:center;gap:6px}.hl h1{font-size:14px;font-weight:800}
-.dt2{width:6px;height:6px;border-radius:50%;animation:pu2 2s infinite}@keyframes pu2{0%,100%{opacity:1}50%{opacity:.4}}
-.dx{font-size:8px;font-weight:600}.hr{display:flex;align-items:center;gap:4px}
-.ub{background:var(--s2);border:1px solid var(--bd);padding:2px 7px;border-radius:10px;font-size:8px;font-weight:600}
-.svx{font-size:7px;color:var(--t2)}.rb{padding:2px 6px;border-radius:3px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-size:8px;font-weight:600;cursor:pointer;font-family:var(--ft)}
+/* App shell */
+.app{padding:10px 12px}
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.hl{display:flex;align-items:center;gap:8px}.hl h1{font-size:18px;font-weight:800;letter-spacing:-.5px}
+.dot{width:7px;height:7px;border-radius:50%;animation:pul 2s infinite}@keyframes pul{0%,100%{opacity:1}50%{opacity:.4}}
+.dx{font-size:10px;font-weight:600}.hr{display:flex;align-items:center;gap:6px}
+.ub{background:var(--s2);border:1px solid var(--bd);padding:3px 10px;border-radius:14px;font-size:10px;font-weight:600}
+.svt{font-size:9px;color:var(--t2)}.rb{padding:3px 8px;border-radius:4px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer}
 .rb:hover{color:var(--tx);border-color:var(--ac)}
-.cds{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:5px}
-@media(max-width:800px){.cds{grid-template-columns:repeat(4,1fr)}}
-.cd{background:var(--s1);border:1px solid var(--bd);border-radius:4px;padding:5px 7px}
+/* Cards - same as screenshot */
+.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-bottom:8px}
+.cd{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:8px 10px}
 .cd.se{border-color:var(--pu);background:rgba(167,139,250,.05)}
-.cd .lb{font-size:6px;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;font-weight:700}
-.cd .vl{font-size:12px;font-weight:800;font-family:var(--mn);margin-top:1px}.cd .sb{font-size:6px;color:var(--t2)}
-.br{display:flex;gap:3px;margin-bottom:5px;flex-wrap:wrap;align-items:center}
-.pl{padding:3px 8px;border-radius:10px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:var(--ft);font-size:8px;font-weight:600;cursor:pointer}
+.cd .lb{font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+.cd .vl{font-size:16px;font-weight:800;font-family:var(--mn);margin-top:1px}.cd .sb{font-size:8px;color:var(--t2)}
+/* Toolbar */
+.br{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.pl{padding:4px 12px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer;transition:.15s}
 .pl.on{background:var(--a2);border-color:var(--a2);color:#fff}.pl:hover:not(.on){border-color:var(--t2);color:var(--tx)}
 .pl.gn{border-color:var(--gn);color:var(--gn)}.pl.gn:hover{background:var(--gn);color:var(--bg)}
-.dv{width:1px;height:12px;background:var(--bd);margin:0 2px}
-.sx{flex:1;min-width:80px;padding:2px 6px;border-radius:3px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-family:var(--ft);font-size:8px;outline:none}
+.dv{width:1px;height:16px;background:var(--bd);margin:0 3px}
+.sx{flex:1;min-width:120px;padding:4px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-family:var(--ft);font-size:10px;outline:none}
 .sx:focus{border-color:var(--ac)}.sx::placeholder{color:var(--t2)}
-.af{background:var(--s2);border:1px solid var(--bd);border-radius:4px;padding:6px;margin-bottom:4px;display:flex;gap:4px;flex-wrap:wrap;align-items:end}
-.af label{font-size:7px;color:var(--t2);display:block;text-transform:uppercase;font-weight:700}
-.af input,.af select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:2px 5px;border-radius:3px;font-family:var(--ft);font-size:8px;outline:none}
+.af{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:8px;margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:end}
+.af label{font-size:8px;color:var(--t2);display:block;text-transform:uppercase;font-weight:700}
+.af input,.af select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:4px 7px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none}
 .af input:focus,.af select:focus{border-color:var(--ac)}
-.mn2{display:flex;align-items:center;gap:3px;margin-bottom:3px}
-.mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:1px 5px;border-radius:3px;cursor:pointer;font-size:7px;font-weight:600;font-family:var(--ft)}
-.mn2 button:hover{color:var(--tx)}.mn2 span{font-size:7px;color:var(--t2)}
-/* MAIN GRID */
-.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:4px;background:var(--s1)}
+/* Month nav - same */
+.mn2{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
+.mn2 button:hover{color:var(--tx)}.mn2 span{font-size:9px;color:var(--t2)}
+/* GRID - same proportions as screenshot */
+.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:var(--s1)}
 .g{display:grid;min-width:fit-content}
 .gh{display:contents}
-.gh>div{position:sticky;top:0;z-index:5;background:var(--s2);padding:3px 4px;font-size:7px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right;cursor:pointer;user-select:none;white-space:nowrap}
+.gh>div{position:sticky;top:0;z-index:5;background:var(--s2);padding:5px 6px;font-size:8px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;user-select:none}
 .gh>div:hover{color:var(--tx);background:var(--s3)}
 .gh>div.ms{color:var(--pu);background:rgba(167,139,250,.1);border-bottom-color:var(--pu)}
-.gh>div:nth-child(1){text-align:center;cursor:default}.gh>div:nth-child(2){text-align:left;cursor:default}.gh>div:nth-child(3){text-align:left;position:sticky;left:0;z-index:6;cursor:default}
-/* Project row */
+/* Project row = merged with Sales */
 .pr{display:contents}
-.pr>div{padding:2px 3px;font-size:8px;font-weight:600;background:var(--s3);border-top:1px solid rgba(91,141,239,.2);border-bottom:1px solid var(--bd);text-align:right;font-family:var(--mn)}
-.pr>div:nth-child(1){text-align:center;font-family:var(--ft)}
-.pr>div:nth-child(2){text-align:left;font-family:var(--mn);font-size:7px;color:var(--t2)}
-.pr>div:nth-child(3){text-align:left;position:sticky;left:0;z-index:2;background:var(--s3);font-family:var(--ft);color:var(--ac);white-space:normal;word-wrap:break-word;line-height:1.2;font-size:8px}
-.eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:7px;border-radius:2px;padding:0 2px;font-weight:700;font-family:var(--mn);line-height:12px;margin-right:1px}
+.pr>div{padding:5px 6px;font-size:10px;font-weight:700;background:var(--s3);border-top:2px solid rgba(91,141,239,.25);border-bottom:1px solid var(--bd);text-align:right;font-family:var(--mn)}
+.pr .pnm{text-align:left;position:sticky;left:0;z-index:3;background:var(--s3);font-family:var(--ft);color:var(--ac);white-space:normal;word-break:break-word;line-height:1.3;font-size:10px;display:flex;align-items:center;gap:3px}
+.pr .pst{font-size:9px;text-align:center;font-family:var(--ft);padding:2px 4px}
+.pr .pid{font-size:9px;text-align:left;font-family:var(--mn);color:var(--t2);padding:2px 4px}
+.eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:9px;border-radius:3px;padding:0 4px;font-weight:700;font-family:var(--mn);line-height:16px}
 .eb:hover{color:var(--ac);border-color:var(--ac)}
-.xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:9px;opacity:.25;padding:0 1px}.xb:hover{color:var(--rd);opacity:1}
+.xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:11px;opacity:.3;padding:0 2px}.xb:hover{color:var(--rd);opacity:1}
 .pne{cursor:pointer}.pne:hover{color:var(--am)}
-/* Sub rows */
-.rw{display:contents}.rw>div{padding:1px 3px;font-size:8px;border-bottom:1px solid rgba(45,52,80,.25);text-align:right}
-.rw>div:nth-child(1),.rw>div:nth-child(2){background:var(--s1)}
-.rw>div:nth-child(3){text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:20px!important;font-size:8px;font-weight:500;white-space:nowrap}
-.r1>div:nth-child(3),.r2>div:nth-child(3),.r3>div:nth-child(3){color:var(--rd)}
-.rg{display:contents}.rg>div{padding:1px 3px;font-size:8px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
-.rg>div:nth-child(1),.rg>div:nth-child(2){background:var(--s1)}
-.rg>div:nth-child(3){text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);color:var(--gn);padding-left:20px!important;white-space:nowrap}
-/* Cells */
-.cl{padding:1px 2px;min-height:13px;cursor:pointer;border-radius:1px;font-family:var(--mn);font-size:8px;text-align:right}
+.stdd{background:transparent;border:none;color:inherit;font-family:var(--ft);font-size:9px;font-weight:700;cursor:pointer;outline:none;-webkit-appearance:none}
+.stdd option{background:var(--s2);color:var(--tx)}
+.jid-in{background:var(--bg);border:1px solid var(--bd);color:var(--t2);font-family:var(--mn);font-size:9px;padding:1px 4px;border-radius:3px;outline:none;width:50px}
+.jid-in:focus{border-color:var(--ac);color:var(--tx)}
+/* Sub rows - same as screenshot */
+.rw{display:contents}.rw>div{padding:3px 6px;font-size:10px;border-bottom:1px solid rgba(45,52,80,.4);text-align:right}
+.rl{text-align:left!important;font-family:var(--ft);font-weight:500;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:16px!important;font-size:10px}
+.r1 .rl,.r2 .rl,.r3 .rl{color:var(--rd)}
+.rg{display:contents}.rg>div{padding:3px 6px;font-size:10px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
+.rg .rl{color:var(--gn)!important}
+/* Editable cells - same */
+.cl{padding:2px 3px;min-height:16px;cursor:pointer;border-radius:2px;font-family:var(--mn);font-size:10px;text-align:right;transition:.1s}
 .cl:hover{background:rgba(91,141,239,.06)}.cs{color:var(--tx)}.cc{color:var(--rd)}
-.ce{color:var(--am);border-bottom:1px dashed rgba(251,191,36,.25)}.ce:hover{background:rgba(251,191,36,.05)}
-.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:8px;padding:1px 2px;border-radius:1px;outline:none;text-align:right}
-.cin{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--ft);font-size:8px;padding:1px 2px;border-radius:1px;outline:none}
-.cij{background:var(--bg);border:1px solid var(--bd);color:var(--t2);font-family:var(--mn);font-size:7px;padding:1px 3px;border-radius:2px;outline:none;width:45px;text-align:left}
-.cij:focus{border-color:var(--ac);color:var(--tx)}
-/* Status dropdown */
-.st-sel{background:transparent;border:none;color:inherit;font-family:var(--ft);font-size:7px;font-weight:700;cursor:pointer;outline:none;padding:0;text-align:center;-webkit-appearance:none;appearance:none}
-.st-sel option{background:var(--s2);color:var(--tx)}
-.ld{display:flex;flex-direction:column;align-items:center;padding:30px;gap:6px}.ld p{font-size:9px;color:var(--t2)}
-.sp{width:18px;height:18px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sn .7s linear infinite}
+.ce{color:var(--am);border-bottom:1px dashed rgba(251,191,36,.3)}.ce:hover{background:rgba(251,191,36,.06)}
+.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:10px;padding:2px 3px;border-radius:2px;outline:none;text-align:right}
+.cin{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--ft);font-size:10px;padding:2px 4px;border-radius:2px;outline:none}
+/* Loading/Error */
+.ld{display:flex;flex-direction:column;align-items:center;padding:40px;gap:8px}.ld p{font-size:11px;color:var(--t2)}
+.sp{width:22px;height:22px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sn .7s linear infinite}
 @keyframes sn{to{transform:rotate(360deg)}}
-.er{padding:4px 6px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:3px;font-size:8px;color:var(--rd);margin-bottom:4px}
-.em{text-align:center;padding:12px;color:var(--t2);font-size:9px}
-/* SUMMARY TABLES - slim */
-.sep{height:6px}
-.sth{padding:2px 4px;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid;cursor:pointer;user-select:none;display:flex;align-items:center;gap:4px}
-.sth-p{color:var(--ac);border-color:var(--ac);background:rgba(91,141,239,.04)}
-.sth-a{color:var(--gn);border-color:var(--gn);background:rgba(52,211,153,.04)}
-.sth .stog{font-size:7px;color:var(--t2);font-weight:400}
-.lkr{margin-left:auto;display:flex;align-items:center;gap:2px}
-.lk{background:none;border:1px solid var(--bd);border-radius:2px;padding:0 3px;cursor:pointer;font-size:7px;color:var(--t2);font-family:var(--ft);line-height:14px}
+.er{padding:6px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:5px;font-size:10px;color:var(--rd);margin-bottom:6px}
+.em{text-align:center;padding:20px;color:var(--t2);font-size:11px}
+/* SUMMARY TABLES - compact but readable */
+.sum-hdr{padding:5px 8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid;cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;margin-top:8px;border-radius:4px 4px 0 0}
+.sum-hdr-p{color:var(--ac);border-color:var(--ac);background:rgba(91,141,239,.06)}
+.sum-hdr-a{color:var(--gn);border-color:var(--gn);background:rgba(52,211,153,.06)}
+.sum-hdr .tog{font-size:8px;color:var(--t2);font-weight:400}
+.lkr{margin-left:auto;display:flex;gap:3px;align-items:center}
+.lk{background:none;border:1px solid var(--bd);border-radius:3px;padding:1px 4px;cursor:pointer;font-size:8px;color:var(--t2);font-family:var(--ft);line-height:14px}
 .lk:hover{border-color:var(--am);color:var(--am)}
 .lk.on{background:var(--am);color:var(--bg);border-color:var(--am)}
-/* Summary rows */
+.sum-gc{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;background:var(--s1);overflow-x:auto}
+.sg{display:grid;min-width:fit-content}
 .sr{display:contents}
-.sr>div{padding:1px 3px;font-size:7px;border-bottom:1px solid rgba(45,52,80,.2);text-align:right;white-space:nowrap}
-.sr>div:nth-child(1){text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);font-weight:600;font-size:7px;white-space:normal;min-width:100px;max-width:160px;padding-left:4px!important}
-.sr>div:nth-child(2),.sr>div:nth-child(3){background:var(--s1)}
-.sr-c>div:nth-child(1){color:var(--ac)}.sr-e>div:nth-child(1){color:var(--am)}
-.sr-t{display:contents}.sr-t>div{padding:1px 3px;font-size:7px;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right}
-.sr-t>div:nth-child(1){text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:4px!important;white-space:normal}
-.sr-t>div:nth-child(2),.sr-t>div:nth-child(3){background:var(--s1)}
-.sr-w{display:contents}.sr-w>div{padding:1px 3px;font-size:7px;text-align:right;color:var(--t2);background:var(--s2);border-bottom:1px solid var(--bd)}
-.sr-w>div:nth-child(1){text-align:left;position:sticky;left:0;z-index:1;background:var(--s2);font-weight:700;padding-left:4px!important}
-.sr-w>div:nth-child(2),.sr-w>div:nth-child(3){background:var(--s2)}
+.sr>div{padding:2px 6px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;white-space:nowrap}
+.sr>div:first-child{text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);font-weight:600;font-size:9px;white-space:normal;padding-left:6px!important;min-width:180px}
+.sr-c>div:first-child{color:var(--ac)}.sr-e>div:first-child{color:var(--am)}
+.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:9px;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right}
+.sr-t>div:first-child{text-align:left;position:sticky;left:0;z-index:1;background:var(--s1);padding-left:6px!important;white-space:normal;min-width:180px}
+.sr-w{display:contents}.sr-w>div{padding:2px 6px;font-size:9px;text-align:right;color:var(--t2);background:var(--s2);border-bottom:1px solid var(--bd)}
+.sr-w>div:first-child{text-align:left;position:sticky;left:0;z-index:1;background:var(--s2);font-weight:700;padding-left:6px!important;min-width:180px}
 /* VO */
-.vw{border:1px solid var(--bd);border-radius:4px;background:var(--s1);overflow:hidden}
-.vhd{padding:5px 8px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:3px}
-.vhd h3{font-size:10px;font-weight:700;color:var(--pu)}
-.vsc{overflow-x:auto;max-height:55vh;overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:8px}
-.vt th{text-align:left;padding:3px 5px;font-size:6px;color:var(--t2);text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
+.vw{border:1px solid var(--bd);border-radius:6px;background:var(--s1);overflow:hidden}
+.vhd{padding:8px 12px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
+.vsc{overflow-x:auto;max-height:60vh;overflow-y:auto}
+.vt{width:100%;border-collapse:collapse;font-size:10px}
+.vt th{text-align:left;padding:5px 7px;font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
 .vt th.tg{border-top:2px solid var(--gn)}.vt th.ty{border-top:2px solid var(--am)}.vt th.tp{border-top:2px solid var(--pu)}
-.vt td{padding:2px 5px;border-bottom:1px solid rgba(45,52,80,.3)}
-.vt input,.vt select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:1px 2px;border-radius:2px;font-family:var(--ft);font-size:8px;outline:none}
+.vt td{padding:4px 7px;border-bottom:1px solid rgba(45,52,80,.3)}
+.vt input,.vt select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:2px 4px;border-radius:3px;font-family:var(--ft);font-size:10px;outline:none}
 .vt input:focus,.vt select:focus{border-color:var(--ac)}
-.vt input.nm{text-align:right;font-family:var(--mn);width:65px}.vt input.sm{width:55px}.vt input.md{width:100px}
+.vt input.nm{text-align:right;font-family:var(--mn);width:75px}.vt input.sm{width:65px}.vt input.md{width:120px}
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
@@ -124,21 +123,20 @@ const API="https://script.google.com/macros/s/AKfycbxZSeOefNZ7nPHiq_Y7ZJNUnIGgfX
 const MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Aug-25","Sep-25","Oct-25","Nov-25","Dec-25","Jan-26","Feb-26","Mar-26","Apr-26","May-26","Jun-26","Jul-26","Aug-26","Sep-26","Oct-26","Nov-26","Dec-26"];
 const RN=["External Materials","ProFab Materials","Other Costs"];
 const RK=["ExtMaterials","ProfabMaterials","OtherCosts"];
-const UK="pipeline-v7";
-const LK="_LOCK";const LS="_LOCK_S";const LE="_LOCK_E";const LP="_LOCK_P";const LO="_LOCK_O";const WK="_WEEKS";
+const UK="pipeline-v8";
+const LK="_LK";const LS="_LS";const LE="_LE";const LP="_LP";const LO="_LO";const WK="_WK";
 const isAp=s=>String(s||"").toUpperCase().includes("APPROVED");
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
 const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
 const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";
-async function aG(a){try{const r=await fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch(e){return null}}
+async function aG(a){try{const r=await fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch{return null}}
 async function aP(p){try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(p)});return true}catch{return false}}
 const fm=v=>v?Number(v).toLocaleString("en-AU",{maximumFractionDigits:0}):"";
 const fK=v=>{if(!v)return"-";const a=Math.abs(v);return(v<0?"-":"")+"$"+(a>=1e6?(a/1e6).toFixed(1)+"M":a>=1e3?(a/1e3).toFixed(0)+"K":String(Math.round(a)))};
 const N=v=>Number(v)||0;
-function F(obj,...names){const nr=s=>String(s).toLowerCase().replace(/[\s_.\-]+/g,"");const keys=Object.keys(obj);for(const n of names){if(obj[n]!==undefined&&obj[n]!=="")return obj[n];const nn=nr(n);for(const k of keys){if(nr(k)===nn&&obj[k]!==""&&obj[k]!==undefined)return obj[k]}}return""}
+function F(o,...ns){const nr=s=>String(s).toLowerCase().replace(/[\s_.\-]+/g,"");const ks=Object.keys(o);for(const n of ns){if(o[n]!==undefined&&o[n]!=="")return o[n];const nn=nr(n);for(const k of ks){if(nr(k)===nn&&o[k]!==""&&o[k]!==undefined)return o[k]}}return""}
 function pM(v){var s=String(v||"").trim();if(/^[A-Za-z]{3}-\d{2}$/.test(s))return s.charAt(0).toUpperCase()+s.slice(1,3).toLowerCase()+s.slice(3);if(s.includes("T")||/^\d{4}-/.test(s)){var d=new Date(s);if(!isNaN(d)){var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return ms[d.getUTCMonth()]+"-"+String(d.getUTCFullYear()).slice(2)}}return s}
-// Count Wednesdays in a month
-function countWed(mStr){try{const ms={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};const p=mStr.split("-");const mi=ms[p[0]];const y=2000+parseInt(p[1]);const days=new Date(y,mi+1,0).getDate();let c=0;for(let d=1;d<=days;d++){if(new Date(y,mi,d).getDay()===3)c++}return c}catch{return 4}}
+function countWed(m){try{const ms={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};const p=m.split("-");const y=2000+parseInt(p[1]);const days=new Date(y,ms[p[0]]+1,0).getDate();let c=0;for(let d=1;d<=days;d++){if(new Date(y,ms[p[0]],d).getDay()===3)c++}return c}catch{return 4}}
 
 function EC({value,onChange,cls}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
 useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
@@ -160,22 +158,19 @@ const[vw,sVw]=useState("grid");const[sr,sSr]=useState("");const[sc,sSc]=useState
 const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
 const[er,sEr]=useState(null);const[sav,sSav]=useState(false);
 const[selM,sSM]=useState([]);const[exp,sExp]=useState({});
-const[projOpen,sPO]=useState(true);const[actOpen,sAO]=useState(true);
+const[pjO,sPjO]=useState(true);const[acO,sAcO]=useState(true);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
 const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
 const togExp=nm=>sExp(p=>({...p,[nm]:!p[nm]}));
 
 const load=useCallback(async()=>{
-  sLd(true);sEr(null);
-  const r=await aG("getAll");
-  if(!r){sEr("No response from Google Sheets.");sLd(false);return}
+  sLd(true);sEr(null);const r=await aG("getAll");
+  if(!r){sEr("No response. Check Apps Script deployment.");sLd(false);return}
   if(r.error){sEr(r.error);sLd(false);return}
   const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[];
   sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
-  const mm={};
-  mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT","Title")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;var key=pn+"|||"+mn;var sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));var prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});
-  sMo(mm);
+  const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT","Title")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=pn+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
   sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.","Variation No.")),vnm:String(F(v,"VARIATION NAME","Variation Name")),ds:String(F(v,"DATE SUBMITTED","Date Submitted")),da:String(F(v,"DATE APPROVED","Date Approved")),pr:N(F(v,"PRICE","Price","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE"))})));
   sLd(false)},[]);
 
@@ -184,156 +179,119 @@ const gv=(p,m,c)=>mo[p+"|||"+m]?.[c]||0;
 const voP=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[v.pj]=(m[v.pj]||0)+v.pr});return m},[vo]);
 
 const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[p+"|||"+m]:{...(pr[p+"|||"+m]||{}),[c]:val}}));sSv(true);await aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:un,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[un]);
-const uP=useCallback(async(nm,fd,val)=>{sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fd.toLowerCase().includes("contract")?"cp":fd.toLowerCase().includes("job")?"jid":fd.toLowerCase().includes("status")?"st":"v"]:val}:p));sSv(true);await aP({action:"updateProject",name:nm,field:fd,value:val});sLs(new Date());sSv(false)},[]);
+const uP=useCallback(async(nm,fd,val)=>{const fld=fd.toLowerCase();sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fld.includes("contract")?"cp":fld.includes("job")?"jid":fld.includes("status")?"st":"v"]:val}:p));sSv(true);await aP({action:"updateProject",name:nm,field:fd,value:val});sLs(new Date());sSv(false)},[]);
 const renP=useCallback(async(old,nw)=>{sPj(pr=>pr.map(p=>p.nm===old?{...p,nm:nw}:p));sMo(prev=>{const next={};Object.entries(prev).forEach(([k,v])=>{next[k.startsWith(old+"|||")?nw+"|||"+k.split("|||")[1]:k]=v});return next});sSv(true);await aP({action:"updateProject",name:old,field:"Project",value:nw});sLs(new Date());sSv(false)},[]);
-const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE"};sSv(true);await aP({action:"updateVO",row:v._r,field:m[fd]||fd,value:val});sLs(new Date());sSv(false)},[vo]);
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE"};sSv(true);await aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val});sLs(new Date());sSv(false)},[vo]);
 const addV=async()=>{if(!nvo.project)return;sSv(true);await aP({action:"addVO",project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf});sSav(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);sLs(new Date());setTimeout(load,1500)};
 const aPj=async()=>{if(!nn.trim())return;const c=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:c,variations:0});sPj(p=>[...p,{nm:nn.trim(),jid:"",cp:c,v:0,st:"Live"}]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
 const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nm+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
 
-// Lock: stores all 4 values when locking
 const isLk=m=>gv(LK,m,"Sales")===1;
-const doLock=async(m)=>{
-  const cur=isLk(m);
-  if(!cur){// Locking - snapshot all values
-    const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);
-    const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);
-    const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);
-    const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);
-    await uC(LK,m,"Sales",1);await uC(LS,m,"Sales",s);await uC(LE,m,"Sales",e);await uC(LP,m,"Sales",p2);await uC(LO,m,"Sales",o);
-  } else {// Unlocking
-    await uC(LK,m,"Sales",0);
-  }
-};
+const doLock=async m=>{const cur=isLk(m);if(!cur){const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);await uC(LK,m,"Sales",1);await uC(LS,m,"Sales",s);await uC(LE,m,"Sales",e);await uC(LP,m,"Sales",p2);await uC(LO,m,"Sales",o)}else{await uC(LK,m,"Sales",0)}};
 
-const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{
-  let sT=0,eT=0,pT=0,oT=0;
-  MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});
-  const avo=voP[p.nm]||0,tot=p.cp+p.v+avo,gp=tot-eT-pT-oT;
-  return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba:tot-sT}}),[pj,mo,voP]);
-
+const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{let sT=0,eT=0,pT=0,oT=0;MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});const avo=voP[p.nm]||0,tot=p.cp+p.v+avo,gp=tot-eT-pT-oT;return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba:tot-sT}}),[pj,mo,voP]);
 const flt=useMemo(()=>{if(!sr)return comp;const q=sr.toLowerCase();return comp.filter(p=>p.nm.toLowerCase().includes(q))},[comp,sr]);
 const vis=MO.slice(sc,sc+12);
-
 const sumM=useMemo(()=>{const o={};MO.forEach(m=>{let s=0,e=0,p=0,ot=0;comp.forEach(pr=>{s+=gv(pr.nm,m,"Sales");e+=gv(pr.nm,m,"ExtMaterials");p+=gv(pr.nm,m,"ProfabMaterials");ot+=gv(pr.nm,m,"OtherCosts")});o[m]={s,e,p,ot}});return o},[comp,mo]);
+const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;comp.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,comp,mo]);
+const pSR=[{k:"_PS",n:"Subcontractors: Non Full-Time"},{k:"_PO",n:"Group Overhead"},{k:"_PW",n:"Wages: PFAB"},{k:"_PM",n:"Wages: PMC, PF & Internal Subbies"},{k:"_PE",n:"No. of Employees On-site",nc:true}];
+const aSR=[{k:"_AS",n:"Subcontractors: Non Full-Time"},{k:"_AO",n:"Group Overhead"},{k:"_AW",n:"Wages: PFAB"},{k:"_AM",n:"Wages: PMC, PF & Internal Subbies"},{k:"_AE",n:"No. of Employees On-site",nc:true}];
 
-const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;comp.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All"}},[selM,comp,mo]);
+if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>👤</div><h2>Welcome</h2><p>Enter your name so edits are tracked.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
 
-const projSR=[{k:"_PROJ_SUB",n:"Subcontractors: Non Full-Time"},{k:"_PROJ_OH",n:"Group Overhead"},{k:"_PROJ_WP",n:"Wages: PFAB"},{k:"_PROJ_WM",n:"Wages: PMC, PF & Internal Subbies"},{k:"_PROJ_EMP",n:"No. of Employees On-site",noCalc:true}];
-const actSR=[{k:"_ACT_SUB",n:"Subcontractors: Non Full-Time"},{k:"_ACT_OH",n:"Group Overhead"},{k:"_ACT_WP",n:"Wages: PFAB"},{k:"_ACT_WM",n:"Wages: PMC, PF & Internal Subbies"},{k:"_ACT_EMP",n:"No. of Employees On-site",noCalc:true}];
-
-if(!un)return<div className="np"><div className="nc"><div style={{fontSize:36}}>👤</div><h2>Welcome</h2><p>Enter your name so edits are tracked.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
-
-const gC="48px 42px 140px 68px 58px 62px 68px 68px 60px "+vis.map(()=>"68px").join(" ");
-const sumC="140px 48px 42px 68px 58px 62px 68px 68px 60px "+vis.map(()=>"68px").join(" ");
+const gC="52px 50px 150px 75px 65px 68px 75px 75px 68px "+vis.map(()=>"75px").join(" ");
+const sC2="180px "+vis.map(()=>"75px").join(" ");
 
 return<div className="app">
-<div className="hd"><div className="hl"><h1>Pipeline Mastersheet</h1><span className="dt2" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
-<div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svx">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={load}>↻</button></div></div>
+<div className="hd"><div className="hl"><h1>Pipeline Mastersheet</h1><span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
+<div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={load}>↻ Sync</button></div></div>
 {er&&<div className="er">{er}</div>}
 {ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
-{selM.length>0&&<div style={{fontSize:7,color:"var(--pu)",fontWeight:700,marginBottom:2}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:7}} onClick={()=>sSM([])}>✕</button></div>}
+{selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:3}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9}} onClick={()=>sSM([])}>✕ Clear</button></div>}
 <div className="cds">
-<div className="cd"><div className="lb">Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(cd.con)}</div><div className="sb">{comp.length}p</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Ext.Mat</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">ProFab</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Other</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.oth)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Costs</div><div className="vl" style={{color:"var(--am)"}}>{fK(cd.costs)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">GP</div><div className="vl" style={{color:"var(--gn)"}}>{fK(cd.gp)}</div></div>
+<div className="cd"><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(cd.con)}</div><div className="sb">{comp.length} projects</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div><div className="sb">{cd.label}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">ProFab Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Other Costs</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.oth)}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Costs</div><div className="vl" style={{color:"var(--am)"}}>{fK(cd.costs)}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Gross Profit</div><div className="vl" style={{color:"var(--gn)"}}>{fK(cd.gp)}</div><div className="sb">{cd.sal?Math.round(cd.gp/cd.sal*100)+"%":""}</div></div>
 </div>
-
 <div className="br">
 {[["grid","Pipeline"],["vos","VO Register"]].map(([k,l])=><button key={k} className={"pl "+(vw===k?"on":"")} onClick={()=>sVw(k)}>{l}</button>)}
-<div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+</button>
+<div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
 <input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
 </div>
-{sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="Project name" style={{width:180}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="0" style={{width:80}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>✕</button></div>}
+{sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="Project name" style={{width:200}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="0" style={{width:100}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}
 
 {vw==="grid"&&<>
-<div className="mn2"><button onClick={()=>sSc(Math.max(0,sc-3))}>←</button><span>{vis[0]}—{vis[vis.length-1]}</span><button onClick={()=>sSc(Math.min(12,sc+3))}>→</button><div style={{flex:1}}/><button onClick={()=>sSc(0)}>25</button><button onClick={()=>sSc(12)}>26</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear</button>}</div>
+<div className="mn2"><button onClick={()=>sSc(Math.max(0,sc-3))}>←</button><span>{vis[0]} — {vis[vis.length-1]}</span><button onClick={()=>sSc(Math.min(12,sc+3))}>→</button><div style={{flex:1}}/><button onClick={()=>sSc(0)}>25</button><button onClick={()=>sSc(12)}>26</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear</button>}</div>
 
-{/* ====== MAIN TABLE ====== */}
+{/* ====== MAIN PROJECT TABLE ====== */}
 <div className="gc" style={{maxHeight:"55vh",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="gh"><div>Status</div><div>ID</div><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Claimed</div><div>To Alloc.</div>
+<div className="gh"><div style={{cursor:"default",textAlign:"center"}}>Status</div><div style={{cursor:"default",textAlign:"left"}}>ID</div><div style={{cursor:"default",textAlign:"left",position:"sticky",left:0,zIndex:6}}>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Claimed</div><div>To Alloc.</div>
 {vis.map(m=><div key={m} className={selM.includes(m)?"ms":""} onClick={()=>togM(m)}>{m}</div>)}</div>
 
 {flt.map(p=>{
-  const open=exp[p.nm];
-  const gpM=m=>gv(p.nm,m,"Sales")-gv(p.nm,m,"ExtMaterials")-gv(p.nm,m,"ProfabMaterials")-gv(p.nm,m,"OtherCosts");
-  return<div className="pg" key={p.i}>
-  {/* PROJECT ROW (= Sales) */}
-  <div className="pr">
-  <div><select className="st-sel" value={p.st} onChange={e=>uP(p.nm,"Status",e.target.value)} style={{color:p.st==="Live"?"var(--gn)":"var(--t2)"}}><option value="Live">Live</option><option value="Completed">Completed</option></select></div>
-  <div><input className="cij" value={p.jid} onChange={e=>uP(p.nm,"Job ID",e.target.value)}/></div>
-  <div><button className="eb" onClick={()=>togExp(p.nm)}>{open?"−":"+"}</button><button className="xb" onClick={()=>dPj(p.nm)}>×</button><EN value={p.nm} onSave={nw=>renP(p.nm,nw)}/></div>
-  <div><EC value={p.cp} onChange={v=>uP(p.nm,"Contract Price",v)} cls="cl ce"/></div>
-  <div><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl ce"/></div>
-  <div style={{color:"var(--pu)",fontStyle:"italic"}}>{p.avo?fm(p.avo):"-"}</div>
-  <div style={{fontWeight:800}}>{fm(p.tot)}</div>
-  <div>{fm(p.sT)}</div>
-  <div style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)"}}>{fm(p.tba)}</div>
-  {vis.map(m=><div key={m}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs"/></div>)}
-  </div>
-
-  {/* COLLAPSIBLE SUB-ROWS */}
-  {open&&<>
-    {RK.map((rk,ri)=><div className={"rw r"+(ri+1)} key={rk}><div/><div/><div>{RN[ri]}</div><div/><div/><div/>
-    <div style={{fontFamily:"var(--mn)",fontSize:8,color:"var(--rd)"}}>{fm([p.eT,p.pT,p.oT][ri])}</div>
-    <div style={{fontFamily:"var(--mn)",fontSize:8,color:"var(--rd)"}}>{fm([p.eT,p.pT,p.oT][ri])}</div><div/>
-    {vis.map(m=><div key={m}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc"/></div>)}</div>)}
-    <div className="rg"><div/><div/><div>Gross Profit</div><div/><div/><div/>
-    <div style={{fontFamily:"var(--mn)",fontSize:8,color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div><div/><div/>
-    {vis.map(m=>{const v=gpM(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
-  </>}
-  </div>
-})}
+const open=exp[p.nm];
+const gpM=m=>gv(p.nm,m,"Sales")-gv(p.nm,m,"ExtMaterials")-gv(p.nm,m,"ProfabMaterials")-gv(p.nm,m,"OtherCosts");
+return<div className="pg" key={p.i}>
+{/* Project row = Sales row merged */}
+<div className="pr">
+<div className="pst"><select className="stdd" value={p.st} onChange={e=>uP(p.nm,"Status",e.target.value)} style={{color:p.st==="Live"?"var(--gn)":"var(--t2)"}}><option value="Live">Live</option><option value="Completed">Done</option></select></div>
+<div className="pid"><input className="jid-in" value={p.jid} onChange={e=>uP(p.nm,"Job ID",e.target.value)}/></div>
+<div className="pnm"><button className="eb" onClick={()=>togExp(p.nm)}>{open?"−":"+"}</button><button className="xb" onClick={()=>dPj(p.nm)}>×</button><EN value={p.nm} onSave={nw=>renP(p.nm,nw)}/></div>
+<div><EC value={p.cp} onChange={v=>uP(p.nm,"Contract Price",v)} cls="cl ce"/></div>
+<div><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl ce"/></div>
+<div style={{color:"var(--pu)",fontStyle:"italic"}}>{p.avo?fm(p.avo):"-"}</div>
+<div style={{fontWeight:800}}>{fm(p.tot)}</div>
+<div>{fm(p.sT)}</div>
+<div style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)"}}>{fm(p.tba)}</div>
+{vis.map(m=><div key={m}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs"/></div>)}
+</div>
+{/* Collapsible sub-rows */}
+{open&&<>{RK.map((rk,ri)=><div className={"rw r"+(ri+1)} key={rk}><div/><div/><div className="rl">{RN[ri]}</div><div/><div/><div/>
+<div style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{fm([p.eT,p.pT,p.oT][ri])}</div>
+<div style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{fm([p.eT,p.pT,p.oT][ri])}</div><div/>
+{vis.map(m=><div key={m}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc"/></div>)}</div>)}
+<div className="rg"><div/><div/><div className="rl">Gross Profit</div><div/><div/><div/>
+<div style={{fontFamily:"var(--mn)",color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div><div/><div/>
+{vis.map(m=>{const v=gpM(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
+</>}
+</div>})}
 </div></div>
 
 {/* ====== NO OF WEEKS ====== */}
-<div style={{marginTop:4}}/>
-<div className="gc"><div className="g" style={{gridTemplateColumns:sumC}}>
-<div className="sr-w"><div>No. of Weeks</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const auto=countWed(m);const manual=gv(WK,m,"Sales");return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7}}>{manual||auto}</div>})}</div>
+<div style={{marginTop:6}}/>
+<div className="sum-gc" style={{borderRadius:4,border:"1px solid var(--bd)"}}><div className="sg" style={{gridTemplateColumns:sC2}}>
+<div className="sr-w"><div>No. of Weeks</div>{vis.map(m=><div key={m} style={{fontFamily:"var(--mn)"}}>{countWed(m)}</div>)}</div>
 </div></div>
 
-{/* ====== PROJECTED (collapsible) ====== */}
-<div className="sth sth-p" onClick={()=>sPO(!projOpen)} style={{marginTop:3}}>
-{projOpen?"▾":"▸"} PROJECTED <span className="stog">{projOpen?"collapse":"expand"}</span>
+{/* ====== PROJECTED ====== */}
+<div className="sum-hdr sum-hdr-p" onClick={()=>sPjO(!pjO)}>
+{pjO?"▾":"▸"} PROJECTED <span className="tog">{pjO?"collapse":"expand"}</span>
 <div className="lkr">{vis.map(m=><button key={m} className={"lk"+(isLk(m)?" on":"")} onClick={e=>{e.stopPropagation();doLock(m)}} title={isLk(m)?"Unlock "+m:"Lock "+m}>{isLk(m)?"🔒":"🔓"}</button>)}</div>
 </div>
-{projOpen&&<div className="gc"><div className="g" style={{gridTemplateColumns:sumC}}>
-<div className="sr sr-c"><div>Projected Sales</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LS,m,"Sales"):(sumM[m]?.s||0);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,fontWeight:600}}>{val?fm(val):""}</div>})}</div>
-<div className="sr sr-c"><div>External Materials</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LE,m,"Sales"):(sumM[m]?.e||0);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{val?fm(val):""}</div>})}</div>
-<div className="sr sr-c"><div>ProFab Materials</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{val?fm(val):""}</div>})}</div>
-<div className="sr sr-c"><div>Other Costs</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{val?fm(val):""}</div>})}</div>
-{projSR.map(row=><div className="sr sr-e" key={row.k}><div>{row.n}</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div style={{color:"var(--ac)"}}>PMC & PF P&L</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);const sales=lk?gv(LS,m,"Sales"):(sumM[m]?.s||0);const matC=(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))+(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))+(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0));const edC=projSR.filter(r=>!r.noCalc).reduce((s,r)=>s+gv(r.k,m,"Sales"),0);const pl=sales-matC-edC;return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,fontWeight:800,color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
+{pjO&&<div className="sum-gc"><div className="sg" style={{gridTemplateColumns:sC2}}>
+<div className="sr sr-c"><div>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontWeight:600}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
+<div className="sr sr-c"><div>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{fm(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))}</div>})}</div>
+<div className="sr sr-c"><div>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{fm(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))}</div>})}</div>
+<div className="sr sr-c"><div>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{fm(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))}</div>})}</div>
+{pSR.map(row=><div className="sr sr-e" key={row.k}><div>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
+<div className="sr-t"><div style={{color:"var(--ac)"}}>PMC & PF Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const s=lk?gv(LS,m,"Sales"):(sumM[m]?.s||0);const c2=(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))+(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))+(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))+pSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=s-c2;return<div key={m} style={{fontFamily:"var(--mn)",color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
 </div></div>}
 
-{/* ====== ACTUAL (collapsible) ====== */}
-<div className="sth sth-a" onClick={()=>sAO(!actOpen)} style={{marginTop:3}}>
-{actOpen?"▾":"▸"} ACTUAL <span className="stog">{actOpen?"collapse":"expand"}</span>
+{/* ====== ACTUAL ====== */}
+<div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>
+{acO?"▾":"▸"} ACTUAL <span className="tog">{acO?"collapse":"expand"}</span>
 </div>
-{actOpen&&<div className="gc"><div className="g" style={{gridTemplateColumns:sumC}}>
-<div className="sr sr-c"><div>Actual Sales</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,fontWeight:600}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
-<div className="sr sr-c"><div>External Materials</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{lk?fm(sumM[m]?.e||0):""}</div>})}</div>
-<div className="sr sr-c"><div>ProFab Materials</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
-<div className="sr sr-c"><div>Other Costs</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,color:"var(--rd)"}}>{lk?fm(sumM[m]?.ot||0):""}</div>})}</div>
-{actSR.map(row=><div className="sr sr-e" key={row.k}><div>{row.n}</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div style={{color:"var(--gn)"}}>PMC & PF P&L</div><div/><div/><div/><div/><div/><div/><div/><div/>
-{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m}/>;const sales=sumM[m]?.s||0;const matC=(sumM[m]?.e||0)+(sumM[m]?.p||0)+(sumM[m]?.ot||0);const edC=actSR.filter(r=>!r.noCalc).reduce((s,r)=>s+gv(r.k,m,"Sales"),0);const pl=sales-matC-edC;return<div key={m} style={{fontFamily:"var(--mn)",fontSize:7,fontWeight:800,color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
+{acO&&<div className="sum-gc"><div className="sg" style={{gridTemplateColumns:sC2}}>
+<div className="sr sr-c"><div>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",fontWeight:600}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
+<div className="sr sr-c"><div>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{lk?fm(sumM[m]?.e||0):""}</div>})}</div>
+<div className="sr sr-c"><div>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
+<div className="sr sr-c"><div>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontFamily:"var(--mn)",color:"var(--rd)"}}>{lk?fm(sumM[m]?.ot||0):""}</div>})}</div>
+{aSR.map(row=><div className="sr sr-e" key={row.k}><div>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
+<div className="sr-t"><div style={{color:"var(--gn)"}}>PMC & PF Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m}/>;const s=sumM[m]?.s||0;const c2=(sumM[m]?.e||0)+(sumM[m]?.p||0)+(sumM[m]?.ot||0)+aSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=s-c2;return<div key={m} style={{fontFamily:"var(--mn)",color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
 </div></div>}
 
 {flt.length===0&&<div className="em">{pj.length===0?"No projects.":"No match."}</div>}
@@ -341,17 +299,17 @@ return<div className="app">
 
 {/* VO REGISTER */}
 {vw==="vos"&&<div className="vw">
-<div className="vhd"><h3>VO / DL Register</h3><div style={{display:"flex",gap:3,alignItems:"center"}}>
-<span style={{fontSize:8,color:"var(--t2)"}}>{vo.length} · Appr: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
-<button className="pl gn" onClick={()=>sSav(!sav)}>+</button></div></div>
-{sav&&<div className="af" style={{margin:5}}>
-<div><label>Project</label><select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{minWidth:120,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px",borderRadius:2,fontSize:8}}><option value="">Select</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></div>
-<div><label>Type</label><select value={nvo.type} onChange={e=>sNvo({...nvo,type:e.target.value})} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px",borderRadius:2,fontSize:8}}><option>VO</option><option>DL</option></select></div>
-<div><label>{nvo.type}-No</label><input value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value.substring(0,10)})} style={{width:50}}/></div>
-<div><label>Name</label><input value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value.substring(0,100)})} style={{width:120}}/></div>
-<div><label>Price</label><input type="number" value={nvo.price||""} onChange={e=>sNvo({...nvo,price:N(e.target.value)})} style={{width:60}}/></div>
-<div><label>Status</label><input value={nvo.status} onChange={e=>sNvo({...nvo,status:e.target.value})} style={{width:70}}/></div>
-<button className="pl gn" onClick={addV}>Add</button><button className="pl" onClick={()=>sSav(false)}>✕</button></div>}
+<div className="vhd"><h3>VO / DL Register</h3><div style={{display:"flex",gap:4,alignItems:"center"}}>
+<span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} entries · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
+<button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
+{sav&&<div className="af" style={{margin:8}}>
+<div><label>Project</label><select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{minWidth:140,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"3px",borderRadius:3,fontSize:10}}><option value="">Select</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></div>
+<div><label>Type</label><select value={nvo.type} onChange={e=>sNvo({...nvo,type:e.target.value})} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"3px",borderRadius:3,fontSize:10}}><option>VO</option><option>DL</option></select></div>
+<div><label>{nvo.type}-No</label><input value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value.substring(0,10)})} style={{width:60}}/></div>
+<div><label>Name</label><input value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value.substring(0,100)})} style={{width:140}}/></div>
+<div><label>Price</label><input type="number" value={nvo.price||""} onChange={e=>sNvo({...nvo,price:N(e.target.value)})} style={{width:80}}/></div>
+<div><label>Status</label><input value={nvo.status} onChange={e=>sNvo({...nvo,status:e.target.value})} style={{width:90}}/></div>
+<button className="pl gn" onClick={addV}>Add</button><button className="pl" onClick={()=>sSav(false)}>Cancel</button></div>}
 {vo.length===0?<div className="em">No entries.</div>:
 <div className="vsc"><table className="vt"><thead><tr>
 <th className="tg">Project</th><th className="tg">Type</th><th className="tg">Var No.</th><th className="tg">Name</th>
@@ -359,14 +317,14 @@ return<div className="app">
 <th className="ty" style={{textAlign:"right"}}>Ext.Mat</th><th className="ty" style={{textAlign:"right"}}>PFAB</th><th className="ty" style={{textAlign:"right"}}>Margin</th>
 <th className="tp" style={{textAlign:"right"}}>#Men</th><th className="tp" style={{textAlign:"right"}}>NHrs</th><th className="tp" style={{textAlign:"right"}}>NRate</th><th className="tp" style={{textAlign:"right"}}>OTHrs</th><th className="tp" style={{textAlign:"right"}}>OTRate</th>
 </tr></thead><tbody>{vo.map((v,vi)=>{const mg=v.pr-v.em-v.pf;return<tr key={vi}>
-<td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:100,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"1px 2px",borderRadius:2,fontSize:8}}><option value="">—</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
-<td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"1px 2px",borderRadius:2,fontSize:8}}><option>VO</option><option>DL</option></select></td>
+<td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:110,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 3px",borderRadius:2,fontSize:10}}><option value="">—</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
+<td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px",borderRadius:2,fontSize:10}}><option>VO</option><option>DL</option></select></td>
 <td><input value={v.vn} onChange={e=>uV(vi,"vn",e.target.value)} className="sm"/></td>
 <td><input value={v.vnm} onChange={e=>uV(vi,"vnm",e.target.value.substring(0,100))} className="md"/></td>
 <td><input value={v.ds} onChange={e=>uV(vi,"ds",e.target.value)} className="sm"/></td>
 <td><input value={v.da} onChange={e=>uV(vi,"da",e.target.value)} className="sm"/></td>
 <td style={{textAlign:"right"}}><input type="number" step=".01" value={v.pr||""} onChange={e=>uV(vi,"pr",N(e.target.value))} className="nm"/></td>
-<td><input value={v.st} onChange={e=>uV(vi,"st",e.target.value)} className={sC(v.st)} style={{minWidth:80}}/></td>
+<td><input value={v.st} onChange={e=>uV(vi,"st",e.target.value)} className={sC(v.st)} style={{minWidth:90}}/></td>
 <td style={{textAlign:"right"}}><input type="number" step=".01" value={v.em||""} onChange={e=>uV(vi,"em",N(e.target.value))} className="nm"/></td>
 <td style={{textAlign:"right"}}><input type="number" step=".01" value={v.pf||""} onChange={e=>uV(vi,"pf",N(e.target.value))} className="nm"/></td>
 <td style={{textAlign:"right",fontFamily:"var(--mn)",color:mg<0?"var(--rd)":"var(--gn)"}}>{mg?fm(mg):""}</td>

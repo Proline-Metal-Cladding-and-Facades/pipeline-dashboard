@@ -148,6 +148,33 @@
 .rh{background:rgba(91,141,239,.08)!important}
 .ch{background:rgba(167,139,250,.06)!important}
 .rh.ch{background:rgba(91,141,239,.15)!important}
+
+/* Sidebar */
+.sb-toggle{background:none;border:1px solid var(--bd);color:var(--t2);font-size:16px;cursor:pointer;padding:2px 8px;border-radius:4px;line-height:1}
+.sb-toggle:hover{color:var(--tx);border-color:var(--ac)}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:220px;background:var(--s1);border-right:1px solid var(--bd);z-index:50;transform:translateX(-100%);transition:transform .2s ease;display:flex;flex-direction:column;padding:16px 0}
+.sidebar.open{transform:translateX(0)}
+.sb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:49;display:none}
+.sb-overlay.open{display:block}
+.sb-hdr{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);margin-bottom:8px}
+.sb-hdr h2{font-size:14px;font-weight:800;color:var(--ac)}
+.sb-close{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer}.sb-close:hover{color:var(--tx)}
+.sb-menu{flex:1;overflow-y:auto}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.sb-item:hover{background:var(--s2);color:var(--tx)}
+.sb-item.active{background:rgba(91,141,239,.08);color:var(--ac);border-left-color:var(--ac)}
+.sb-item .sb-ico{font-size:16px;width:22px;text-align:center}
+.sb-item .sb-badge{margin-left:auto;font-size:9px;background:var(--s3);padding:1px 6px;border-radius:8px;color:var(--t2)}
+.sb-divider{height:1px;background:var(--bd);margin:8px 16px}
+.sb-footer{padding:10px 16px;font-size:9px;color:var(--t2);border-top:1px solid var(--bd)}
+/* Alternate row shading */
+.pg:nth-child(even) .pr>div{background:rgba(37,43,61,.6)}
+.pg:nth-child(even) .pr>div:nth-child(-n+7){background:rgba(37,43,61,.6)}
+/* Current month highlight */
+.cur-month{background:rgba(91,141,239,.08)!important;border-bottom-color:var(--ac)!important}
+/* Status filter */
+.sf{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:3px 8px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none;cursor:pointer}
+.sf:focus{border-color:var(--ac)}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
 const{useState,useMemo,useEffect,useCallback,useRef}=React;
@@ -156,6 +183,7 @@ const DEF_MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Au
 const RN=["External Materials","ProFab Materials","Other Costs"];
 const RK=["ExtMaterials","ProfabMaterials","OtherCosts"];
 const UK="pipeline-v9";
+const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][NOW.getMonth()]+"-"+String(NOW.getFullYear()).slice(2);
 const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
 const isAp=s=>String(s||"").toUpperCase().includes("APPROVED");
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
@@ -189,7 +217,7 @@ const addMonth=()=>{const last=MO[MO.length-1];const ms=["Jan","Feb","Mar","Apr"
 const[un,sU]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
 const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useState(null);
 const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);
-const[vw,sVw]=useState("grid");const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
+const[vw,sVw]=useState("grid");const[sbOpen,sSbO]=useState(false);const[stFilt,setStFilt]=useState("all");const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
 const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
 const[er,sEr]=useState(null);const[sav,sSav]=useState(false);
 const[selM,sSM]=useState([]);const[exp,sExp]=useState({});const[hovR,sHR]=useState(null);const[hovC,sHC]=useState(null);
@@ -233,7 +261,7 @@ const isLk=m=>gv(LK,m,"Sales")===1;
 const doLock=async m=>{if(!isLk(m)){const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);await uC(LK,m,"Sales",1);await uC(LS,m,"Sales",s);await uC(LE,m,"Sales",e);await uC(LP,m,"Sales",p2);await uC(LO,m,"Sales",o)}else{await uC(LK,m,"Sales",0)}};
 
 const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{let sT=0,eT=0,pT=0,oT=0;MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});const avo=voP[p.nm]||0,tot=p.cp+p.v+avo,gp=tot-eT-pT-oT;return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba:tot-sT}}),[pj,mo,voP]);
-const flt=useMemo(()=>{if(!sr)return comp;const q=sr.toLowerCase();return comp.filter(p=>p.nm.toLowerCase().includes(q))},[comp,sr]);
+const flt=useMemo(()=>{let f=comp;if(stFilt!=="all")f=f.filter(p=>p.st===stFilt);if(sr){const q=sr.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q))}return f},[comp,sr,stFilt]);
 const vis=MO;
 const sumM=useMemo(()=>{const o={};MO.forEach(m=>{let s=0,e=0,p=0,ot=0;comp.forEach(pr=>{s+=gv(pr.nm,m,"Sales");e+=gv(pr.nm,m,"ExtMaterials");p+=gv(pr.nm,m,"ProfabMaterials");ot+=gv(pr.nm,m,"OtherCosts")});o[m]={s,e,p,ot}});return o},[comp,mo]);
 const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;comp.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,comp,mo]);
@@ -248,6 +276,20 @@ const gC="160px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
 return<div className="app">
 <div className="hd"><div className="hl"><h1>Pipeline Mastersheet</h1><span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
 <div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={load}>↻ Sync</button></div></div>
+{/* SIDEBAR */}
+<div className={"sb-overlay"+(sbOpen?" open":"")} onClick={()=>sSbO(false)}/>
+<div className={"sidebar"+(sbOpen?" open":"")}>
+<div className="sb-hdr"><h2>Proline Facades</h2><button className="sb-close" onClick={()=>sSbO(false)}>×</button></div>
+<div className="sb-menu">
+<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">📈</span>Dashboard<span className="sb-badge">Soon</span></div>
+<div className="sb-divider"/>
+<div className={"sb-item"+(vw==="grid"?" active":"")} onClick={()=>{sVw("grid");sSbO(false)}}><span className="sb-ico">📊</span>PMC & PF Pipeline</div>
+<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">🏭</span>PFAB Pipeline<span className="sb-badge">Soon</span></div>
+<div className={"sb-item"+(vw==="vos"?" active":"")} onClick={()=>{sVw("vos");sSbO(false)}}><span className="sb-ico">📋</span>VO Register</div>
+<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">👷</span>Day Labour Dockets<span className="sb-badge">Soon</span></div>
+</div>
+<div className="sb-footer">Pipeline Mastersheet v2.0</div>
+</div>
 {er&&<div className="er">{er}</div>}
 {ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
 {selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:3}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9}} onClick={()=>sSM([])}>✕ Clear</button></div>}
@@ -261,9 +303,8 @@ return<div className="app">
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Gross Profit</div><div className="vl" style={{color:"var(--gn)"}}>{fK(cd.gp)}</div><div className="sb">{cd.sal?Math.round(cd.gp/cd.sal*100)+"%":""}</div></div>
 </div>
 <div className="br">
-{[["grid","Pipeline"],["vos","VO Register"]].map(([k,l])=><button key={k} className={"pl "+(vw===k?"on":"")} onClick={()=>sVw(k)}>{l}</button>)}
-<div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
-<input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
+<button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
+<select className="sf" value={stFilt} onChange={e=>setStFilt(e.target.value)}><option value="all">All Status</option><option value="Live">Live</option><option value="Completed">Completed</option></select><input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
 </div>
 {sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="Project name" style={{width:200}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="0" style={{width:100}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}
 
@@ -273,7 +314,7 @@ return<div className="app">
 {/* ====== MAIN TABLE ====== */}
 <div className="gc ss" onScroll={syncScroll} style={{maxHeight:"55vh",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Claimed</div><div>To Alloc.</div>
-{vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(hovC===m?"ch":"")} onClick={()=>togM(m)} onMouseEnter={()=>sHC(m)} onMouseLeave={()=>sHC(null)}>{m}</div>)}</div>
+{vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(hovC===m?"ch":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} onMouseEnter={()=>sHC(m)} onMouseLeave={()=>sHC(null)}>{m}</div>)}</div>
 
 {flt.map(p=>{
 const open=exp[p.nm];

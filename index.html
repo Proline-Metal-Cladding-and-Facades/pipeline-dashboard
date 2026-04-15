@@ -49,7 +49,7 @@
 .gh>div:first-child{text-align:left;position:sticky;left:0;z-index:4;min-width:150px;cursor:default}
 .gh>div.ms{color:var(--pu);background:rgba(167,139,250,.1);border-bottom-color:var(--pu)}
 .pg{display:contents}
-.pn>div{padding:3px 4px;font-size:10px;font-weight:700;background:var(--s3);border-top:2px solid rgba(91,141,239,.3);color:var(--ac);grid-column:1/-1;position:sticky;left:0;z-index:2;display:flex;align-items:center;gap:3px}
+.pn{display:contents}.pn>div{padding:3px 4px;font-size:10px;font-weight:700;background:var(--s3);border-top:2px solid rgba(91,141,239,.3);color:var(--ac)}.pn>div:first-child{position:sticky;left:0;z-index:2;display:flex;align-items:center;gap:3px}
 .pne{cursor:pointer;border-bottom:1px dashed rgba(91,141,239,.3)}.pne:hover{color:var(--am)}
 .xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:10px;opacity:.3}.xb:hover{color:var(--rd);opacity:1}
 .rw{display:contents}.rw>div{padding:1px 4px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.3);text-align:right}
@@ -291,7 +291,7 @@ return<div className="app">
 {flt.map(p=>{
   return<div className="pg" key={p.i}>
   {/* Project name */}
-  <div className="pn"><div><button className="xb" onClick={()=>dPj(p.nm)}>×</button><EN value={p.nm} onSave={nw=>renP(p.nm,nw)}/></div></div>
+  <div className="pn"><div><button className="xb" onClick={()=>dPj(p.nm)}>×</button><EN value={p.nm} onSave={nw=>renP(p.nm,nw)}/></div><div/><div/><div/><div/><div/><div/>{vis.map(m=><div key={m}/>)}</div>
 
   {/* 4 data rows: Sales, Ext, ProFab, Other */}
   {p.rows.map((row,ri)=>{

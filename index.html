@@ -143,7 +143,7 @@
 
 /* Center monthly columns */
 .gh>div:nth-child(n+8){text-align:center;color:var(--tx)}
-.pr>div:nth-child(n+8),.rw>div:nth-child(n+8),.rg>div:nth-child(n+8){text-align:center}
+.pr>div:nth-child(n+8),.rw>div:nth-child(n+8),.rg>div:nth-child(n+8){text-align:right}
 /* Row + Column highlight */
 .rh{background:rgba(68,114,196,.14)!important}
 .ch{background:rgba(68,114,196,.1)!important}
@@ -382,7 +382,7 @@ return<div className="pg" key={p.i}>
 </div>
 {pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className={"slbl"+(hovR==="_lkr"?" rh":"")} onMouseEnter={()=>sHR("_lkr")} onMouseLeave={()=>sHR(null)} style={{color:"var(--am)",fontSize:8}}>🔒 Lock Month</div>{vis.map(m=><div key={m} className={(hovR==="_lkr"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("_lkr");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="sal"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
+<div className="sr sr-c"><div className={"slbl"+(hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="sal"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600,color:"var(--ac)"}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="ext"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="pfab"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="oct"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))}</div>})}</div>
@@ -395,7 +395,7 @@ return<div className="pg" key={p.i}>
 {acO?"▾":"▸"} ACTUAL <span className="tog">{acO?"collapse":"expand"}</span>
 </div>
 {acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="sr sr-c"><div className={"slbl"+(hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="sal"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
+<div className="sr sr-c"><div className={"slbl"+(hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="sal"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600,color:"var(--ac)"}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="ext"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.e||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="pfab"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovR==="oct"?"rh":"")+" "+(hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct");sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.ot||0):""}</div>})}</div>
@@ -411,7 +411,7 @@ return<div className="pg" key={p.i}>
 
 {/* VO REGISTER - unchanged */}
 {vw==="vos"&&<div className="vw">
-<div className="vhd"><h3>Variation Register</h3><div style={{display:"flex",gap:4,alignItems:"center"}}>
+<div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
 <button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
 {sav&&<div className="af" style={{margin:8}}>

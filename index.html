@@ -79,6 +79,10 @@
 .vt input:focus,.vt select:focus{border-color:var(--ac)}
 .vt input.nm{text-align:right;font-family:var(--mn);width:70px}.vt input.sm{width:60px}.vt input.md{width:110px}
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.sr{background:rgba(107,114,128,.2)!important;color:var(--gr)!important}
+.ctog{position:relative;display:inline-block}
+.coldd{position:absolute;top:100%;right:0;background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:5px;z-index:50;min-width:140px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.coldd label{display:flex;align-items:center;gap:5px;padding:2px 3px;font-size:9px;color:var(--t2);cursor:pointer;border-radius:2px}
+.coldd label:hover{background:var(--s3);color:var(--tx)}.coldd input{accent-color:var(--ac)}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
 const{useState,useMemo,useEffect,useCallback,useRef}=React;
@@ -138,6 +142,10 @@ const[vw,sVw]=useState("grid");const[sr,sSr]=useState("");const[sc,sSc]=useState
 const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
 const[er,sEr]=useState(null);const[db,sDb]=useState("");const[sav,sSav]=useState(false);
 const[selM,sSM]=useState([]);
+const[showCols,setShowCols]=useState(false);
+const allCols=["Contract","Var.","Appr.VOs","Total","Claimed","To Alloc."];
+const[hidCols,setHidCols]=useState([]);
+const togCol=c2=>setHidCols(p2=>p2.includes(c2)?p2.filter(x2=>x2!==c2):[...p2,c2]);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
 const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
@@ -277,6 +285,8 @@ return<div className="app">
 <div className="br">
 {[["grid","Pipeline"],["vos","VO Register"]].map(([k,l])=><button key={k} className={"pl "+(vw===k?"on":"")} onClick={()=>sVw(k)}>{l}</button>)}
 <div className="dv"/><button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
+<div className="ctog"><button className="pl" onClick={()=>setShowCols(!showCols)}>⚙ Columns</button>
+{showCols&&<div className="coldd">{allCols.map(c2=><label key={c2}><input type="checkbox" checked={!hidCols.includes(c2)} onChange={()=>togCol(c2)}/>{c2}</label>)}</div>}</div>
 <input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
 </div>
 {sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="2140 - Project" style={{width:200}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="500000" style={{width:90}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}

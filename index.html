@@ -229,6 +229,13 @@
 /* Remove number input spinners */
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
+
+.notes-modal{position:fixed;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;z-index:60}
+.notes-box{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:16px;width:360px;max-width:90%}
+.notes-box h4{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--tx)}
+.notes-box textarea{width:100%;height:120px;border:1px solid var(--bd);border-radius:4px;padding:8px;font-family:var(--ft);font-size:11px;outline:none;resize:vertical;color:var(--tx)}
+.notes-box textarea:focus{border-color:var(--ac)}
+.notes-box .nbtn{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
 /* Cell selection + status bar */
 .cl.sel{outline:1px solid var(--ac);background:rgba(91,141,239,.12)!important}
 .stat-bar{position:fixed;bottom:0;left:0;right:0;background:var(--s2);border-top:1px solid var(--bd);padding:3px 12px;display:flex;gap:16px;align-items:center;justify-content:flex-end;font-size:9px;color:var(--t2);font-family:var(--mn);z-index:40;height:22px}
@@ -246,7 +253,7 @@ const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug
 const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
 const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
 const voRowColor=st=>{const s=String(st||"").toLowerCase();if(s.includes("fully claimed"))return"#1a9a6b";if(s.includes("partially"))return"#c45e10";if(s.includes("accepted"))return"#7c3aed";if(s.includes("rejected"))return"#b5b5b5";return"var(--tx)"};
-const isAp=s=>String(s||"").toUpperCase().includes("APPROVED");
+const isAp=s=>{const u=String(s||"").toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")||u.includes("approved")};
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
 const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
 const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";
@@ -266,11 +273,11 @@ var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m
 var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
 return s}
 function nk(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
-function EC({value,onChange,cls,tentative,onContext}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
+function EC({value,onChange,cls,tentative,onContext,style}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
 useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
 const c=()=>{sE(false);const n=parseFloat(d.replace(/,/g,""))||0;if(n!==(value||0))onChange(n)};
 if(e)return<input ref={r} className="ci" value={d} onChange={x=>sD(x.target.value)} onBlur={c} onKeyDown={x=>{if(x.key==="Enter")c();if(x.key==="Escape")sE(false)}}/>;
-return<div className={(cls||"cl cs")+(tentative?" tent":"")} onContextMenu={e=>{e.preventDefault();if(onContext)onContext()}} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?fm(value):""}</div>}
+return<div className={(cls||"cl cs")+(tentative?" tent":"")} style={style} onContextMenu={e=>{e.preventDefault();if(onContext)onContext()}} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?fm(value):""}</div>}
 
 function EN({value,onSave,style}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
 useEffect(()=>{if(e&&r.current){r.current.focus();r.current.select()}},[e]);
@@ -306,6 +313,8 @@ const defCW=[130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
 const[colW,setColW]=useState(defCW);
 const resRef=useRef(null);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
+const[noteEdit,setNoteEdit]=useState(null);
+const[noteText,setNoteText]=useState("");
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
 const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
@@ -476,6 +485,14 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <div className="scroll-ctrl ss" onScroll={syncScroll}><div style={{height:1,minWidth:568+vis.length*72}}/></div>
 
 {flt.length===0&&<div className="em">{pj.length===0?"No projects.":"No match."}</div>}
+{noteEdit!==null&&<div className="notes-modal" onClick={()=>setNoteEdit(null)}>
+<div className="notes-box" onClick={e=>e.stopPropagation()}>
+<h4>Notes — {vo[noteEdit]?.vnm||vo[noteEdit]?.pj||"Entry"}</h4>
+<textarea value={noteText} onChange={e=>setNoteText(e.target.value)} autoFocus placeholder="Type notes here..."/>
+<div className="nbtn">
+<button className="pl" onClick={()=>setNoteEdit(null)}>Cancel</button>
+<button className="pl gn" onClick={()=>{uV(noteEdit,"notes",noteText);setNoteEdit(null)}}>Save</button>
+</div></div></div>}
 </>}
 
 {/* VO REGISTER - unchanged */}
@@ -501,17 +518,17 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <td><input value={v.vnm} onChange={e=>uV(vi,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
 <td><input value={v.ds} onChange={e=>uV(vi,"ds",e.target.value)} onBlur={e=>uV(vi,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td><input value={v.da} onChange={e=>uV(vi,"da",e.target.value)} onBlur={e=>uV(vi,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
-<td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(vi,"pr",val)} cls="cl cs" tentative={false}/></td>
-<td><select value={v.st} onChange={e=>uV(vi,"st",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,fontWeight:600,width:"100%"}}><option value="">—</option>{VO_ST.map(s=><option key={s.v} value={s.v}>{s.v}</option>)}</select></td>
-<td style={{textAlign:"right"}}><EC value={v.em} onChange={val=>uV(vi,"em",val)} cls="cl cs" tentative={false}/></td>
-<td style={{textAlign:"right"}}><EC value={v.pf} onChange={val=>uV(vi,"pf",val)} cls="cl cs" tentative={false}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(vi,"pr",val)} cls="cl" style={{color:rc}}/></td>
+<td><select value={v.st} onChange={e=>uV(vi,"st",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,fontWeight:600,width:"100%"}}><option value="">—</option>{VO_ST.map(s=><option key={s.v} value={s.v}>{s.v}</option>)}</select></td>
+<td style={{textAlign:"right"}}><EC value={v.em} onChange={val=>uV(vi,"em",val)} cls="cl" style={{color:rc}}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pf} onChange={val=>uV(vi,"pf",val)} cls="cl" style={{color:rc}}/></td>
 <td style={{textAlign:"right",color:rc}}>{mg?fmP(mg):""}</td>
 <td style={{textAlign:"right",color:rc}}><input type="number" value={v.nmn||""} onChange={e=>uV(vi,"nmn",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
 <td style={{textAlign:"right",color:rc}}><input type="number" value={v.nh||""} onChange={e=>uV(vi,"nh",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
 <td style={{textAlign:"right",color:rc}}><input type="number" value={v.nr||""} onChange={e=>uV(vi,"nr",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
 <td style={{textAlign:"right",color:rc}}><input type="number" value={v.oh||""} onChange={e=>uV(vi,"oh",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
 <td style={{textAlign:"right",color:rc}}><input type="number" value={v.or2||""} onChange={e=>uV(vi,"or2",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
-<td style={{textAlign:"center"}} onClick={()=>{const n=prompt(v.notes?"Edit note:\n"+v.notes:"Add note:",v.notes||"");if(n!==null)uV(vi,"notes",n)}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
+<td style={{textAlign:"center"}} onClick={()=>{setNoteEdit(vi);setNoteText(v.notes||"")}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
 </tr>})}</tbody></table></div>}
 </div>}
 </>}

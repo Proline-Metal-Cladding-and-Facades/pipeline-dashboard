@@ -317,6 +317,7 @@ const resRef=useRef(null);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 const[noteEdit,setNoteEdit]=useState(null);
 const[voFiltPj,setVoFiltPj]=useState("");
+const[pfSr,setPfSr]=useState("");const[pfStFilt,setPfStFilt]=useState([]);
 const[voFiltTy,setVoFiltTy]=useState("all");
 const[voFiltSt,setVoFiltSt]=useState([]);
 const voFilt=useMemo(()=>{let f=vo;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[vo,voFiltPj,voFiltTy,voFiltSt]);
@@ -371,6 +372,8 @@ const vis=MO.slice(startM);
 const sumM=useMemo(()=>{const o={};MO.forEach(m=>{let s=0,e=0,p=0,ot=0;comp.forEach(pr=>{s+=gv(pr.nm,m,"Sales");e+=gv(pr.nm,m,"ExtMaterials");p+=gv(pr.nm,m,"ProfabMaterials");ot+=gv(pr.nm,m,"OtherCosts")});o[m]={s,e,p,ot}});return o},[comp,mo]);
 const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;comp.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,comp,mo]);
 const pSR=[{k:"_PS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_PO",n:"Group Overhead",g:"oh"},{k:"_PW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_PM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_PE",n:"No. of Employees On-site",nc:true,g:"emp"}];
+const pfPSR=[{k:"_FC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_FM",n:"Materials (COGS)",g:"fmat",cl:"#c45e10"},{k:"_FH",n:"PFAB Overhead",g:"foh",cl:"#c45e10"},{k:"_FS",n:"Subcontractors: Non Full-Time",g:"fsub"},{k:"_FW",n:"Wages: PFAB and Internal Subbies",g:"fwg"},{k:"_FE",n:"No. of Employees On-site",nc:true,g:"femp"}];
+const pfASR=[{k:"_HC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_HM",n:"Materials (COGS)",g:"fmat",cl:"#c45e10"},{k:"_HH",n:"PFAB Overhead",g:"foh",cl:"#c45e10"},{k:"_HS",n:"Subcontractors: Non Full-Time",g:"fsub"},{k:"_HW",n:"Wages: PFAB and Internal Subbies",g:"fwg"},{k:"_HE",n:"No. of Employees On-site",nc:true,g:"femp"}];
 const aSR=[{k:"_AS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_AO",n:"Group Overhead",g:"oh"},{k:"_AW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_AM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_AE",n:"No. of Employees On-site",nc:true,g:"emp"}];
 
 if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>👤</div><h2>Welcome</h2><p>Enter your name.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
@@ -379,7 +382,7 @@ if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>
 const gC="160px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
 
 return<div className="app" onClick={e=>{const el=e.target.closest('.cl');if(el){const txt=el.textContent.replace(/,/g,'');const v=parseFloat(txt);if(!isNaN(v)&&v!==0){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}}>
-<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}>{sv?"Saving...":cached?"Offline":"Connected"}</span></div>
+<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":vw==="pfab"?"PFAB Pipeline":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}>{sv?"Saving...":cached?"Offline":"Connected"}</span></div>
 <div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
 {/* SIDEBAR */}
 <div className={"sb-overlay"+(sbOpen?" open":"")} onClick={()=>sSbO(false)}/>
@@ -389,7 +392,7 @@ return<div className="app" onClick={e=>{const el=e.target.closest('.cl');if(el){
 <div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">📈</span>Dashboard<span className="sb-badge">Soon</span></div>
 <div className="sb-divider"/>
 <div className={"sb-item"+(vw==="grid"?" active":"")} onClick={()=>{sVw("grid");sSbO(false)}}><span className="sb-ico">📊</span>PMC & PF Pipeline</div>
-<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">🏭</span>PFAB Pipeline<span className="sb-badge">Soon</span></div>
+<div className={"sb-item"+(vw==="pfab"?" active":"")} onClick={()=>{sVw("pfab");sSbO(false)}}><span className="sb-ico">🏭</span>PFAB Pipeline</div>
 <div className={"sb-item"+(vw==="vos"?" active":"")} onClick={()=>{sVw("vos");sSbO(false)}}><span className="sb-ico">📋</span>Variation Register</div>
 <div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">👷</span>Day Labour Dockets<span className="sb-badge">Soon</span></div>
 </div>
@@ -502,6 +505,62 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <div className="scroll-ctrl ss" onScroll={syncScroll}><div style={{height:1,minWidth:568+vis.length*72}}/></div>
 
 {flt.length===0&&<div className="em">{pj.length===0?"No projects.":"No match."}</div>}
+</>}
+
+{/* PFAB PIPELINE */}
+{vw==="pfab"&&<>
+{/* PFAB Cards */}
+<div className="cds"><div className="cd">
+<div className="cl2">Total Revenue</div>
+<div className="cv">{fK((()=>{const ms=selM.length?selM:MO;let t=0;comp.forEach(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;t+=pfCon+pfVar+pfVO});return t})())}</div>
+<div className="cl3">{selM.length?selM.join(", "):"All projects"}</div>
+</div></div>
+{/* Toolbar */}
+<div className="br">
+<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setPfStFilt(p2=>p2.includes(s.v)?p2.filter(x=>x!==s.v):[...p2,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:pfStFilt.includes(s.v)?s.c:"var(--bd)",background:pfStFilt.includes(s.v)?s.c:"transparent",color:pfStFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v}</button>)}</div>
+<input className="sx" placeholder="Search project..." value={pfSr} onChange={e=>setPfSr(e.target.value)}/>
+</div>
+{/* Month nav */}
+<div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:8,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><span>{vis[0]} — {vis[vis.length-1]}</span><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button></div>
+{/* Main PFAB table */}
+<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 340px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+<div className="gh"><div>Project</div><div>Est. Sales</div><div>VO Sales</div><div style={{color:"var(--pu)"}}>Appr. VO</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
+{vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} style={{textAlign:"center",color:"var(--tx)"}}>{m}</div>)}</div>
+{(()=>{let pfs=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfStFilt.length>0)pfs=pfs.filter(p=>pfStFilt.includes(p.st));if(pfSr)pfs=pfs.filter(p=>p.nm.toLowerCase().includes(pfSr.toLowerCase()));return pfs.map(p=>{
+const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;const pfTot=pfCon+pfVar+pfVO;const pfAlloc=p.pT;const pfTba=pfTot-pfAlloc;
+return<div className="pr" key={p.i}>
+<div style={{textAlign:"left",position:"sticky",left:0,zIndex:3,background:"var(--s3)",fontFamily:"var(--ft)",color:"var(--ac)",fontSize:10,fontWeight:700,padding:"4px 6px",display:"flex",alignItems:"center",gap:4}}><span className={"st-tag "+(p.st==="Live"?"st-live":p.st==="Pending"?"st-pend":p.st==="Awarded"?"st-awd":"st-done")} style={{fontSize:7}}>{p.st==="Live"?"LIVE":p.st==="Pending"?"PEND":p.st==="Awarded"?"AWRD":"DONE"}</span>{p.nm}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{pfCon?fm(pfCon):""}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{pfVar?fm(pfVar):""}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,color:"var(--pu)",fontStyle:"italic",textAlign:"right",padding:"4px 6px"}}>{pfVO?fm(pfVO):"-"}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,fontWeight:800,textAlign:"right",padding:"4px 6px"}}>{pfTot?fm(pfTot):""}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{fm(pfAlloc)}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px",color:pfTba<0?"var(--rd)":pfTba>0?"var(--am)":"var(--gn)"}}>{pfTot?fm(pfTba):""}</div>
+{vis.map(m=>{const val=gv(p.nm,m,"ProfabMaterials");return<div key={m} style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{})}}>{val?fm(val):""}</div>})}
+</div>})})()}
+</div></div>
+{/* No. of Weeks */}
+<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" "),background:"var(--s2)"}}>
+<div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:10,color:"var(--tx)",textTransform:"uppercase",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
+{vis.map(m=><div key={m} style={{padding:"4px 6px",textAlign:"center",fontFamily:"var(--mn)",fontSize:10,fontWeight:700,color:"var(--tx)",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}>{countWed(m)}</div>)}
+</div></div>
+{/* PFAB Projected */}
+<div className="sum-hdr sum-hdr-p" onClick={()=>sPjO(!pjO)}>{pjO?"\u25be":"\u25b8"} <b>PROJECTED</b> <span className="tog">{pjO?"collapse":"expand"}</span></div>
+{pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:8}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:8,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
+<div className="sr"><div className="slbl" style={{color:"var(--am)",fontSize:8}}>\ud83d\udd12 Lock Month</div>{vis.map(m=><div key={m} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"\ud83d\udd12":"\ud83d\udd13"}</button></div>)}</div>
+<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Projects</div>{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{val?fm(val):""}</div>})}</div>
+{pfPSR.map(row=><div className="sr sr-e" key={row.k}><div className="slbl" style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
+<div className="sr-t"><div className="slbl" style={{color:"var(--ac)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const sales=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);const costs=pfPSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":pl>0?"var(--gn)":"var(--tx)",fontWeight:800}}>{pl?fm(pl):""}</div>})}</div>
+</div></div>}
+{/* PFAB Actual */}
+<div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>{acO?"\u25be":"\u25b8"} <b>ACTUAL</b> <span className="tog">{acO?"collapse":"expand"}</span></div>
+{acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:8}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:8,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
+<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Actual PFAB Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
+{pfASR.map(row=><div className="sr sr-e" key={row.k}><div className="slbl" style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
+<div className="sr-t"><div className="slbl" style={{color:"var(--gn)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m}/>;const sales=sumM[m]?.p||0;const costs=pfASR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":"var(--gn)",fontWeight:800}}>{pl?fm(pl):""}</div>})}</div>
+</div></div>}
 </>}
 
 {/* VO REGISTER - unchanged */}

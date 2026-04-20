@@ -296,7 +296,7 @@ const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useStat
 const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);
 const[vw,sVw]=useState("grid");const[sbOpen,sSbO]=useState(false);const[stFilt,setStFilt]=useState([]);const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
 const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
-const[er,sEr]=useState(null);const[sav,sSav]=useState(false);
+const[er,sEr]=useState(null);const[cached,setCached]=useState(false);const[sav,sSav]=useState(false);
 const[selM,sSM]=useState([]);const[startM,setStartM]=useState(0);const[exp,sExp]=useState({});
 const[tent,setTent]=useState(()=>{try{return JSON.parse(localStorage.getItem("pipeline-tent")||"{}")}catch{return{}}});
 const togTent=(p,m,col)=>{const k=nk(p)+"|||"+m+"|||"+col;setTent(prev=>{const n={...prev};if(n[k])delete n[k];else n[k]=true;localStorage.setItem("pipeline-tent",JSON.stringify(n));return n})};
@@ -329,9 +329,20 @@ const syncScroll=e=>{const sl=e.target.scrollLeft;document.querySelectorAll('.ss
 
 const load=useCallback(async()=>{
   sLd(true);sEr(null);const r=await aG("getAll");
-  if(!r){sEr("No response from Google Sheets.");sLd(false);return}
-  if(r.error){sEr(r.error);sLd(false);return}
+  if(!r){
+    try{const cc=JSON.parse(localStorage.getItem("pipeline-cache"));
+    if(cc&&cc.projects){const age=Math.round((Date.now()-cc.ts)/60000);
+    sEr("Offline — cached data ("+age+" min ago). Changes won't save until reconnected.");
+    setCached(true);r=cc}}catch(e){}
+    if(!r){sEr("No response & no cache available.");sLd(false);return}}
+  if(r.error){
+    try{const cc=JSON.parse(localStorage.getItem("pipeline-cache"));
+    if(cc&&cc.projects){const age=Math.round((Date.now()-cc.ts)/60000);
+    sEr("Error: "+r.error+" — showing cached data ("+age+" min ago).");
+    setCached(true);r=cc}}catch(e){}
+    if(r.error&&!cached){sEr(r.error);sLd(false);return}}
   const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[];
+  if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,ts:Date.now()}))}catch(e){}}
   sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
   const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
   sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 
@@ -368,7 +379,7 @@ if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>
 const gC="160px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
 
 return<div className="app" onClick={e=>{const el=e.target.closest('.cl');if(el){const txt=el.textContent.replace(/,/g,'');const v=parseFloat(txt);if(!isNaN(v)&&v!==0){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}}>
-<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
+<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}>{sv?"Saving...":cached?"Offline":"Connected"}</span></div>
 <div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
 {/* SIDEBAR */}
 <div className={"sb-overlay"+(sbOpen?" open":"")} onClick={()=>sSbO(false)}/>

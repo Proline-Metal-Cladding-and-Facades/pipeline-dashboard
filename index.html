@@ -253,7 +253,7 @@ const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug
 const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
 const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
 const voRowColor=st=>{const s=String(st||"").toLowerCase();if(s.includes("fully claimed"))return"#1a9a6b";if(s.includes("partially"))return"#c45e10";if(s.includes("accepted"))return"#7c3aed";if(s.includes("rejected"))return"#b5b5b5";return"var(--tx)"};
-const isAp=s=>{const u=String(s||"").toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")||u.includes("approved")};
+const isAp=s=>{const u=String(s||"").toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")};
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
 const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
 const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";

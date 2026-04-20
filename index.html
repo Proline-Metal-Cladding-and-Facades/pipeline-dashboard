@@ -257,7 +257,9 @@ function F(o,...ns){const nr=s=>String(s).toLowerCase().replace(/[\s_.\-]+/g,"")
 function pM(v){var s=String(v||"").trim();if(/^[A-Za-z]{3}-\d{2}$/.test(s))return s.charAt(0).toUpperCase()+s.slice(1,3).toLowerCase()+s.slice(3);if(s.includes("T")||/^\d{4}-/.test(s)){var d=new Date(s);if(!isNaN(d)){var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return ms[d.getUTCMonth()]+"-"+String(d.getUTCFullYear()).slice(2)}}return s}
 function countWed(m){try{const ms={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};const p=m.split("-");const y=2000+parseInt(p[1]);const days=new Date(y,ms[p[0]]+1,0).getDate();let c=0;for(let d=1;d<=days;d++){if(new Date(y,ms[p[0]],d).getDay()===3)c++}return c}catch{return 4}}
 
+function fmP(v){if(!v&&v!==0)return"";return"$"+Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmD(v){if(!v)return"";var s=String(v).trim();var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+if(s.includes("T")||/^\d{4}-\d{2}-\d{2}/.test(s)){var d=new Date(s);if(!isNaN(d)){return String(d.getDate()).padStart(2,"0")+"-"+ms[d.getMonth()]+"-"+String(d.getFullYear()).slice(2)}}
 var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m[2])-1;if(mi>=0&&mi<12)return m[1].padStart(2,"0")+"-"+ms[mi]+"-"+(m[3].length===4?m[3].slice(2):m[3])}
 var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
 return s}
@@ -298,7 +300,7 @@ const handleSumHover=(e,enter)=>{
 };
 
 const[pjO,sPjO]=useState(true);const[acO,sAcO]=useState(true);
-const defCW=[130,60,70,140,80,80,85,100,80,80,80,60,60,60,60,60];
+const defCW=[130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
 const[colW,setColW]=useState(defCW);
 const resRef=useRef(null);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
@@ -315,7 +317,7 @@ const load=useCallback(async()=>{
   const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[];
   sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
   const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
-  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),vnm:String(F(v,"VARIATION NAME")),ds:String(F(v,"DATE SUBMITTED")),da:String(F(v,"DATE APPROVED")),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE"))})));
+  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 
   sLd(false)},[]);
 
 useEffect(()=>{if(un)load()},[un,load]);
@@ -327,7 +329,7 @@ const voPfab=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m
 const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[nk(p)+"|||"+m]:{...(pr[nk(p)+"|||"+m]||{}),[c]:val}}));sSv(true);await aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:un,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[un]);
 const uP=useCallback(async(nm,fd,val)=>{const fl=fd.toLowerCase();sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fl.includes("contract")?"cp":fl.includes("job")?"jid":fl.includes("status")?"st":"v"]:val}:p));sSv(true);await aP({action:"updateProject",name:nm,field:fd,value:val});sLs(new Date());sSv(false)},[]);
 const renP=useCallback(async(old,nw)=>{sPj(pr=>pr.map(p=>p.nm===old?{...p,nm:nw}:p));sMo(prev=>{const next={};Object.entries(prev).forEach(([k,v])=>{next[k.startsWith(nk(old)+"|||")?nk(nw)+"|||"+k.split("|||")[1]:k]=v});return next});sSv(true);await aP({action:"updateProject",name:old,field:"Project",value:nw});sLs(new Date());sSv(false)},[]);
-const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE"};sSv(true);await aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val});sLs(new Date());sSv(false)},[vo]);
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};sSv(true);await aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val});sLs(new Date());sSv(false)},[vo]);
 const addV=async()=>{if(!nvo.project)return;sSv(true);await aP({action:"addVO",project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf});sSav(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);sLs(new Date());setTimeout(load,1500)};
 const aPj=async()=>{if(!nn.trim())return;if(pj.some(p=>nk(p.nm)===nk(nn.trim()))){alert("Project \""+nn.trim()+"\" already exists.");return}const c=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:c,variations:0});sPj(p=>[...p,{nm:nn.trim(),jid:"",cp:c,v:0,st:"Live"}]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
 const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nk(nm)+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
@@ -489,24 +491,25 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <button className="pl gn" onClick={addV}>Add</button><button className="pl" onClick={()=>sSav(false)}>Cancel</button></div>}
 {vo.length===0?<div className="em">No entries.</div>:
 <div className="vsc"><table className="vt"><thead><tr>
-{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":"tp"} style={{width:colW[ci],minWidth:40,...(ci>=6&&ci!==7?{textAlign:"right"}:{})}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
-</tr></thead><tbody>{vo.map((v,vi)=>{const mg=v.pr-v.em-v.pf;return<tr key={vi}>
-<td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:110,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 3px",borderRadius:2,fontSize:10}}><option value="">—</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
-<td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px",borderRadius:2,fontSize:10}}><option>VO</option><option>DL</option></select></td>
-<td><input value={v.vn} onChange={e=>uV(vi,"vn",e.target.value)} className="sm"/></td>
-<td><input value={v.vnm} onChange={e=>uV(vi,"vnm",e.target.value.substring(0,100))} className="md"/></td>
-<td><input value={v.ds} onChange={e=>uV(vi,"ds",e.target.value)} className="sm"/></td>
-<td><input value={v.da} onChange={e=>uV(vi,"da",e.target.value)} className="sm"/></td>
-<td style={{textAlign:"right"}}><input type="number" step=".01" value={v.pr||""} onChange={e=>uV(vi,"pr",N(e.target.value))} className="nm"/></td>
-<td><input value={v.st} onChange={e=>uV(vi,"st",e.target.value)} className={sC(v.st)} style={{minWidth:90}}/></td>
-<td style={{textAlign:"right"}}><input type="number" step=".01" value={v.em||""} onChange={e=>uV(vi,"em",N(e.target.value))} className="nm"/></td>
-<td style={{textAlign:"right"}}><input type="number" step=".01" value={v.pf||""} onChange={e=>uV(vi,"pf",N(e.target.value))} className="nm"/></td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:mg<0?"var(--rd)":"var(--gn)"}}>{mg?fm(mg):""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nmn||""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nh||""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.nr||""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.oh||""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)",color:"var(--pu)"}}>{v.or2||""}</td>
+{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci>=6&&ci!==7?{textAlign:"right"}:{})}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
+</tr></thead><tbody>{vo.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
+<td><input list={"pl"+vi} value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+vi}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
+<td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,width:"100%"}}><option>VO</option><option>DL</option></select></td>
+<td><input value={v.vn} onChange={e=>uV(vi,"vn",e.target.value)} style={{color:rc}}/></td>
+<td><input value={v.vnm} onChange={e=>uV(vi,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
+<td><input value={v.ds} onChange={e=>uV(vi,"ds",e.target.value)} onBlur={e=>uV(vi,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
+<td><input value={v.da} onChange={e=>uV(vi,"da",e.target.value)} onBlur={e=>uV(vi,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(vi,"pr",val)} cls="cl cs" tentative={false}/></td>
+<td><select value={v.st} onChange={e=>uV(vi,"st",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,fontWeight:600,width:"100%"}}><option value="">—</option>{VO_ST.map(s=><option key={s.v} value={s.v}>{s.v}</option>)}</select></td>
+<td style={{textAlign:"right"}}><EC value={v.em} onChange={val=>uV(vi,"em",val)} cls="cl cs" tentative={false}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pf} onChange={val=>uV(vi,"pf",val)} cls="cl cs" tentative={false}/></td>
+<td style={{textAlign:"right",color:rc}}>{mg?fmP(mg):""}</td>
+<td style={{textAlign:"right",color:rc}}><input type="number" value={v.nmn||""} onChange={e=>uV(vi,"nmn",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
+<td style={{textAlign:"right",color:rc}}><input type="number" value={v.nh||""} onChange={e=>uV(vi,"nh",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
+<td style={{textAlign:"right",color:rc}}><input type="number" value={v.nr||""} onChange={e=>uV(vi,"nr",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
+<td style={{textAlign:"right",color:rc}}><input type="number" value={v.oh||""} onChange={e=>uV(vi,"oh",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
+<td style={{textAlign:"right",color:rc}}><input type="number" value={v.or2||""} onChange={e=>uV(vi,"or2",N(e.target.value))} style={{color:rc,textAlign:"right"}}/></td>
+<td style={{textAlign:"center"}} onClick={()=>{const n=prompt(v.notes?"Edit note:\n"+v.notes:"Add note:",v.notes||"");if(n!==null)uV(vi,"notes",n)}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
 </tr>})}</tbody></table></div>}
 </div>}
 </>}

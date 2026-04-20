@@ -527,7 +527,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 {/* Month nav */}
 <div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:8,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><span>{vis[0]} — {vis[vis.length-1]}</span><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button></div>
 {/* Main PFAB table */}
-<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 340px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 340px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div>Est. Sales</div><div>VO Sales</div><div style={{color:"var(--pu)"}}>Appr. VO</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
 {vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} style={{textAlign:"center",color:"var(--tx)"}}>{m}</div>)}</div>
 {(()=>{let pfs=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfStFilt.length>0)pfs=pfs.filter(p=>pfStFilt.includes(p.st));if(pfSr)pfs=pfs.filter(p=>p.nm.toLowerCase().includes(pfSr.toLowerCase()));return pfs.map(p=>{
@@ -544,13 +544,13 @@ return<div className="pr pr-pf" key={p.i}>
 </div>})})()}
 </div></div>
 {/* No. of Weeks */}
-<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" "),background:"var(--s2)"}}>
+<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
 <div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:10,color:"var(--tx)",textTransform:"uppercase",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
 {vis.map(m=>{const wkVal=gv(WK,m,"Sales")||countWed(m);return<div key={m} style={{padding:"4px 6px",textAlign:"center",fontFamily:"var(--mn)",fontSize:10,fontWeight:700,color:"var(--tx)",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}>{wkVal}</div>})}
 </div></div>
 {/* PFAB Projected */}
 <div className="sum-hdr sum-hdr-p" onClick={()=>sPjO(!pjO)}>{pjO?"▾":"▸"} <b>PROJECTED</b> <span className="tog">{pjO?"collapse":"expand"}</span></div>
-{pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+{pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:8}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:8,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
 <div className="sr"><div className="slbl" style={{color:"var(--am)",fontSize:8}}>🔒 Lock Month</div>{vis.map(m=><div key={m} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
 <div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Projects</div>{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{val?fm(val):""}</div>})}</div>
@@ -559,7 +559,7 @@ return<div className="pr pr-pf" key={p.i}>
 </div></div>}
 {/* PFAB Actual */}
 <div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>{acO?"▾":"▸"} <b>ACTUAL</b> <span className="tog">{acO?"collapse":"expand"}</span></div>
-{acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:"160px 80px 72px 80px 80px 72px 72px "+vis.map(()=>"72px").join(" ")}}>
+{acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:8}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:8,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
 <div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Actual PFAB Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
 {pfASR.map(row=><div className="sr sr-e" key={row.k}><div className="slbl" style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}

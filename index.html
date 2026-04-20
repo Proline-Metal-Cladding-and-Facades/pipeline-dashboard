@@ -104,15 +104,15 @@
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
 .vsc{overflow-x:auto;max-height:calc(100vh - 80px);overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn)}
+.vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:left;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
 .vt tr:nth-child(even) td{background:#f8f9fb}
 .vt tr:hover td{background:rgba(68,114,196,.08)}
-.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:10px;outline:none;width:100%}
+.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:10px;outline:none;width:100%;box-sizing:border-box}
 .vt input:focus,.vt select:focus{background:rgba(68,114,196,.06);border-bottom:1px solid var(--ac)}
-.vt input.nm{text-align:right;width:80px}.vt input.sm{width:70px}.vt input.md{width:130px}
+.vt input.nm{text-align:right;width:100%}.vt input.sm{width:100%}.vt input.md{width:100%}
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
 
 .sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
@@ -219,6 +219,16 @@
 .sum-body .sr:first-child .slbl{background:var(--s2);z-index:4}
 
 .sr>div:first-child,.sr-t>div:first-child,.sr-w>div:first-child{border-right:2px solid var(--bd)}
+
+/* Column resize */
+.vt th{position:relative}
+.vt .col-resize{position:absolute;right:0;top:0;bottom:0;width:4px;cursor:col-resize;background:transparent}
+.vt .col-resize:hover{background:var(--ac)}
+.vt .col-resize.dragging{background:var(--ac)}
+
+/* Remove number input spinners */
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
 /* Cell selection + status bar */
 .cl.sel{outline:1px solid var(--ac);background:rgba(91,141,239,.12)!important}
 .stat-bar{position:fixed;bottom:0;left:0;right:0;background:var(--s2);border-top:1px solid var(--bd);padding:3px 12px;display:flex;gap:16px;align-items:center;justify-content:flex-end;font-size:9px;color:var(--t2);font-family:var(--mn);z-index:40;height:22px}
@@ -247,6 +257,10 @@ function F(o,...ns){const nr=s=>String(s).toLowerCase().replace(/[\s_.\-]+/g,"")
 function pM(v){var s=String(v||"").trim();if(/^[A-Za-z]{3}-\d{2}$/.test(s))return s.charAt(0).toUpperCase()+s.slice(1,3).toLowerCase()+s.slice(3);if(s.includes("T")||/^\d{4}-/.test(s)){var d=new Date(s);if(!isNaN(d)){var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return ms[d.getUTCMonth()]+"-"+String(d.getUTCFullYear()).slice(2)}}return s}
 function countWed(m){try{const ms={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};const p=m.split("-");const y=2000+parseInt(p[1]);const days=new Date(y,ms[p[0]]+1,0).getDate();let c=0;for(let d=1;d<=days;d++){if(new Date(y,ms[p[0]],d).getDay()===3)c++}return c}catch{return 4}}
 
+function fmD(v){if(!v)return"";var s=String(v).trim();var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m[2])-1;if(mi>=0&&mi<12)return m[1].padStart(2,"0")+"-"+ms[mi]+"-"+(m[3].length===4?m[3].slice(2):m[3])}
+var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
+return s}
 function nk(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
 function EC({value,onChange,cls,tentative,onContext}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
 useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
@@ -284,6 +298,10 @@ const handleSumHover=(e,enter)=>{
 };
 
 const[pjO,sPjO]=useState(true);const[acO,sAcO]=useState(true);
+const defCW=[130,60,70,140,80,80,85,100,80,80,80,60,60,60,60,60];
+const[colW,setColW]=useState(defCW);
+const resRef=useRef(null);
+const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
 const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
@@ -471,10 +489,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <button className="pl gn" onClick={addV}>Add</button><button className="pl" onClick={()=>sSav(false)}>Cancel</button></div>}
 {vo.length===0?<div className="em">No entries.</div>:
 <div className="vsc"><table className="vt"><thead><tr>
-<th className="tg">Project</th><th className="tg">Type</th><th className="tg">Var No.</th><th className="tg">Name</th>
-<th className="tg">Date Sub.</th><th className="tg">Date Appr.</th><th className="tg" style={{textAlign:"right"}}>Price</th><th className="tg">Status</th>
-<th className="ty" style={{textAlign:"right"}}>Ext.Mat</th><th className="ty" style={{textAlign:"right"}}>PFAB</th><th className="ty" style={{textAlign:"right"}}>Margin</th>
-<th className="tp" style={{textAlign:"right"}}>#Men</th><th className="tp" style={{textAlign:"right"}}>NHrs</th><th className="tp" style={{textAlign:"right"}}>NRate</th><th className="tp" style={{textAlign:"right"}}>OTHrs</th><th className="tp" style={{textAlign:"right"}}>OTRate</th>
+{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":"tp"} style={{width:colW[ci],minWidth:40,...(ci>=6&&ci!==7?{textAlign:"right"}:{})}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
 </tr></thead><tbody>{vo.map((v,vi)=>{const mg=v.pr-v.em-v.pf;return<tr key={vi}>
 <td><select value={v.pj} onChange={e=>uV(vi,"pj",e.target.value)} style={{minWidth:110,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 3px",borderRadius:2,fontSize:10}}><option value="">—</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></td>
 <td><select value={v.ty} onChange={e=>uV(vi,"ty",e.target.value)} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px",borderRadius:2,fontSize:10}}><option>VO</option><option>DL</option></select></td>

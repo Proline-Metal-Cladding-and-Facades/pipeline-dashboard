@@ -238,6 +238,8 @@ input[type=number]{-moz-appearance:textfield}
 .notes-box .nbtn{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
 
 .pr-pf>div{background:#fff!important;border-top:1px solid #e8eaef;border-bottom:1px solid #e8eaef}
+
+.pr>div:nth-child(n+8){font-weight:400}
 /* Cell selection + status bar */
 .cl.sel{outline:1px solid var(--ac);background:rgba(91,141,239,.12)!important}
 .stat-bar{position:fixed;bottom:0;left:0;right:0;background:var(--s2);border-top:1px solid var(--bd);padding:3px 12px;display:flex;gap:16px;align-items:center;justify-content:flex-end;font-size:9px;color:var(--t2);font-family:var(--mn);z-index:40;height:22px}
@@ -514,7 +516,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 {/* PFAB Cards */}
 <div className="cds"><div className="cd">
 <div className="cl2">Total Revenue</div>
-<div className="cv">{fK((()=>{if(selM.length>0){let t=0;selM.forEach(m=>{comp.forEach(p=>{t+=gv(p.nm,m,"ProfabMaterials")})});return t}let t=0;comp.forEach(p=>{t+=gv(p.nm,"_BC","ProfabMaterials")+gv(p.nm,"_BV","ProfabMaterials")+(voPfab[nk(p.nm)]||0)});return t})())}</div>
+<div className="cv">{fK(selM.length>0?comp.reduce((t,p)=>t+selM.reduce((s,m)=>s+gv(p.nm,m,"ProfabMaterials"),0),0):comp.reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials")+gv(p.nm,"_BV","ProfabMaterials")+(voPfab[nk(p.nm)]||0),0))}</div>
 <div className="cl3">{selM.length?selM.join(", "):"All projects"}</div>
 </div></div>
 {/* Toolbar */}
@@ -535,9 +537,9 @@ return<div className="pr pr-pf" key={p.i}>
 <div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{pfCon?fm(pfCon):""}</div>
 <div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{pfVar?fm(pfVar):""}</div>
 <div style={{fontFamily:"var(--mn)",fontSize:10,color:"var(--pu)",fontStyle:"italic",textAlign:"right",padding:"4px 6px"}}>{pfVO?fm(pfVO):"-"}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:10,fontWeight:800,textAlign:"right",padding:"4px 6px"}}>{pfTot?fm(pfTot):""}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,fontWeight:800,textAlign:"right",padding:"4px 6px"}}>{(pfTot||pfAlloc)?fm(pfTot):""}</div>
 <div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px"}}>{fm(pfAlloc)}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px",color:pfTba<0?"var(--rd)":pfTba>0?"var(--am)":"var(--gn)"}}>{pfTot?fm(pfTba):""}</div>
+<div style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px",color:pfTba<0?"var(--rd)":pfTba>0?"var(--am)":"var(--gn)"}}>{(pfTot||pfAlloc)?fm(pfTba):""}</div>
 {vis.map(m=>{const val=gv(p.nm,m,"ProfabMaterials");return<div key={m} style={{fontFamily:"var(--mn)",fontSize:10,textAlign:"right",padding:"4px 6px",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{})}}>{val?fm(val):""}</div>})}
 </div>})})()}
 </div></div>

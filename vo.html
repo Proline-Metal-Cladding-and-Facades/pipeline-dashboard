@@ -137,7 +137,7 @@ const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.m
 const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};
 sSv(true);await aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")});sSv(false)},[vo,user]);
 
-const dVO=async(v)=>{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return;sSv(true);await aP({action:"deleteCoordVO",user,row:v._r});sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()};
+const dVO=async(v)=>{if(v.pushed){if(!confirm("⚠️ This VO was pushed to Master on "+v.pushed+".\n\nDeleting here will NOT remove it from the Master Pipeline.\nContact admin to remove it from Master.\n\nDelete from your register anyway?"))return}else{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return}sSv(true);await aP({action:"deleteCoordVO",user,row:v._r});sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()};
 
 const pushVO=async(v)=>{
 if(!confirm(v.pushed?"Re-push \""+v.vnm+"\" to update Master?":"Push \""+v.vnm+"\" to Master VO Register?"))return;

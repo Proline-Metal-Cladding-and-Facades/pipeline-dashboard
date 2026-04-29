@@ -84,6 +84,7 @@ return<div className={cls||"cl"} style={{textAlign:"right",fontFamily:"var(--mn)
 
 function App(){
 const urlUser=new URLSearchParams(window.location.search).get("user")||"";
+const[identity,setIdentity]=useState(()=>localStorage.getItem("vo-identity")||"");
 const[user,setUser]=useState(urlUser);
 const[vo,sVo]=useState([]);
 const[pj,sPj]=useState([]);
@@ -133,7 +134,7 @@ useEffect(()=>{if(user)load()},[user,load]);
 
 const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));
 const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};
-sSv(true);await aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val});sSv(false)},[vo,user]);
+sSv(true);await aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")});sSv(false)},[vo,user]);
 
 const dVO=async(v)=>{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return;sSv(true);await aP({action:"deleteCoordVO",user,row:v._r});sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()};
 
@@ -149,13 +150,19 @@ const voFilt=useMemo(()=>{let f=vo;if(filtPj)f=f.filter(v=>v.pj.toLowerCase().in
 
 const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
 
-if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Select Your Name</h2>
+if(!identity)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Who are you?</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>This is saved so we know who made changes.</p>
+{USERS.map(u=><button key={u} onClick={()=>{setIdentity(u);localStorage.setItem("vo-identity",u);if(!user)setUser(u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}
+</div></div>;
+
+if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Select Register</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>Logged in as <b>{identity}</b></p>
 {USERS.map(u=><button key={u} onClick={()=>{setUser(u);window.history.replaceState(null,"","?user="+u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}
 </div></div>;
 
 return<div className="app">
-<div className="hd"><div className="hl"><h1>Variation Register — {user}</h1><span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
-<div style={{display:"flex",gap:4}}><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch User</button></div></div>
+<div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
+<div style={{display:"flex",gap:4}}><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
 
 {er&&<div className="er">{er}</div>}
 {ld?<div className="ld">Loading...</div>:<>

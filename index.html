@@ -41,18 +41,18 @@
 .mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
 .mn2 button:hover{color:var(--tx)}.mn2 span{font-size:9px;color:var(--t2)}
 /* GRID - EXACT same column structure as the working version */
-.gc{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 220px);border:1px solid var(--bd);border-radius:6px;background:#fff}
+.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:#fff;scrollbar-gutter:stable}
 .g{display:grid;min-width:fit-content}
 .gh{display:contents}
-.gh>div{position:sticky;top:0;z-index:5;background:var(--s2);padding:5px 6px;font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;user-select:none}
+.gh>div{position:sticky;top:0;z-index:15;background:var(--s2);padding:5px 6px;font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;user-select:none}
 .gh>div:hover{color:var(--tx);background:var(--s3)}
-.gh>div:first-child{text-align:left;position:sticky;left:0;z-index:6;min-width:160px;cursor:default}
+.gh>div:first-child{text-align:left;position:sticky;left:0;z-index:6;min-width:240px;cursor:default}
 .gh>div.ms{color:var(--pu);background:rgba(167,139,250,.1);border-bottom-color:var(--pu)}
 .pg{display:contents}
 /* Project row = Sales merged */
 .pr{display:contents}
 .pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:#f9f9f7;font-family:var(--mn);border-top:0.5px solid #e4e6eb;border-bottom:0.5px solid #e4e6eb;text-align:right;font-family:var(--mn)}
-.pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:#f9f9f7;font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:160px;padding-left:4px!important}
+.pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:#f9f9f7;font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:240px;padding-left:4px!important}
 .eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:9px;border-radius:3px;padding:0 4px;font-weight:700;font-family:var(--mn);line-height:16px;flex-shrink:0}
 .eb:hover{color:var(--ac);border-color:var(--ac)}
 .xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:11px;opacity:.3;padding:0 1px;flex-shrink:0}.xb:hover{color:var(--rd);opacity:1}
@@ -87,7 +87,7 @@
 .lk{background:#fff;border:1px solid var(--bd);border-radius:3px;padding:0 3px;cursor:pointer;font-size:9px;color:var(--t2);line-height:16px}
 .lk:hover{border-color:var(--am);color:var(--am)}
 .lk.on{background:#c5cad3;color:#fff;border-color:#b5bbc6}
-.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
+.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1);scrollbar-gutter:stable}
 .sr{display:contents}
 .sr>div{padding:2px 6px;font-size:9px;font-family:var(--mn);font-weight:400;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
 .sr .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
@@ -115,7 +115,7 @@
 .vt input.nm{text-align:right;width:100%}.vt input.sm{width:100%}.vt input.md{width:100%}
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
 
-.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
+.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1);scrollbar-gutter:stable}
 .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
 .sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
 .sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-size:9px;padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
@@ -130,17 +130,19 @@
 
 /* FREEZE PANES - first 7 columns sticky */
 .gh>div:nth-child(1),.pr>div:nth-child(1),.rw>div:nth-child(1),.rg>div:nth-child(1){position:sticky;left:0;z-index:4}
-.gh>div:nth-child(2),.pr>div:nth-child(2),.rw>div:nth-child(2),.rg>div:nth-child(2){position:sticky;left:160px;z-index:4}
-.gh>div:nth-child(3),.pr>div:nth-child(3),.rw>div:nth-child(3),.rg>div:nth-child(3){position:sticky;left:232px;z-index:4}
-.gh>div:nth-child(4),.pr>div:nth-child(4),.rw>div:nth-child(4),.rg>div:nth-child(4){position:sticky;left:294px;z-index:4}
-.gh>div:nth-child(5),.pr>div:nth-child(5),.rw>div:nth-child(5),.rg>div:nth-child(5){position:sticky;left:359px;z-index:4}
-.gh>div:nth-child(6),.pr>div:nth-child(6),.rw>div:nth-child(6),.rg>div:nth-child(6){position:sticky;left:431px;z-index:4}
-.gh>div:nth-child(7),.pr>div:nth-child(7),.rw>div:nth-child(7),.rg>div:nth-child(7){position:sticky;left:503px;z-index:4;border-right:2px solid var(--bd)}
+.gh>div:nth-child(2),.pr>div:nth-child(2),.rw>div:nth-child(2),.rg>div:nth-child(2){position:sticky;left:240px;z-index:4}
+.gh>div:nth-child(3),.pr>div:nth-child(3),.rw>div:nth-child(3),.rg>div:nth-child(3){position:sticky;left:312px;z-index:4}
+.gh>div:nth-child(4),.pr>div:nth-child(4),.rw>div:nth-child(4),.rg>div:nth-child(4){position:sticky;left:374px;z-index:4}
+.gh>div:nth-child(5),.pr>div:nth-child(5),.rw>div:nth-child(5),.rg>div:nth-child(5){position:sticky;left:439px;z-index:4}
+.gh>div:nth-child(6),.pr>div:nth-child(6),.rw>div:nth-child(6),.rg>div:nth-child(6){position:sticky;left:511px;z-index:4}
+.gh>div:nth-child(7),.pr>div:nth-child(7),.rw>div:nth-child(7),.rg>div:nth-child(7){position:sticky;left:583px;z-index:4;border-right:2px solid var(--bd)}
 /* Header z-index higher */
 .gh>div:nth-child(-n+7){z-index:6}
 /* Backgrounds must be opaque for freeze to work */
 .gh>div:nth-child(-n+7){background:var(--s2)}
 .pr>div:nth-child(-n+7){background:#f9f9f7}
+.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
+.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
 .rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
 
 /* Center monthly columns */
@@ -172,6 +174,8 @@
 /* Alternate row shading */
 .pg:nth-child(even) .pr>div{background:#f9f9f7}
 .pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
+.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
+.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
 /* Current month highlight */
 .cur-month{background:var(--ac)!important;color:#fff!important;border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;font-weight:800!important}
 /* Status filter */
@@ -213,7 +217,7 @@
 .app div.sel-cell{outline:2px solid var(--ac)!important;background:rgba(68,114,196,.12)!important}
 
 .sum-body .g>div:nth-child(1),.sum-body .sr>div:first-child,.sum-body .sr-t>div:first-child,.sum-body .sr-c>div:first-child,.sum-body .sr-e>div:first-child{position:sticky;left:0;z-index:4;background:var(--s1)}
-.sum-body .slbl{position:sticky;left:0;z-index:4;background:var(--s1);min-width:240px}
+.sum-body .slbl{position:sticky;left:0;z-index:4;background:var(--s1)}
 /* Column separators - light grey gridlines */
 .gh>div{border-right:1px solid #e8eaef}
 .pr>div{border-right:1px solid #e8eaef}
@@ -285,6 +289,7 @@ input[type=number]{-moz-appearance:textfield}
 .vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px;border-right:2px solid var(--bd)!important}
 .vt-ro th:nth-child(5),.vt-ro td:nth-child(5){position:static;left:auto;border-right:none!important}
 .vt-ro th:nth-child(6),.vt-ro td:nth-child(6){position:static;left:auto;border-right:none!important}
+
 /* ROW HOVER */
 div.rh{background:#dce6f5!important}
 </style></head><body><div id="root"></div>
@@ -472,7 +477,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 <div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><button onClick={()=>sExp(comp.reduce((a,p)=>({...a,[p.nm]:true}),{}))} title="Expand All">+ All</button><button onClick={()=>sExp({})} title="Collapse All">- All</button><div className="dv"/><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft=Math.max(0,el.scrollLeft-300)})}}>←</button><span>{vis[0]} — {vis[vis.length-1]} ({vis.length} months)</span><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft+=300})}}>→</button><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear</button>}</div>
 
 {/* ====== MAIN TABLE ====== */}
-<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 280px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
+<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 220px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
 {vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} onMouseEnter={()=>hovOn&&sHC(m)} onMouseLeave={()=>sHC(null)}>{m}</div>)}</div>
 
@@ -518,7 +523,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 
 {/* ====== NO OF WEEKS (aligned with months via padding) ====== */}
 {/* No of Weeks - same grid for alignment */}
-<div className="ss" onScroll={syncScroll} style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto"}}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
+<div className="ss" onScroll={syncScroll} style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto",scrollbarGutter:"stable"}}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
 <div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:9,color:"var(--tx)",textTransform:"uppercase",letterSpacing:".3px",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
 {vis.map(m=>{const manual=gv(WK,m,"Sales");const val=manual||countWed(m);return<div key={m} style={{padding:"2px 6px",textAlign:"center",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}><EC value={val} onChange={v=>uC(WK,m,"Sales",v)} cls="cl cl-wk" tentative={isTent(WK,m,"Sales")} onContext={()=>togTent(WK,m,"Sales")}/></div>})}
 </div></div>
@@ -575,7 +580,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 {/* Month nav */}
 <div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><span>{vis[0]} — {vis[vis.length-1]}</span><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button></div>
 {/* Main PFAB table */}
-<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 340px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
+<div className="gc ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div>Est. Sales</div><div>VO Sales</div><div style={{color:"var(--pu)"}}>Appr. VO</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
 {vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} style={{textAlign:"center",color:"var(--tx)"}}>{m}</div>)}</div>
 {(()=>{let pfs=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfStFilt.length>0)pfs=pfs.filter(p=>pfStFilt.includes(p.st));if(pfSr)pfs=pfs.filter(p=>p.nm.toLowerCase().includes(pfSr.toLowerCase()));return pfs.map(p=>{
@@ -592,7 +597,7 @@ return<div className="pr pr-pf" key={p.i}>
 </div>})})()}
 </div></div>
 {/* No. of Weeks */}
-<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto"}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
+<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto",scrollbarGutter:"stable"}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
 <div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:9,color:"var(--tx)",textTransform:"uppercase",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
 {vis.map(m=>{const wkVal=gv(WK,m,"Sales")||countWed(m);return<div key={m} style={{padding:"4px 6px",textAlign:"center",fontFamily:"var(--mn)",fontSize:9,fontWeight:700,color:"var(--tx)",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}>{wkVal}</div>})}
 </div></div>

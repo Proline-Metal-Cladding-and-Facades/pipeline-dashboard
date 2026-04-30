@@ -51,7 +51,7 @@
 .pg{display:contents}
 /* Project row = Sales merged */
 .pr{display:contents}
-.pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:var(--s3);border-top:2px solid rgba(91,141,239,.25);border-bottom:1px solid var(--bd);text-align:right;font-family:var(--mn)}
+.pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:var(--s3);font-family:var(--mn);border-top:2px solid rgba(91,141,239,.25);border-bottom:1px solid var(--bd);text-align:right;font-family:var(--mn)}
 .pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:var(--s3);font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:160px;padding-left:4px!important}
 .eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:9px;border-radius:3px;padding:0 4px;font-weight:700;font-family:var(--mn);line-height:16px;flex-shrink:0}
 .eb:hover{color:var(--ac);border-color:var(--ac)}
@@ -89,10 +89,10 @@
 .lk.on{background:#c5cad3;color:#fff;border-color:#b5bbc6}
 .sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
 .sr{display:contents}
-.sr>div{padding:2px 6px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
+.sr>div{padding:2px 6px;font-size:9px;font-family:var(--mn);font-weight:400;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
 .sr .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
 .sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
-.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:9px;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right;font-family:var(--mn)}
+.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:9px;font-family:var(--mn);font-weight:400;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right;font-family:var(--mn)}
 .sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
 /* Weeks row */
 .wk-row{display:flex;align-items:center;margin:6px 0;padding:4px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:4px}
@@ -104,7 +104,7 @@
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
 .vsc{overflow-x:auto;max-height:calc(100vh - 80px);overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn);table-layout:fixed}
+.vt{width:100%;border-collapse:collapse;font-size:9px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:left;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
@@ -442,10 +442,10 @@ return<div className="pg" key={p.i}>
 </div>
 <div className={hovOn&&hovR===p.nm?"rh":""}><EC value={p.cp} onChange={v=>uP(p.nm,"Contract Price",v)} cls="cl ce" tentative={isTent(p.nm,"_","cp")} onContext={()=>togTent(p.nm,"_","cp")}/></div>
 <div className={hovOn&&hovR===p.nm?"rh":""}><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl ce" tentative={isTent(p.nm,"_","var")} onContext={()=>togTent(p.nm,"_","var")}/></div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:"var(--pu)",fontStyle:"italic"}}>{p.avo?fm(p.avo):"-"}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{fontWeight:800}}>{fm(p.tot)}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""}>{fm(p.sT)}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)"}}>{fm(p.tba)}</div>
+<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:"var(--pu)",fontStyle:"italic",fontFamily:"var(--mn)"}}>{p.avo?fm(p.avo):"-"}</div>
+<div className={hovOn&&hovR===p.nm?"rh":""} style={{fontWeight:800,fontFamily:"var(--mn)"}}>{fm(p.tot)}</div>
+<div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)"}}>{fm(p.sT)}</div>
+<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)",fontFamily:"var(--mn)"}}>{fm(p.tba)}</div>
 {vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" tentative={isTent(p.nm,m,"Sales")} onContext={()=>togTent(p.nm,m,"Sales")}/></div>)}
 </div>
 {/* Collapsible sub-rows */}
@@ -465,7 +465,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 {vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" tentative={isTent(p.nm,m,rk)} onContext={()=>togTent(p.nm,m,rk)}/></div>)}</div>})}
 <div className="rg"><div className="rl">Gross Profit</div><div/><div/><div/>
 <div style={{fontFamily:"var(--mn)",color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div><div/><div/>
-{vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)",fontWeight:600}}>{v?fm(v):""}</div>})}</div>
+{vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)"}}>{v?fm(v):""}</div>})}</div>
 </>}
 </div>})}
 </div></div>
@@ -485,7 +485,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 {pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9,color:"var(--t2)",textTransform:"uppercase"}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
 <div className="sr"><div className={"slbl"+(hovR==="_lkr"?" rh":"")} onMouseEnter={()=>sHR("_lkr")} onMouseLeave={()=>sHR(null)} style={{color:"var(--am)",fontSize:9}}>🔒 Lock Month</div>{vis.map(m=><div key={m} className={(hovR==="_lkr"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("_lkr");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600,color:"var(--ac)"}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
+<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"var(--ac)"}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="ext"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="pfab"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="oct"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))}</div>})}</div>
@@ -499,7 +499,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 </div>
 {acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9,color:"var(--t2)",textTransform:"uppercase"}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{fontWeight:600,color:"var(--ac)"}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
+<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"var(--ac)"}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="ext"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.e||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="pfab"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
 <div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="oct"?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct");hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.ot||0):""}</div>})}</div>
@@ -555,17 +555,17 @@ return<div className="pr pr-pf" key={p.i}>
 {pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
 <div className="sr"><div className="slbl" style={{color:"var(--am)",fontSize:9}}>🔒 Lock Month</div>{vis.map(m=><div key={m} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
-<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Projects</div>{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{val?fm(val):""}</div>})}</div>
+<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Projects</div>{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} style={{color:"var(--ac)"}}>{val?fm(val):""}</div>})}</div>
 {pfPSR.map(row=><div className="sr sr-e" key={row.k}><div className="slbl" style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div className="slbl" style={{color:"var(--ac)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const sales=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);const costs=pfPSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":pl>0?"var(--gn)":"var(--tx)",fontWeight:800}}>{pl?fm(pl):""}</div>})}</div>
+<div className="sr-t"><div className="slbl" style={{color:"var(--ac)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const sales=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);const costs=pfPSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":pl>0?"var(--gn)":"var(--tx)"}}>{pl?fm(pl):""}</div>})}</div>
 </div></div>}
 {/* PFAB Actual */}
 <div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>{acO?"▾":"▸"} <b>ACTUAL</b> <span className="tog">{acO?"collapse":"expand"}</span></div>
 {acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Actual PFAB Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{fontWeight:600,color:"var(--ac)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
+<div className="sr sr-c"><div className="slbl" style={{fontWeight:700}}>Actual PFAB Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} style={{color:"var(--ac)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
 {pfASR.map(row=><div className="sr sr-e" key={row.k}><div className="slbl" style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div className="slbl" style={{color:"var(--gn)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m}/>;const sales=sumM[m]?.p||0;const costs=pfASR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":"var(--gn)",fontWeight:800}}>{pl?fm(pl):""}</div>})}</div>
+<div className="sr-t"><div className="slbl" style={{color:"var(--gn)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m}/>;const sales=sumM[m]?.p||0;const costs=pfASR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} style={{color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
 </div></div>}
 <div className="scroll-ctrl ss" onScroll={syncScroll}><div style={{height:1,minWidth:568+vis.length*72}}/></div>
 </>}

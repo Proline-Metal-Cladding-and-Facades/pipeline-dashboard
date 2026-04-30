@@ -41,7 +41,7 @@
 .mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
 .mn2 button:hover{color:var(--tx)}.mn2 span{font-size:9px;color:var(--t2)}
 /* GRID - EXACT same column structure as the working version */
-.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:var(--s1)}
+.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:#fff}
 .g{display:grid;min-width:fit-content}
 .gh{display:contents}
 .gh>div{position:sticky;top:0;z-index:5;background:var(--s2);padding:5px 6px;font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;user-select:none}
@@ -51,8 +51,8 @@
 .pg{display:contents}
 /* Project row = Sales merged */
 .pr{display:contents}
-.pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:#fff;font-family:var(--mn);border-top:0.5px solid #e4e6eb;border-bottom:0.5px solid #e4e6eb;text-align:right;font-family:var(--mn)}
-.pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:var(--s3);font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:160px;padding-left:4px!important}
+.pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:#f4f7fc!important;font-family:var(--mn);border-top:0.5px solid #e4e6eb;border-bottom:0.5px solid #e4e6eb;text-align:right;font-family:var(--mn)}
+.pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:#f4f7fc!important;font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:160px;padding-left:4px!important}
 .eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:9px;border-radius:3px;padding:0 4px;font-weight:700;font-family:var(--mn);line-height:16px;flex-shrink:0}
 .eb:hover{color:var(--ac);border-color:var(--ac)}
 .xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:11px;opacity:.3;padding:0 1px;flex-shrink:0}.xb:hover{color:var(--rd);opacity:1}
@@ -61,18 +61,18 @@
 .st-live{background:rgba(52,211,153,.15);color:var(--gn)}.st-done{background:rgba(125,137,166,.15);color:var(--t2)}.st-pend{background:rgba(220,74,74,.15);color:var(--rd)}.st-awd{background:rgba(68,114,196,.15);color:var(--ac)}
 .jid-tag{font-size:9px;color:var(--t2);font-family:var(--mn);flex-shrink:0;background:var(--bg);border:1px solid var(--bd);padding:0 4px;border-radius:3px;outline:none;width:50px}
 .jid-tag:focus{border-color:var(--ac);color:var(--tx)}
-.cin{background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--ft);font-size:10px;padding:2px 4px;border-radius:2px;outline:none;width:140px}
+.cin{background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--ft);font-size:9px;padding:2px 4px;border-radius:2px;outline:none;width:140px}
 /* Sub rows */
-.rw{display:contents}.rw>div{padding:3px 6px;font-size:10px;border-bottom:1px solid rgba(45,52,80,.4);text-align:right}
+.rw{display:contents}.rw>div{padding:3px 6px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.4);text-align:right}
 .rl{text-align:left!important;font-family:var(--ft);font-weight:500;padding-left:4px!important;font-size:9px}
 .r1 .rl,.r2 .rl,.r3 .rl{color:#c45e10}
-.rg{display:contents}.rg>div{padding:3px 6px;font-size:10px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
+.rg{display:contents}.rg>div{padding:3px 6px;font-size:9px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
 .rg>div:nth-child(1){color:var(--gn)!important}
 /* Cells */
-.cl{padding:2px 3px;min-height:14px;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:2px;font-family:var(--mn);font-size:10px;text-align:right}
+.cl{padding:2px 3px;min-height:14px;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:2px;font-family:var(--mn);font-size:9px;text-align:right}
 .cl:hover{background:rgba(91,141,239,.06)}.cs{color:var(--ac)}.cc{color:#c45e10}
 .ce{color:var(--ac);border-bottom:1px dashed rgba(68,114,196,.4)}.ce:hover{background:rgba(68,114,196,.08)}
-.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:10px;padding:2px 3px;border-radius:2px;outline:none;text-align:right}
+.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:9px;padding:2px 3px;border-radius:2px;outline:none;text-align:right}
 .ld{display:flex;flex-direction:column;align-items:center;padding:40px;gap:8px}.ld p{font-size:11px;color:var(--t2)}
 .sp{width:22px;height:22px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sn .7s linear infinite}
 @keyframes sn{to{transform:rotate(360deg)}}
@@ -110,7 +110,7 @@
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
 .vt tr:nth-child(even) td{background:#f8f9fb}
 .vt tr:hover td{background:rgba(68,114,196,.08)}
-.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:10px;outline:none;width:100%;box-sizing:border-box}
+.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:9px;outline:none;width:100%;box-sizing:border-box}
 .vt input:focus,.vt select:focus{background:rgba(68,114,196,.06);border-bottom:1px solid var(--ac)}
 .vt input.nm{text-align:right;width:100%}.vt input.sm{width:100%}.vt input.md{width:100%}
 .sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
@@ -118,7 +118,7 @@
 .sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1)}
 .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
 .sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
-.sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-size:10px;padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
+.sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-size:9px;padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
 
 .ss{scrollbar-width:none;-ms-overflow-style:none}
 .ss::-webkit-scrollbar{display:none}
@@ -140,8 +140,8 @@
 .gh>div:nth-child(-n+7){z-index:6}
 /* Backgrounds must be opaque for freeze to work */
 .gh>div:nth-child(-n+7){background:var(--s2)}
-.pr>div:nth-child(-n+7){background:var(--s3)}
-.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:var(--s1)}
+.pr>div:nth-child(-n+7){background:#f4f7fc!important}
+.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff!important}
 
 /* Center monthly columns */
 .gh>div:nth-child(n+8){text-align:center;color:var(--tx)}
@@ -170,8 +170,8 @@
 .sb-divider{height:1px;background:var(--bd);margin:8px 16px}
 .sb-footer{padding:10px 16px;font-size:9px;color:var(--t2);border-top:1px solid var(--bd)}
 /* Alternate row shading */
-.pg:nth-child(even) .pr>div{background:#fff}
-.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#fff}
+.pg:nth-child(even) .pr>div{background:#fef9f4!important}
+.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#fef9f4!important}
 /* Current month highlight */
 .cur-month{background:var(--ac)!important;color:#fff!important;border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;font-weight:800!important}
 /* Status filter */
@@ -183,7 +183,7 @@
 [style*="font-family:var(--mn)"]{font-variant-numeric:tabular-nums}
 .sr>div,.sr-t>div,.sr-w>div,.pr>div,.rw>div,.rg>div{font-variant-numeric:tabular-nums}
 
-.cm-hl{border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;background:rgba(68,114,196,.06)!important}
+.cm-hl{border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;background:rgba(68,114,196,.12)!important}
 
 .sr-e .ce{color:var(--tx);border-bottom:1px dashed rgba(30,35,48,.3)}
 .sr-e .ce:hover{background:rgba(30,35,48,.06)}
@@ -201,6 +201,16 @@
 .vt tr:nth-child(even) td:first-child{background:#f8f9fb}
 .vt tr:hover td:first-child{background:rgba(68,114,196,.08)}
 
+
+.pg:nth-child(odd) .pr>div{background:#f4f7fc!important}
+.pg:nth-child(even) .pr>div{background:#fef9f4!important}
+
+.rw>div,.rg>div{background:#fff!important}
+.rw>div:nth-child(n+8),.rg>div:nth-child(n+8){background:#fff!important}
+.pg:nth-child(odd) .rw>div,.pg:nth-child(odd) .rg>div{background:#fff!important}
+.pg:nth-child(even) .rw>div,.pg:nth-child(even) .rg>div{background:#fff!important}
+
+.app div.sel-cell{outline:2px solid var(--ac)!important;background:rgba(68,114,196,.12)!important}
 /* Column separators - light grey gridlines */
 .gh>div{border-right:1px solid #e8eaef}
 .pr>div{border-right:1px solid #e8eaef}
@@ -387,7 +397,7 @@ if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>
 // SAME column template as the working version: 7 fixed + 12 months = 19 cols
 const gC="240px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
 
-return<div className="app" onClick={e=>{const el=e.target.closest('.cl');if(el){const txt=el.textContent.replace(/,/g,'');const v=parseFloat(txt);if(!isNaN(v)&&v!==0){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}}>
+return<div className="app" onClick={e=>{if(e.target.closest('button,input,select,a'))return;const el=e.target.closest('.cl')||e.target;const txt=(el.textContent||'').replace(/[$,]/g,'').trim();const v=parseFloat(txt);if(!isNaN(v)&&v!==0&&txt.length<15){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}>
 <div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":vw==="pfab"?"PFAB Pipeline":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}>{sv?"Saving...":cached?"Offline":"Connected"}</span></div>
 <div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
 {/* SIDEBAR */}
@@ -408,7 +418,7 @@ return<div className="app" onClick={e=>{const el=e.target.closest('.cl');if(el){
 {ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
 {vw==="grid"&&selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:3}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9}} onClick={()=>sSM([])}>✕ Clear</button></div>}
 {vw==="grid"&&<div className="cds">
-<div className="cd"><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(cd.con)}</div><div className="sb">{comp.length} projects</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).reduce((t,p)=>t+p.tot,0):cd.con)}</div><div className="sb">{selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).length+" projects · "+cd.label:comp.length+" projects"}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div><div className="sb">{cd.label}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">ProFab Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
@@ -446,7 +456,7 @@ return<div className="pg" key={p.i}>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{fontWeight:800,fontFamily:"var(--mn)"}}>{fm(p.tot)}</div>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)"}}>{fm(p.sT)}</div>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)",fontFamily:"var(--mn)"}}>{fm(p.tba)}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" tentative={isTent(p.nm,m,"Sales")} onContext={()=>togTent(p.nm,m,"Sales")}/></div>)}
+{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" tentative={isTent(p.nm,m,"Sales")} onContext={()=>togTent(p.nm,m,"Sales")}/></div>)}
 </div>
 {/* Collapsible sub-rows */}
 {open&&<>{RK.map((rk,ri)=>{
@@ -462,7 +472,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className="rl">{RN[ri]}</div>
 <div style={{fontFamily:"var(--mn)",color:"#c45e10"}}>{(cTot||cClaimed)?fm(cTot):""}</div>
 <div style={{fontFamily:"var(--mn)",color:"#c45e10"}}>{fm(cClaimed)}</div>
 <div style={{fontFamily:"var(--mn)",color:cTba<0?"var(--rd)":cTba>0?"var(--am)":"var(--gn)"}}>{(cTot||cClaimed)?fm(cTba):""}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" tentative={isTent(p.nm,m,rk)} onContext={()=>togTent(p.nm,m,rk)}/></div>)}</div>})}
+{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" tentative={isTent(p.nm,m,rk)} onContext={()=>togTent(p.nm,m,rk)}/></div>)}</div>})}
 <div className="rg"><div className="rl">Gross Profit</div><div/><div/><div/>
 <div style={{fontFamily:"var(--mn)",color:p.gp<0?"var(--rd)":"var(--gn)"}}>{fm(p.gp)}</div><div/><div/>
 {vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+" "+(hovOn&&hovC===m?"ch":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm);hovOn&&sHC(m)}} onMouseLeave={()=>{sHR(null);sHC(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:v<0?"var(--rd)":"var(--gn)"}}>{v?fm(v):""}</div>})}</div>
@@ -594,7 +604,7 @@ return<div className="pr pr-pf" key={p.i}>
 {["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci>=7&&ci!==8?{textAlign:"right"}:{})}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
 </tr></thead><tbody>{voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}><td style={{textAlign:"center",padding:0,width:24}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
 <td><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
-<td><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,width:"100%"}}><option>VO</option><option>DL</option></select></td>
+<td><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
 <td><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
 <td><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
 <td><input value={v.ds} onChange={e=>uV(v.i,"ds",e.target.value)} onBlur={e=>uV(v.i,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
@@ -631,3 +641,4 @@ return<div className="pr pr-pf" key={p.i}>
 </div>}
 ReactDOM.render(<App/>,document.getElementById("root"));
 </script></body></html>
+

@@ -104,8 +104,8 @@
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
 .vsc{overflow-x:auto;max-height:calc(100vh - 80px);overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:9px;font-family:var(--mn);table-layout:fixed}
-.vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap}
+.vt{width:100%;border-collapse:separate;border-spacing:0;font-size:9px;font-family:var(--mn);table-layout:fixed}
+.vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
 .vt tr:nth-child(even) td{background:#f8f9fb}
@@ -265,30 +265,26 @@ input[type=number]{-moz-appearance:textfield}
 .vt-ro td{white-space:nowrap}
 .vt-ro td:nth-child(4){white-space:normal;min-width:200px}
 
-/* VO Register freeze panes - master */
-.vt th:nth-child(-n+6),.vt td:nth-child(-n+6){position:sticky;z-index:2}
-.vt th:nth-child(-n+6){z-index:3}
-.vt th:nth-child(1),.vt td:nth-child(1){left:0}
-.vt th:nth-child(2),.vt td:nth-child(2){left:24px}
-.vt th:nth-child(3),.vt td:nth-child(3){left:52px}
-.vt th:nth-child(4),.vt td:nth-child(4){left:182px}
-.vt th:nth-child(5),.vt td:nth-child(5){left:242px}
-.vt th:nth-child(6),.vt td:nth-child(6){left:312px;border-right:2px solid var(--bd)}
+/* VO freeze panes */
+.vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
+.vt th:nth-child(2),.vt td:nth-child(2){position:sticky;left:24px;z-index:2}
+.vt th:nth-child(3),.vt td:nth-child(3){position:sticky;left:52px;z-index:2}
+.vt th:nth-child(4),.vt td:nth-child(4){position:sticky;left:182px;z-index:2}
+.vt th:nth-child(5),.vt td:nth-child(5){position:sticky;left:242px;z-index:2}
+.vt th:nth-child(6),.vt td:nth-child(6){position:sticky;left:312px;z-index:2;border-right:2px solid var(--bd)!important}
+.vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
 .vt td:nth-child(-n+6){background:#fff}
 .vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
-.vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)}
-/* Read-only VO freeze panes */
-.vt-ro th:nth-child(-n+4),.vt-ro td:nth-child(-n+4){position:sticky;z-index:2}
-.vt-ro th:nth-child(-n+4){z-index:3}
+.vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
+.vt th{position:sticky;top:0;z-index:3}
+.vt th:nth-child(-n+6){z-index:5}
+/* Read-only VO - first 4 cols frozen (Project,Type,VarNo,Name) */
 .vt-ro th:nth-child(1),.vt-ro td:nth-child(1){left:0}
 .vt-ro th:nth-child(2),.vt-ro td:nth-child(2){left:150px}
 .vt-ro th:nth-child(3),.vt-ro td:nth-child(3){left:210px}
-.vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px;border-right:2px solid var(--bd)}
-.vt-ro th:nth-child(5),.vt-ro td:nth-child(5){position:static;left:auto}
-.vt-ro th:nth-child(6),.vt-ro td:nth-child(6){position:static;left:auto;border-right:none}
-.vt-ro td:nth-child(-n+4){background:#fff}
-.vt-ro tr:nth-child(even) td:nth-child(-n+4){background:#f8f9fb}
-.vt-ro tr:hover td:nth-child(-n+4){background:rgba(68,114,196,.08)}
+.vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px;border-right:2px solid var(--bd)!important}
+.vt-ro th:nth-child(5),.vt-ro td:nth-child(5){position:static;left:auto;border-right:none!important}
+.vt-ro th:nth-child(6),.vt-ro td:nth-child(6){position:static;left:auto;border-right:none!important}
 /* ROW HOVER */
 div.rh{background:#dce6f5!important}
 </style></head><body><div id="root"></div>
@@ -299,7 +295,7 @@ const DEF_MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Au
 const RN=["External Materials","ProFab Materials","Other Costs"];
 const RK=["ExtMaterials","ProfabMaterials","OtherCosts"];
 const UK="pipeline-v9";
-const COORDS=["Lizzie","Lachlan","Luka"];
+const COORDS=["Lachlan","Lizzie","Luka"];
 const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][NOW.getMonth()]+"-"+String(NOW.getFullYear()).slice(2);
 const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
 const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
@@ -452,7 +448,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 {COORDS.map(u=><div key={u} className={"sb-item"+(vw==="coord"&&coordUser===u?" active":"")} onClick={()=>{sVw("coord");loadCoordVO(u);sSbO(false)}} style={{paddingLeft:36,fontSize:11}}><span className="sb-ico">👤</span>{u}</div>)}
 <div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">👷</span>Day Labour Dockets<span className="sb-badge">Soon</span></div>
 </div>
-<div className="sb-footer">PMC & PF Pipeline v2.0</div>
+<div className="sb-footer">Proline Group Pipeline v1.0</div>
 </div>
 {er&&<div className="er">{er}</div>}
 {ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>

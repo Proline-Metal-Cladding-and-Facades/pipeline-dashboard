@@ -268,13 +268,8 @@ input[type=number]{-moz-appearance:textfield}
 
 
 
-/* VO freeze panes */
+/* VO freeze panes - left positions handled inline via colW state */
 .vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
-.vt th:nth-child(2),.vt td:nth-child(2){position:sticky;left:24px;z-index:2}
-.vt th:nth-child(3),.vt td:nth-child(3){position:sticky;left:52px;z-index:2}
-.vt th:nth-child(4),.vt td:nth-child(4){position:sticky;left:182px;z-index:2}
-.vt th:nth-child(5),.vt td:nth-child(5){position:sticky;left:242px;z-index:2}
-.vt th:nth-child(6),.vt td:nth-child(6){position:sticky;left:312px;z-index:2;border-right:2px solid var(--bd)!important}
 .vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
 .vt td:nth-child(-n+6){background:#fff}
 .vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}

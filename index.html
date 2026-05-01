@@ -630,14 +630,7 @@ return<div className="pr pr-pf" key={p.i}>
 </>}
 
 {/* VO REGISTER - unchanged */}
-{vw==="vos"&&<><div className="cds" style={{marginBottom:6}}>
-<div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div>
-<div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div>
-<div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div>
-<div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div>
-<div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div>
-</div>
-<div className="vw">
+{vw==="vos"&&<div className="vw">
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
 <button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
@@ -652,12 +645,12 @@ return<div className="pr pr-pf" key={p.i}>
 <div style={{padding:"6px 10px",display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
 <input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>
 <div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setVoFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:voFiltTy===t?"var(--ac)":"var(--bd)",background:voFiltTy===t?"var(--ac)":"transparent",color:voFiltTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
-<div style={{display:"flex",gap:2}}>{VO_ST.map(s=><button key={s.v} onClick={()=>setVoFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:voFiltSt.includes(s.v)?s.c:"var(--bd)",background:voFiltSt.includes(s.v)?s.c:"transparent",color:voFiltSt.includes(s.v)?"#fff":s.c,fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")}</button>)}</div>
+<div style={{display:"flex",gap:2}}>{VO_ST.map(s=><button key={s.v} onClick={()=>setVoFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:voFiltSt.includes(s.v)?s.c:"var(--bd)",background:voFiltSt.includes(s.v)?s.c:"transparent",color:voFiltSt.includes(s.v)?"#fff":s.c,fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} </button>)}</div>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length}</span>
 </div>
 {voFilt.length===0?<div className="em">No entries match filter.</div>:
 <div className="vsc"><table className="vt"><thead><tr>
-{["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci>=7&&ci!==8?{textAlign:"right"}:{})}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
+{["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
 </tr></thead><tbody>{voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}><td style={{textAlign:"center",padding:0,width:24}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
 <td><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
 <td><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
@@ -678,23 +671,15 @@ return<div className="pr pr-pf" key={p.i}>
 <td style={{textAlign:"center"}} onClick={()=>{setNoteEdit(v.i);setNoteText(v.notes||"")}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
 </tr>})}</tbody></table></div>}
 </div>}
-</>}
 
 {/* COORDINATOR VO VIEW (read-only) */}
-{vw==="coord"&&<><div className="cds" style={{marginBottom:6}}>
-<div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length}</div></div>
-<div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pr,0))}</div></div>
-<div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.em,0))}</div></div>
-<div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pf,0))}</div></div>
-<div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div>
-</div>
-<div className="vw">
+{vw==="coord"&&<div className="vw">
 <div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
 <span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.length} entries · Read only</span>
 <input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>
 </div>
 <div className="vsc"><table className="vt vt-ro"><thead><tr>
-{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{minWidth:ci===0?150:ci===3?200:ci===7?170:ci===4||ci===5?90:ci===6?85:ci>=8&&ci<=10?80:60,...(ci>=6&&ci!==7?{textAlign:"right"}:{})}}>{h}</th>)}
+{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{minWidth:ci===0?150:ci===3?200:ci===7?170:ci===4||ci===5?90:ci===6?85:ci>=8&&ci<=10?80:60}}>{h}</th>)}
 </tr></thead><tbody>
 {coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
 <td>{v.pj}</td>
@@ -733,6 +718,7 @@ return<div className="pr pr-pf" key={p.i}>
 <span className="stat-lbl">Avg: </span><span>{fm(Math.round(selCells.reduce((a,b)=>a+b,0)/selCells.length))}</span>
 <span className="stat-lbl">Count: </span><span>{selCells.length}</span>
 </div>}
+</>}
 </div>}
 ReactDOM.render(<App/>,document.getElementById("root"));
 </script></body></html>

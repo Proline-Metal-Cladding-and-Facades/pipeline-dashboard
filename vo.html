@@ -28,7 +28,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .vw{background:#fff;overflow:hidden;border:none;margin:0;padding:0}
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vsc{overflow-x:auto;max-height:calc(100vh - 160px);overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn);table-layout:fixed}
+.vt{width:100%;border-collapse:separate;border-spacing:0;font-size:10px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap;position:relative}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
@@ -59,18 +59,20 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .nin{font-size:14px;padding:8px 12px;border:2px solid var(--ac);border-radius:6px;outline:none;width:200px;font-family:var(--ft);color:var(--tx)}
 
 /* VO freeze panes */
+.vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
+.vt td:nth-child(-n+6){background:#fff}
+.vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
+.vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
 .vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
 .vt th:nth-child(2),.vt td:nth-child(2){position:sticky;left:24px;z-index:2}
 .vt th:nth-child(3),.vt td:nth-child(3){position:sticky;left:52px;z-index:2}
 .vt th:nth-child(4),.vt td:nth-child(4){position:sticky;left:182px;z-index:2}
 .vt th:nth-child(5),.vt td:nth-child(5){position:sticky;left:242px;z-index:2}
 .vt th:nth-child(6),.vt td:nth-child(6){position:sticky;left:312px;z-index:2;border-right:2px solid var(--bd)!important}
-.vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
 .vt td:nth-child(-n+6){background:#fff}
 .vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
 .vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
 .vt th{position:sticky;top:0;z-index:3}
-.vt th:nth-child(-n+6){z-index:5}
 
 .vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap}
 .vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
@@ -214,7 +216,7 @@ return<div className="app">
 
 {/* Table */}
 <div className="vw"><div className="vsc"><table className="vt"><thead><tr>
-{["","☐","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:30,...(ci>=8&&ci!==9?{textAlign:"right"}:{})}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
+{["","☐","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:30}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
 </tr></thead><tbody>
 {voFilt.length===0?<tr><td colSpan={20} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
 voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}>

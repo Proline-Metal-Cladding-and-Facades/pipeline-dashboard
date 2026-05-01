@@ -388,6 +388,7 @@ const[pfSr,setPfSr]=useState("");const[pfStFilt,setPfStFilt]=useState([]);
 const[voFiltTy,setVoFiltTy]=useState("all");
 const[voFiltSt,setVoFiltSt]=useState([]);
 const voFilt=useMemo(()=>{let f=vo;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[vo,voFiltPj,voFiltTy,voFiltSt]);
+const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[coordVO,voFiltPj,voFiltTy,voFiltSt]);
 const[noteText,setNoteText]=useState("");
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
@@ -678,15 +679,29 @@ return<div className="pr pr-pf" key={p.i}>
 </tr>})}</tbody></table></div>}
 </div>}
 
-{/* COORDINATOR VO VIEW (read-only) */}
+{/* COORDINATOR VO VIEW (read-only, styled to match vo.html) */}
 {vw==="coord"&&<div style={{background:"#fff",margin:"-10px -12px",padding:0}}>
-<div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
-<div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}><span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length} entries · Read only</span><input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/></div>
-<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt"><thead><tr>
-{(()=>{const cols=["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"];const ws=[130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return cols.map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)})()}
+<div className="vo-cards" style={{padding:"8px 10px"}}>
+<div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordFilt.length}</div></div>
+<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${coordFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${coordFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU")}</div></div>
+</div>
+ 
+{/* Toolbar with filter pills - matches vo.html */}
+<div className="br" style={{padding:"6px 10px",margin:0,borderBottom:"1px solid var(--bd)"}}>
+<div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setVoFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:voFiltTy===t?"var(--ac)":"var(--bd)",background:voFiltTy===t?"var(--ac)":"transparent",color:voFiltTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
+<div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=coordVO.filter(v=>{const pjM=!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase());const tyM=voFiltTy==="all"||v.ty===voFiltTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length;return<button key={s.v} onClick={()=>setVoFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:voFiltSt.includes(s.v)?s.c:"var(--bd)",background:voFiltSt.includes(s.v)?s.c:"transparent",color:voFiltSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
+<input className="sx" value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..."/>
+<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{coordFilt.length} of {coordVO.length} · Read only · Approved: {coordVO.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length}</span>
+</div>
+ 
+<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro"><thead><tr>
+{(()=>{const cols=["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"];const ws=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return cols.map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)})()}
 </tr></thead><tbody>
-{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
-coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const ws=[130,60,70,140];return<tr key={vi} style={{color:rc}}>
+{coordFilt.length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
+coordFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const ws=[150,60,70,160];return<tr key={vi} style={{color:rc}}>
 <td style={{position:"sticky",left:0,zIndex:2,background:"#fff"}}>{v.pj}</td>
 <td style={{position:"sticky",left:ws[0],zIndex:2,background:"#fff"}}>{v.ty}</td>
 <td style={{position:"sticky",left:ws[0]+ws[1],zIndex:2,background:"#fff"}}>{v.vn}</td>
@@ -697,7 +712,7 @@ coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())
 <td style={{fontWeight:600}}>{v.st}</td>
 <td style={{textAlign:"right"}}>{v.em?fmP(v.em):""}</td>
 <td style={{textAlign:"right"}}>{v.pf?fmP(v.pf):""}</td>
-<td style={{textAlign:"right"}}>{mg?fmP(mg):""}</td>
+<td style={{textAlign:"right",fontFamily:"var(--mn)"}}>{mg?fmP(mg):""}</td>
 <td style={{textAlign:"right"}}>{v.nmn?fmN(v.nmn):""}</td>
 <td style={{textAlign:"right"}}>{v.nh?fm2(v.nh):""}</td>
 <td style={{textAlign:"right"}}>{v.nr?fmP(v.nr):""}</td>
@@ -708,7 +723,7 @@ coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())
 </tr>})}
 </tbody></table></div>
 </div>}
-
+  
 {noteEdit!==null&&<div className="notes-modal" onClick={()=>setNoteEdit(null)}>
 <div className="notes-box" onClick={e=>e.stopPropagation()}>
 <h4>Notes — {vo[noteEdit]?.vnm||vo[noteEdit]?.pj||"Entry"}</h4>

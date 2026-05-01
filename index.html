@@ -482,6 +482,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 {vw==="grid"&&<>
 <div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><button onClick={()=>sExp(comp.reduce((a,p)=>({...a,[p.nm]:true}),{}))} title="Expand All">+ All</button><button onClick={()=>sExp({})} title="Collapse All">- All</button><div className="dv"/><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft=Math.max(0,el.scrollLeft-300)})}}>←</button><span>{vis[0]} — {vis[vis.length-1]} ({vis.length} months)</span><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft+=300})}}>→</button><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear</button>}</div>
 
+<div className="sticky-bg"/>
 {/* ====== MAIN TABLE ====== */}
 <div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 220px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
@@ -585,6 +586,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 </div>
 {/* Month nav */}
 <div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><span>{vis[0]} — {vis[vis.length-1]}</span><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button></div>
+<div className="sticky-bg"/>
 {/* Main PFAB table */}
 <div className="gc ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
 <div className="gh"><div>Project</div><div>Est. Sales</div><div>VO Sales</div><div style={{color:"var(--pu)"}}>Appr. VO</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
@@ -628,7 +630,14 @@ return<div className="pr pr-pf" key={p.i}>
 </>}
 
 {/* VO REGISTER - unchanged */}
-{vw==="vos"&&<div className="vw">
+{vw==="vos"&&<><div className="cds" style={{marginBottom:6}}>
+<div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div>
+<div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div>
+<div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div>
+<div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div>
+<div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div>
+</div>
+<div className="vw">
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
 <button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
@@ -672,7 +681,14 @@ return<div className="pr pr-pf" key={p.i}>
 </>}
 
 {/* COORDINATOR VO VIEW (read-only) */}
-{vw==="coord"&&<div className="vw">
+{vw==="coord"&&<><div className="cds" style={{marginBottom:6}}>
+<div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length}</div></div>
+<div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pr,0))}</div></div>
+<div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.em,0))}</div></div>
+<div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pf,0))}</div></div>
+<div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div>
+</div>
+<div className="vw">
 <div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
 <span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.length} entries · Read only</span>
 <input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>

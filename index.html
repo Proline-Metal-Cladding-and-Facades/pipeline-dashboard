@@ -194,7 +194,7 @@
 
 /* Universal hover fix - overrides ALL backgrounds */
 
-.ch{}
+
 .rh.ch{background:#cddaf0!important}
 
 .cl-wk{color:var(--tx)!important;text-align:center!important;font-weight:700}
@@ -244,7 +244,7 @@
 .vt .col-resize.dragging{background:var(--ac)}
 
 /* Remove number input spinners */
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
 
 .notes-modal{position:fixed;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;z-index:60}
@@ -299,6 +299,11 @@ input[type=number]{-moz-appearance:textfield}
 .vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
 .vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
 .vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
+
+.vt th:nth-child(-n+5){z-index:5!important;background:var(--s2)}
+.vt td:nth-child(-n+5){background:#fff}
+.vt tr:nth-child(even) td:nth-child(-n+5){background:#f8f9fb}
+.vt tr:hover td:nth-child(-n+5){background:rgba(68,114,196,.08)!important}
 /* ROW HOVER */
 div.rh{background:#dce6f5!important}
 </style></head><body><div id="root"></div>
@@ -652,12 +657,12 @@ return<div className="pr pr-pf" key={p.i}>
 </div>
 {voFilt.length===0?<div className="em">No entries match filter.</div>:
 <div className="vsc"><table className="vt"><thead><tr>
-{["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
-</tr></thead><tbody>{voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}><td style={{textAlign:"center",padding:0,width:24}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
-<td><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
-<td><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
-<td><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
-<td><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
+{["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<5?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===4?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
+</tr></thead><tbody>{voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}><td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
+<td style={{position:"sticky",left:colW[0],zIndex:2}}><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
+<td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2,borderRight:"2px solid var(--bd)"}}><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
 <td><input value={v.ds} onChange={e=>uV(v.i,"ds",e.target.value)} onBlur={e=>uV(v.i,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td><input value={v.da} onChange={e=>uV(v.i,"da",e.target.value)} onBlur={e=>uV(v.i,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(v.i,"pr",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
@@ -682,13 +687,13 @@ return<div className="pr pr-pf" key={p.i}>
 <input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>
 </div>
 <div className="vsc"><table className="vt vt-ro"><thead><tr>
-{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{minWidth:ci===0?150:ci===3?200:ci===7?170:ci===4||ci===5?90:ci===6?85:ci>=8&&ci<=10?80:60}}>{h}</th>)}
+{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{minWidth:ci===0?150:ci===3?200:ci===7?170:ci===4||ci===5?90:ci===6?85:ci>=8&&ci<=10?80:60,...(ci<4?{position:"sticky",left:ci===0?0:ci===1?150:ci===2?210:280,zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)}
 </tr></thead><tbody>
 {coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
-<td>{v.pj}</td>
-<td>{v.ty}</td>
-<td>{v.vn}</td>
-<td>{v.vnm}</td>
+<td style={{position:"sticky",left:0,zIndex:2,background:"#fff"}}>{v.pj}</td>
+<td style={{position:"sticky",left:150,zIndex:2,background:"#fff"}}>{v.ty}</td>
+<td style={{position:"sticky",left:210,zIndex:2,background:"#fff"}}>{v.vn}</td>
+<td style={{position:"sticky",left:280,zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
 <td>{v.ds}</td>
 <td>{v.da}</td>
 <td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>

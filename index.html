@@ -575,11 +575,16 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 {/* PFAB PIPELINE */}
 {vw==="pfab"&&<>
 {/* PFAB Cards */}
-<div className="cds"><div className="cd">
-<div className="cl2">Total Revenue</div>
-<div className="cv">{fK(selM.length>0?comp.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)).reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials")+gv(p.nm,"_BV","ProfabMaterials")+(voPfab[nk(p.nm)]||0),0):comp.reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials")+gv(p.nm,"_BV","ProfabMaterials")+(voPfab[nk(p.nm)]||0),0))}</div>
-<div className="cl3">{selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)).length+" projects · "+selM.join(", "):"All projects"}</div>
-</div></div>
+{(()=>{
+const monthsToUse=selM.length?selM:MO;
+const activeProjects=selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)):comp.filter(p=>MO.some(m=>gv(p.nm,m,"ProfabMaterials")>0));
+const totalEstSales=activeProjects.reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials"),0);
+const totalRevenue=comp.reduce((t,p)=>t+monthsToUse.reduce((s,m)=>s+gv(p.nm,m,"ProfabMaterials"),0),0);
+return<div className="cds">
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Est. Sales</div><div className="vl" style={{color:"var(--ac)"}}>{fK(totalEstSales)}</div><div className="sb">{activeProjects.length} project{activeProjects.length===1?"":"s"} · {selM.length?selM.join(", "):"any month"}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Revenue</div><div className="vl" style={{color:"var(--gn)"}}>{fK(totalRevenue)}</div><div className="sb">{selM.length?selM.join(", "):"All months"}</div></div>
+</div>
+})()}
 {/* Toolbar */}
 <div className="br">
 <div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setPfStFilt(p2=>p2.includes(s.v)?p2.filter(x=>x!==s.v):[...p2,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:pfStFilt.includes(s.v)?s.c:"var(--bd)",background:pfStFilt.includes(s.v)?s.c:"transparent",color:pfStFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v}</button>)}</div>

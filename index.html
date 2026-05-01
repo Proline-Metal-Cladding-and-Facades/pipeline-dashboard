@@ -270,12 +270,7 @@ input[type=number]{-moz-appearance:textfield}
 
 /* VO freeze panes - left positions handled inline via colW state */
 .vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
-.vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
-.vt td:nth-child(-n+6){background:#fff}
-.vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
-.vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
 .vt th{position:sticky;top:0;z-index:3}
-.vt th:nth-child(-n+6){z-index:5}
 /* Read-only VO - first 4 cols frozen (Project,Type,VarNo,Name) */
 .vt-ro th:nth-child(1),.vt-ro td:nth-child(1){left:0}
 .vt-ro th:nth-child(2),.vt-ro td:nth-child(2){left:150px}
@@ -297,7 +292,8 @@ input[type=number]{-moz-appearance:textfield}
 .vt th:nth-child(-n+5){z-index:5!important;background:var(--s2)}
 .vt td:nth-child(-n+5){background:#fff}
 .vt tr:nth-child(even) td:nth-child(-n+5){background:#f8f9fb}
-.vt tr:hover td:nth-child(-n+5){background:rgba(68,114,196,.08)!important}
+.vt tr:hover td:nth-child(-n+5){background:#e8eef9!important}
+.vt tr:nth-child(even):hover td:nth-child(-n+5){background:#dde5f3!important}
 /* ROW HOVER */
 div.rh{background:#dce6f5!important}
 </style></head><body><div id="root"></div>

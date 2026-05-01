@@ -692,11 +692,11 @@ return<div className="pr pr-pf" key={p.i}>
 {["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:coordColW[ci],...(ci<4?{position:"sticky",left:coordColW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startCoordResize(ci,e)}/></th>)}
 </tr></thead><tbody>
 {coordFilt.length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
-coordFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
-<td style={{position:"sticky",left:0,zIndex:2,background:"#fff"}}>{v.pj}</td>
-<td style={{position:"sticky",left:coordColW[0],zIndex:2,background:"#fff"}}>{v.ty}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:"#fff"}}>{v.vn}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
+coordFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const bg=vi%2===1?"#f8f9fb":"#fff";return<tr key={vi} style={{color:rc}}>
+<td style={{position:"sticky",left:0,zIndex:2,background:bg}}>{v.pj}</td>
+<td style={{position:"sticky",left:coordColW[0],zIndex:2,background:bg}}>{v.ty}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:bg}}>{v.vn}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:bg,borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
 <td>{v.ds}</td>
 <td>{v.da}</td>
 <td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>

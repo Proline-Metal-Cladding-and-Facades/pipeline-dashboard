@@ -369,8 +369,11 @@ const handleSumHover=(e,enter)=>{
 const[pjO,sPjO]=useState(false);const[acO,sAcO]=useState(false);
 const defCW=[24,130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
 const[colW,setColW]=useState(defCW);
+const defCoordCW=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
+const[coordColW,setCoordColW]=useState(defCoordCW);
 const resRef=useRef(null);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
+const startCoordResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=coordColW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setCoordColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 const[noteEdit,setNoteEdit]=useState(null);
 const[coordVO,setCoordVO]=useState([]);
 const[coordUser,setCoordUser]=useState("");
@@ -685,15 +688,15 @@ return<div className="pr pr-pf" key={p.i}>
 <input className="sx" value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..."/>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{coordFilt.length} of {coordVO.length} · Read only · Approved: {coordVO.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length}</span>
 </div>
-<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro" style={{width:"1535px",minWidth:"1535px"}}><colgroup>{[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70].map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
-{(()=>{const cols=["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"];const ws=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return cols.map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)})()}
+<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro" style={{width:coordColW.reduce((a,b)=>a+b,0)+"px",minWidth:coordColW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{coordColW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
+{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:coordColW[ci],...(ci<4?{position:"sticky",left:coordColW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startCoordResize(ci,e)}/></th>)}
 </tr></thead><tbody>
 {coordFilt.length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
-coordFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const ws=[150,60,70,160];return<tr key={vi} style={{color:rc}}>
+coordFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
 <td style={{position:"sticky",left:0,zIndex:2,background:"#fff"}}>{v.pj}</td>
-<td style={{position:"sticky",left:ws[0],zIndex:2,background:"#fff"}}>{v.ty}</td>
-<td style={{position:"sticky",left:ws[0]+ws[1],zIndex:2,background:"#fff"}}>{v.vn}</td>
-<td style={{position:"sticky",left:ws[0]+ws[1]+ws[2],zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
+<td style={{position:"sticky",left:coordColW[0],zIndex:2,background:"#fff"}}>{v.ty}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:"#fff"}}>{v.vn}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
 <td>{v.ds}</td>
 <td>{v.da}</td>
 <td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>

@@ -651,7 +651,7 @@ return<div className="pr pr-pf" key={p.i}>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length}</span>
 </div>
 {voFilt.length===0?<div className="em">No entries match filter.</div>:
-<div className="vsc"><table className="vt"><thead><tr>
+<div className="vsc"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
 {["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<5?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===4?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
 </tr></thead><tbody>{voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}><td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
 <td style={{position:"sticky",left:colW[0],zIndex:2}}><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
@@ -689,7 +689,7 @@ return<div className="pr pr-pf" key={p.i}>
 <input className="sx" value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..."/>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{coordFilt.length} of {coordVO.length} · Read only · Approved: {coordVO.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length}</span>
 </div>
-<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro"><thead><tr>
+<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro" style={{width:"1535px",minWidth:"1535px"}}><colgroup>{[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70].map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
 {(()=>{const cols=["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"];const ws=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return cols.map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)})()}
 </tr></thead><tbody>
 {coordFilt.length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:

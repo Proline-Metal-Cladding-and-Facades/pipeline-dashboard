@@ -103,7 +103,7 @@
 .vw{background:#fff;border:none;margin:-10px -12px;padding:0}
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
-.vsc{overflow-x:auto;max-height:calc(100vh - 220px);overflow-y:auto}
+.vsc{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto}
 .vt{width:100%;border-collapse:separate;border-spacing:0;font-size:9px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
@@ -635,7 +635,7 @@ return<div className="pr pr-pf" key={p.i}>
 </>}
 
 {/* VO REGISTER - unchanged */}
-{vw==="vos"&&<div className="vw">
+{vw==="vos"&&<div style={{background:"#fff",margin:"-10px -12px",padding:0}}>
 <div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
@@ -681,25 +681,23 @@ return<div className="pr pr-pf" key={p.i}>
 {/* COORDINATOR VO VIEW (read-only) */}
 {vw==="coord"&&<div style={{background:"#fff",margin:"-10px -12px",padding:0}}>
 <div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
-<div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
-<span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length} entries · Read only</span>
-<input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>
-</div>
-<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt" style={{minWidth:1650}}><thead><tr>
-{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=>{const ws=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return<th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>})}
+<div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}><span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length} entries · Read only</span><input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/></div>
+<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt"><thead><tr>
+{(()=>{const cols=["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"];const ws=[130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50,70];return cols.map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:ws[ci],...(ci<4?{position:"sticky",left:ws.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}</th>)})()}
 </tr></thead><tbody>
-{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={vi} style={{color:rc}}>
+{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
+coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const ws=[130,60,70,140];return<tr key={vi} style={{color:rc}}>
 <td style={{position:"sticky",left:0,zIndex:2,background:"#fff"}}>{v.pj}</td>
-<td style={{position:"sticky",left:150,zIndex:2,background:"#fff"}}>{v.ty}</td>
-<td style={{position:"sticky",left:210,zIndex:2,background:"#fff"}}>{v.vn}</td>
-<td style={{position:"sticky",left:280,zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
+<td style={{position:"sticky",left:ws[0],zIndex:2,background:"#fff"}}>{v.ty}</td>
+<td style={{position:"sticky",left:ws[0]+ws[1],zIndex:2,background:"#fff"}}>{v.vn}</td>
+<td style={{position:"sticky",left:ws[0]+ws[1]+ws[2],zIndex:2,background:"#fff",borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
 <td>{v.ds}</td>
 <td>{v.da}</td>
 <td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>
-<td>{v.st}</td>
+<td style={{fontWeight:600}}>{v.st}</td>
 <td style={{textAlign:"right"}}>{v.em?fmP(v.em):""}</td>
 <td style={{textAlign:"right"}}>{v.pf?fmP(v.pf):""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)"}}>{mg?fmP(mg):""}</td>
+<td style={{textAlign:"right"}}>{mg?fmP(mg):""}</td>
 <td style={{textAlign:"right"}}>{v.nmn?fmN(v.nmn):""}</td>
 <td style={{textAlign:"right"}}>{v.nh?fm2(v.nh):""}</td>
 <td style={{textAlign:"right"}}>{v.nr?fmP(v.nr):""}</td>

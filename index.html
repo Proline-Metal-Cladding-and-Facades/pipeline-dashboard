@@ -265,9 +265,9 @@ input[type=number]{-moz-appearance:textfield}
 .stat-bar .stat-lbl{color:var(--t2);font-weight:400}
 
 
-.vt-ro{table-layout:auto!important}
-.vt-ro td{white-space:nowrap}
-.vt-ro td:nth-child(4){white-space:normal;min-width:200px}
+.vt-ro{table-layout:fixed}
+
+
 
 /* VO freeze panes */
 .vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
@@ -627,6 +627,7 @@ return<div className="pr pr-pf" key={p.i}>
 
 {/* VO REGISTER - unchanged */}
 {vw==="vos"&&<div className="vw">
+<div style={{display:"flex",gap:6,padding:"8px 10px",flexWrap:"wrap"}}><div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div><div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div><div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div><div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div><div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
 <button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
@@ -670,6 +671,7 @@ return<div className="pr pr-pf" key={p.i}>
 
 {/* COORDINATOR VO VIEW (read-only) */}
 {vw==="coord"&&<div className="vw">
+<div style={{display:"flex",gap:6,padding:"8px 10px",flexWrap:"wrap"}}><div className="cd"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).length}</div></div><div className="cd"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pr,0))}</div></div><div className="cd"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.em,0))}</div></div><div className="cd"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+v.pf,0))}</div></div><div className="cd"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(coordVO.filter(v=>!voFiltPj||v.pj.toLowerCase().includes(voFiltPj.toLowerCase())).reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
 <div style={{padding:"6px 10px",display:"flex",gap:6,alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
 <span style={{fontSize:9,color:"var(--t2)"}}>{coordVO.length} entries · Read only</span>
 <input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{marginLeft:"auto",padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>

@@ -71,6 +71,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
 .vt th{position:sticky;top:0;z-index:3}
 .vt th:nth-child(-n+6){z-index:5}
+
+.vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
+.vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
+.vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useRef,useMemo,useCallback}=React;
@@ -183,10 +188,17 @@ return<div className="app">
 {ld?<div className="ld">Loading...</div>:<>
 
 {/* Toolbar */}
+<div className="vo-cards">
+<div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div>
+<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${voFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${voFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${voFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU")}</div></div>
+</div>
 <div className="br">
 <button className="pl gn" onClick={()=>sSa(!sa)}>{sa?"Cancel":"+ Add"}</button>
 <div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:filtTy===t?"var(--ac)":"var(--bd)",background:filtTy===t?"var(--ac)":"transparent",color:filtTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
-<div style={{display:"flex",gap:2}}>{VO_ST.map(s=><button key={s.v} onClick={()=>setFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:filtSt.includes(s.v)?s.c:"var(--bd)",background:filtSt.includes(s.v)?s.c:"transparent",color:filtSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")}</button>)}</div>
+<div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=vo.filter(v=>{const pjM=!filtPj||v.pj.toLowerCase().includes(filtPj.toLowerCase());const tyM=filtTy==="all"||v.ty===filtTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length;return<button key={s.v} onClick={()=>setFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:filtSt.includes(s.v)?s.c:"var(--bd)",background:filtSt.includes(s.v)?s.c:"transparent",color:filtSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
 <input className="sx" placeholder="Search project..." value={filtPj} onChange={e=>setFiltPj(e.target.value)}/>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length} · Approved: {apCount}</span>{selRows.size>0&&<button className="pl gn" onClick={async()=>{if(!confirm("Push "+selRows.size+" selected VOs to Master?"))return;sSv(true);for(const r of selRows){const v=vo.find(x=>x._r===r);if(v){await aP({action:"pushToMaster",user,row:v._r});sVo(prev=>prev.map(x=>x._r===r?{...x,pushed:new Date().toLocaleString("en-AU")}:x))}}setSelRows(new Set());sSv(false);load()}}>{selRows.size} Push Selected</button>}
 </div>

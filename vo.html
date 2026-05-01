@@ -28,7 +28,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .vw{background:#fff;overflow:hidden;border:none;margin:0;padding:0}
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vsc{overflow-x:auto;max-height:calc(100vh - 160px);overflow-y:auto}
-.vt{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mn);table-layout:fixed}
+.vt{width:100%;border-collapse:separate;border-spacing:0;font-size:10px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap;position:relative}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
@@ -59,6 +59,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .nin{font-size:14px;padding:8px 12px;border:2px solid var(--ac);border-radius:6px;outline:none;width:200px;font-family:var(--ft);color:var(--tx)}
 
 /* VO freeze panes */
+
+.vt th:nth-child(-n+6){z-index:5;background:var(--s2)}
+.vt td:nth-child(-n+6){background:#fff}
+.vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
+.vt tr:hover td:nth-child(-n+6){background:rgba(68,114,196,.08)!important}
 .vt th{position:sticky;top:0;z-index:3}
 
 .vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap}
@@ -203,16 +208,16 @@ return<div className="app">
 
 {/* Table */}
 <div className="vw"><div className="vsc"><table className="vt"><thead><tr>
-{["","☐","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:30}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
+{["","☐","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:30,...(ci<6?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===5?"2px solid var(--bd)":undefined}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
 </tr></thead><tbody>
 {voFilt.length===0?<tr><td colSpan={20} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
 voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}>
-<td style={{textAlign:"center",padding:0,width:24}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
-<td style={{textAlign:"center",padding:0}}><input type="checkbox" checked={selRows.has(v._r)} onChange={e=>{const n=new Set(selRows);if(e.target.checked)n.add(v._r);else n.delete(v._r);setSelRows(n)}} style={{cursor:"pointer"}}/></td>
-<td><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
-<td><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,width:"100%"}}><option>VO</option><option>DL</option></select></td>
-<td><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
-<td><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
+<td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
+<td style={{textAlign:"center",padding:0,position:"sticky",left:colW[0],zIndex:2}}><input type="checkbox" checked={selRows.has(v._r)} onChange={e=>{const n=new Set(selRows);if(e.target.checked)n.add(v._r);else n.delete(v._r);setSelRows(n)}} style={{cursor:"pointer"}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pj.map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,width:"100%"}}><option>VO</option><option>DL</option></select></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2}}><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4],zIndex:2,borderRight:"2px solid var(--bd)"}}><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
 <td><input value={v.ds} onChange={e=>uV(v.i,"ds",e.target.value)} onBlur={e=>uV(v.i,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td><input value={v.da} onChange={e=>uV(v.i,"da",e.target.value)} onBlur={e=>uV(v.i,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(v.i,"pr",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>

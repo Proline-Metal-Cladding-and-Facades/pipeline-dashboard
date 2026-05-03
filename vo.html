@@ -87,6 +87,7 @@ var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m
 var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
 return s}
 function N(v){return parseFloat(v)||0}
+function dsToTs(ds){if(!ds)return 0;const m=/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/.exec(String(ds).trim());if(!m)return 0;const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};const mi=months[m[2].toLowerCase()];if(mi===undefined)return 0;let y=parseInt(m[3]);if(y<100)y+=2000;return y*10000+mi*100+parseInt(m[1])}
 function F(o,...ks){for(const k of ks){if(o[k]!==undefined&&o[k]!==null&&o[k]!=="")return o[k];const lk=k.toLowerCase();for(const ok of Object.keys(o)){if(ok.toLowerCase().replace(/[\s_.\-]+/g,"")===lk.replace(/[\s_.\-]+/g,""))return o[ok]}}return""}
 
 const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
@@ -170,7 +171,7 @@ sSv(false);load()};
 
 const addV=async()=>{if(!nvo.project)return;sSv(true);await enq(()=>aP({action:"addCoordVO",user,project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf,notes:""}));sSa(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);setTimeout(load,1500)};
 
-const voFilt=useMemo(()=>{let f=vo;if(filtPj)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj.toLowerCase()));if(filtTy!=="all")f=f.filter(v=>v.ty===filtTy);if(filtSt.length>0)f=f.filter(v=>filtSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[vo,filtPj,filtTy,filtSt]);
+const voFilt=useMemo(()=>{let f=vo;if(filtPj)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj.toLowerCase()));if(filtTy!=="all")f=f.filter(v=>v.ty===filtTy);if(filtSt.length>0)f=f.filter(v=>filtSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[vo,filtPj,filtTy,filtSt]);
 
 const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
 

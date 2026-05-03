@@ -335,6 +335,7 @@ var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m
 var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
 return s}
 function nk(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
+function dsToTs(ds){if(!ds)return 0;const m=/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/.exec(String(ds).trim());if(!m)return 0;const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};const mi=months[m[2].toLowerCase()];if(mi===undefined)return 0;let y=parseInt(m[3]);if(y<100)y+=2000;return y*10000+mi*100+parseInt(m[1])}
 const EC_COLORS={red:"var(--rd)",green:"var(--gn)",orange:"#c45e10",blue:"var(--ac)"};
 function EC({value,onChange,cls,color,onContext,style,fmt}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
 useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
@@ -397,8 +398,8 @@ const[voFiltPj,setVoFiltPj]=useState("");
 const[pfSr,setPfSr]=useState("");const[pfStFilt,setPfStFilt]=useState([]);
 const[voFiltTy,setVoFiltTy]=useState("all");
 const[voFiltSt,setVoFiltSt]=useState([]);
-const voFilt=useMemo(()=>{let f=vo;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[vo,voFiltPj,voFiltTy,voFiltSt]);
-const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f},[coordVO,voFiltPj,voFiltTy,voFiltSt]);
+const voFilt=useMemo(()=>{let f=vo;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[vo,voFiltPj,voFiltTy,voFiltSt]);
+const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[coordVO,voFiltPj,voFiltTy,voFiltSt]);
 const[noteText,setNoteText]=useState("");
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};

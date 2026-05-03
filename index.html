@@ -661,7 +661,7 @@ return<div className="pr pr-pf" key={p.i}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
 <button className="pl gn" onClick={()=>sSav(!sav)}>+ Add</button></div></div>
 {sav&&<div className="af" style={{margin:8}}>
-<div><label>Project</label><select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{minWidth:140,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"3px",borderRadius:3,fontSize:10}}><option value="">Select</option>{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select></div>
+<div><label>Project</label><input list="addvo-projects" value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} placeholder="Type to search..." style={{minWidth:180,background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"3px 6px",borderRadius:3,fontSize:10,fontFamily:"var(--ft)",outline:"none"}}/><datalist id="addvo-projects">{pj.filter(p=>!p.nm.startsWith("_")).map(p=><option key={p.nm} value={p.nm}/>)}</datalist></div>
 <div><label>Type</label><select value={nvo.type} onChange={e=>sNvo({...nvo,type:e.target.value})} style={{background:"var(--bg)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"3px",borderRadius:3,fontSize:10}}><option>VO</option><option>DL</option></select></div>
 <div><label>{nvo.type}-No</label><input value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value.substring(0,10)})} style={{width:60}}/></div>
 <div><label>Name</label><input value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value.substring(0,100)})} style={{width:140}}/></div>

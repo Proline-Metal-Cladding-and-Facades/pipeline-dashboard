@@ -146,7 +146,8 @@ sLd(false)}catch(e){sEr("Failed to connect: "+e.message);sLd(false)}},[user]);
 
 useEffect(()=>{if(user)load()},[user,load]);
 
-const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));
+const calcPrice=(v,fd,val)=>{const u={...v,[fd]:val};const p=(N(u.nmn)*N(u.nh)*N(u.nr))+(N(u.nmn)*N(u.oh)*N(u.or2));return p};
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;const autoP=["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));
 const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};
 sSv(true);await aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU",{maximumFractionDigits:0})});sSv(false)},[vo,user]);
 

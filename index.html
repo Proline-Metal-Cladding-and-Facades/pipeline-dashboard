@@ -104,6 +104,11 @@
 .vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
 .vsc{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto}
+/* VO/Coord flex layout — fills viewport, no grey strip at top or bottom */
+.vw-fx{background:#fff;margin:-10px -12px;padding:0;display:flex;flex-direction:column;height:calc(100vh - 65px);min-height:0;overflow:hidden}
+.vw-fx>*{flex-shrink:0}
+.vw-fx>.vsc-fx{flex:1;min-height:0;overflow:auto;max-height:none}
+.vw-fx>.em{flex:1;display:flex;align-items:center;justify-content:center}
 .vt{width:100%;border-collapse:separate;border-spacing:0;font-size:9px;font-family:var(--mn);table-layout:fixed}
 .vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
@@ -111,10 +116,10 @@
 .vt tr:nth-child(even) td{background:#f8f9fb}
 .vt tr:hover td{background:rgba(68,114,196,.08)}
 /* Coord VO read-only: solid frozen-column backgrounds (4 frozen cols) — fixes scroll-bleed */
-.vt-ro td:nth-child(-n+4){background:#fff}
-.vt-ro tr:nth-child(even) td:nth-child(-n+4){background:#f8f9fb}
-.vt-ro tr:hover td:nth-child(-n+4){background:#e8eef9!important}
-.vt-ro tr:nth-child(even):hover td:nth-child(-n+4){background:#dde5f3!important}
+.vt-ro td:nth-child(-n+5){background:#fff}
+.vt-ro tr:nth-child(even) td:nth-child(-n+5){background:#f8f9fb}
+.vt-ro tr:hover td:nth-child(-n+5){background:#e8eef9!important}
+.vt-ro tr:nth-child(even):hover td:nth-child(-n+5){background:#dde5f3!important}
 .vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:9px;outline:none;width:100%;box-sizing:border-box}
 .vt input:focus,.vt select:focus{background:rgba(68,114,196,.06);border-bottom:1px solid var(--ac)}
 .vt input.nm{text-align:right;width:100%}.vt input.sm{width:100%}.vt input.md{width:100%}
@@ -294,11 +299,11 @@ input[type=number]{-moz-appearance:textfield}
 .vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
 .vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
  
-.vt th:nth-child(-n+5){z-index:5!important;background:var(--s2)}
-.vt td:nth-child(-n+5){background:#fff}
-.vt tr:nth-child(even) td:nth-child(-n+5){background:#f8f9fb}
-.vt tr:hover td:nth-child(-n+5){background:#e8eef9!important}
-.vt tr:nth-child(even):hover td:nth-child(-n+5){background:#dde5f3!important}
+.vt th:nth-child(-n+6){z-index:5!important;background:var(--s2)}
+.vt td:nth-child(-n+6){background:#fff}
+.vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
+.vt tr:hover td:nth-child(-n+6){background:#e8eef9!important}
+.vt tr:nth-child(even):hover td:nth-child(-n+6){background:#dde5f3!important}
 /* ROW HOVER */
 div.rh{background:#dce6f5!important}
 /* Gross Profit row tint */
@@ -313,7 +318,7 @@ const DEF_MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Au
 const RN=["External Materials","ProFab Materials","Other Costs"];
 const RK=["ExtMaterials","ProfabMaterials","OtherCosts"];
 const UK="pipeline-v9";
-const COORDS=["Lachlan","Lizzie","Luka"];
+const COORDS=["Luka","Lizzie","Lachlan"];
 const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][NOW.getMonth()]+"-"+String(NOW.getFullYear()).slice(2);
 const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
 const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
@@ -378,7 +383,8 @@ return<tr style={{color:rc}}>
 <td style={{position:"sticky",left:colW[0],zIndex:2}}><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pjOpts.map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
 <td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
 <td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
-<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2,borderRight:"2px solid var(--bd)"}}><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2}}><input value={v.srn} onChange={e=>uV(v.i,"srn",e.target.value)} style={{color:rc}} placeholder="—"/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4],zIndex:2,borderRight:"2px solid var(--bd)"}}><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
 <td><input value={v.ds} onChange={e=>uV(v.i,"ds",e.target.value)} onBlur={e=>uV(v.i,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td><input value={v.da} onChange={e=>uV(v.i,"da",e.target.value)} onBlur={e=>uV(v.i,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
 <td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(v.i,"pr",val)} cls="cl" style={styleC} fmt={fmP}/></td>
@@ -394,13 +400,14 @@ return<tr style={{color:rc}}>
 <td style={{textAlign:"center"}} onClick={()=>onOpenNote(v.i)}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
 </tr>});
  
-const CoordRow=React.memo(function CoordRow({v,vi,coordColW}){
+const CoordRow=React.memo(function CoordRow({v,vi,coordColW,onOpenNote}){
 const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const bg=vi%2===1?"#f8f9fb":"#fff";
 return<tr style={{color:rc}}>
 <td style={{position:"sticky",left:0,zIndex:2,background:bg}}>{v.pj}</td>
 <td style={{position:"sticky",left:coordColW[0],zIndex:2,background:bg}}>{v.ty}</td>
 <td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:bg}}>{v.vn}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:bg,borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:bg}}>{v.srn||""}</td>
+<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2]+coordColW[3],zIndex:2,background:bg,borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
 <td>{v.ds}</td>
 <td>{v.da}</td>
 <td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>
@@ -413,7 +420,7 @@ return<tr style={{color:rc}}>
 <td style={{textAlign:"right"}}>{v.nr?fmP(v.nr):""}</td>
 <td style={{textAlign:"right"}}>{v.oh?fm2(v.oh):""}</td>
 <td style={{textAlign:"right"}}>{v.or2?fmP(v.or2):""}</td>
-<td style={{textAlign:"center"}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:""}</td>
+<td style={{textAlign:"center"}} onClick={()=>v.notes&&onOpenNote&&onOpenNote(vi)}>{v.notes?<span title="Click to view full note" style={{cursor:"pointer",fontSize:14}}>💬</span>:""}</td>
 <td style={{textAlign:"center",fontSize:8,color:"var(--t2)"}}>{v.pushed||""}</td>
 </tr>});
  
@@ -448,14 +455,15 @@ const handleSumHover=(e,enter)=>{
 };
  
 const[pjO,sPjO]=useState(false);const[acO,sAcO]=useState(false);
-const defCW=[24,130,60,70,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
+const defCW=[24,130,60,70,60,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
 const[colW,setColW]=useState(defCW);
-const defCoordCW=[150,60,70,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
+const defCoordCW=[150,60,70,60,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
 const[coordColW,setCoordColW]=useState(defCoordCW);
 const resRef=useRef(null);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 const startCoordResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=coordColW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setCoordColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 const[noteEdit,setNoteEdit]=useState(null);
+const[coordNoteView,setCoordNoteView]=useState(null);
 const[coordVO,setCoordVO]=useState([]);
 const[coordUser,setCoordUser]=useState("");
 const[voFiltPj,setVoFiltPj]=useState("");
@@ -464,8 +472,8 @@ const[pfSr,setPfSr]=useState("");const[pfStFilt,setPfStFilt]=useState([]);
 const pfSr_d=useDeferredValue(pfSr);
 const[voFiltTy,setVoFiltTy]=useState("all");
 const[voFiltSt,setVoFiltSt]=useState([]);
-const voFilt=useMemo(()=>{let f=vo;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return ad-bd})},[vo,voFiltPj_d,voFiltTy,voFiltSt]);
-const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return ad-bd})},[coordVO,voFiltPj_d,voFiltTy,voFiltSt]);
+const voFilt=useMemo(()=>{let f=vo;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[vo,voFiltPj_d,voFiltTy,voFiltSt]);
+const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy!=="all")f=f.filter(v=>v.ty===voFiltTy);if(voFiltSt.length>0)f=f.filter(v=>voFiltSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[coordVO,voFiltPj_d,voFiltTy,voFiltSt]);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 const sub=n=>{localStorage.setItem(UK,n);sU(n)};
 const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
@@ -490,7 +498,7 @@ const load=useCallback(async()=>{
   if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,ts:Date.now()}))}catch(e){}}
   sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),pt:String(F(p,"Payment Terms","PAYMENT TERMS")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
   const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
-  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 
+  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 
   sLd(false)},[]);
  
 useEffect(()=>{if(un)load()},[un,load]);
@@ -503,9 +511,9 @@ const pjOpts=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")),[pj]);
 const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[nk(p)+"|||"+m]:{...(pr[nk(p)+"|||"+m]||{}),[c]:val}}));sSv(true);await enq(()=>aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
 const uP=useCallback(async(nm,fd,val)=>{const fl=fd.toLowerCase();sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fl.includes("contract")?"cp":fl.includes("job")?"jid":fl.includes("status")?"st":"v"]:val}:p));sSv(true);await enq(()=>aP({action:"updateProject",name:nm,field:fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
 const renP=useCallback(async(old,nw)=>{sPj(pr=>pr.map(p=>p.nm===old?{...p,nm:nw}:p));sMo(prev=>{const next={};Object.entries(prev).forEach(([k,v])=>{next[k.startsWith(nk(old)+"|||")?nk(nw)+"|||"+k.split("|||")[1]:k]=v});return next});sSv(true);await aP({action:"updateProject",name:old,field:"Project",value:nw,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[]);
-const loadCoordVO=async(user)=>{setCoordUser(user);sLd(true);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user));const d=await r.json();if(d.vos){setCoordVO(d.vos.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),pushed:String(F(v,"PUSHED","")||"")})))}sLd(false)}catch(e){sEr("Failed: "+e.message);sLd(false)}};
+const loadCoordVO=async(user)=>{setCoordUser(user);sLd(true);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user));const d=await r.json();if(d.vos){setCoordVO(d.vos.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),pushed:String(F(v,"PUSHED","")||"")})))}sLd(false)}catch(e){sEr("Failed: "+e.message);sLd(false)}};
 const dVO=useCallback(async(v)=>{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return;sSv(true);await aP({action:"deleteVO",row:v._r});sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()},[load]);
-const uV=useCallback(async(vi,fd,val)=>{const v=voRef.current[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};sSv(true);await enq(()=>aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
+const uV=useCallback(async(vi,fd,val)=>{const v=voRef.current[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","srn":"SUB REF NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};sSv(true);await enq(()=>aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
 const addV=async()=>{if(!nvo.project)return;sSv(true);await aP({action:"addVO",project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf});sSav(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);sLs(new Date());setTimeout(load,1500)};
 const aPj=async()=>{if(!nn.trim())return;if(pj.some(p=>nk(p.nm)===nk(nn.trim()))){alert("Project \""+nn.trim()+"\" already exists.");return}const c=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:c,variations:0});sPj(p=>[...p,{nm:nn.trim(),jid:"",cp:c,v:0,st:"Live"}]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
 const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nk(nm)+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
@@ -517,7 +525,9 @@ const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{let sT=0,
 const flt=useMemo(()=>{let f=comp;if(stFilt.length>0)f=f.filter(p=>stFilt.includes(p.st));if(sr_d){const q=sr_d.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q))}return f},[comp,sr_d,stFilt]);
 const vis=MO.slice(startM);
 const sumM=useMemo(()=>{const o={};MO.forEach(m=>{let s=0,e=0,p=0,ot=0;comp.forEach(pr=>{s+=gv(pr.nm,m,"Sales");e+=gv(pr.nm,m,"ProfabMaterials");p+=gv(pr.nm,m,"ProfabMaterials");ot+=gv(pr.nm,m,"OtherCosts")});o[m]={s,e,p,ot}});return o},[comp,mo]);
-const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;comp.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,comp,mo]);
+const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;flt.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,flt,mo]);
+const pjStCnt=useMemo(()=>{const o={Pending:0,Awarded:0,Live:0,Completed:0};let f=comp;if(sr_d){const q=sr_d.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q))}f.forEach(p=>{if(o[p.st]!==undefined)o[p.st]++});return o},[comp,sr_d]);
+const pfPjStCnt=useMemo(()=>{const o={Pending:0,Awarded:0,Live:0,Completed:0};let f=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfSr_d)f=f.filter(p=>p.nm.toLowerCase().includes(pfSr_d.toLowerCase()));f.forEach(p=>{if(o[p.st]!==undefined)o[p.st]++});return o},[comp,pfSr_d,voPfab,mo]);
 const masterStCnt=useMemo(()=>{const o={};VO_ST.forEach(s=>{o[s.v]=vo.filter(v=>{const pjM=!voFiltPj_d||v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase());const tyM=voFiltTy==="all"||v.ty===voFiltTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length});return o},[vo,voFiltPj_d,voFiltTy]);
 const coordStCnt=useMemo(()=>{const o={};VO_ST.forEach(s=>{o[s.v]=coordVO.filter(v=>{const pjM=!voFiltPj_d||v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase());const tyM=voFiltTy==="all"||v.ty===voFiltTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length});return o},[coordVO,voFiltPj_d,voFiltTy]);
 const pSR=[{k:"_PS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_PO",n:"Group Overhead",g:"oh"},{k:"_PW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_PM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_PE",n:"No. of Employees On-site",nc:true,g:"emp"}];
@@ -556,7 +566,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 {ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
 {vw==="grid"&&selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:3}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9}} onClick={()=>sSM([])}>✕ Clear</button></div>}
 {vw==="grid"&&<div className="cds">
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).reduce((t,p)=>t+p.tot,0):cd.con)}</div><div className="sb">{selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).length+" projects · "+cd.label:comp.length+" projects"}</div></div>
+<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(selM.length?flt.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).reduce((t,p)=>t+p.tot,0):cd.con)}</div><div className="sb">{selM.length?flt.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).length+" projects · "+cd.label:flt.length+" projects"}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div><div className="sb">{cd.label}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">ProFab Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
@@ -566,7 +576,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 </div>}
 {vw==="grid"&&<div className="br">
 <button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
-<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setStFilt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:stFilt.includes(s.v)?s.c:"var(--bd)",background:stFilt.includes(s.v)?s.c:"transparent",color:stFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v}</button>)}</div><input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
+<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setStFilt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:stFilt.includes(s.v)?s.c:"var(--bd)",background:stFilt.includes(s.v)?s.c:"transparent",color:stFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v} ({pjStCnt[s.v]||0})</button>)}</div><input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
 </div>}
 {vw==="grid"&&sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="Project name" style={{width:200}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="0" style={{width:100}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}
  
@@ -676,7 +686,7 @@ return<div className="cds">
 })()}
 {/* Toolbar */}
 <div className="br">
-<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setPfStFilt(p2=>p2.includes(s.v)?p2.filter(x=>x!==s.v):[...p2,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:pfStFilt.includes(s.v)?s.c:"var(--bd)",background:pfStFilt.includes(s.v)?s.c:"transparent",color:pfStFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v}</button>)}</div>
+<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setPfStFilt(p2=>p2.includes(s.v)?p2.filter(x=>x!==s.v):[...p2,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:pfStFilt.includes(s.v)?s.c:"var(--bd)",background:pfStFilt.includes(s.v)?s.c:"transparent",color:pfStFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v} ({pfPjStCnt[s.v]||0})</button>)}</div>
 <input className="sx" placeholder="Search project..." value={pfSr} onChange={e=>setPfSr(e.target.value)}/>
 </div>
 {/* Month nav */}
@@ -724,7 +734,7 @@ return<div className="pr pr-pf" key={p.i}>
 </>}
  
 {/* VO REGISTER */}
-{vw==="vos"&&<div style={{background:"#fff",margin:"-10px -12px",padding:0}}>
+{vw==="vos"&&<div className="vw-fx">
 <div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
@@ -744,13 +754,13 @@ return<div className="pr pr-pf" key={p.i}>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length}</span>
 </div>
 {voFilt.length===0?<div className="em">No entries match filter.</div>:
-<div className="vsc"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
-{["","Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<5?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===4?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
+<div className="vsc-fx"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
+{["","Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<6?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===5?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
 </tr></thead><tbody>{voFilt.map(v=><VORow key={v.i} v={v} colW={colW} pjOpts={pjOpts} uV={uV} dVO={dVO} onOpenNote={setNoteEdit}/>)}</tbody></table></div>}
 </div>}
  
 {/* COORDINATOR VO VIEW (read-only, styled to match vo.html) */}
-{vw==="coord"&&<div style={{background:"#fff",margin:"-10px -12px",padding:0}}>
+{vw==="coord"&&<div className="vw-fx">
 <div className="vo-cards">
 <div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordFilt.length}</div></div>
 <div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${coordFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU")}</div></div>
@@ -764,15 +774,22 @@ return<div className="pr pr-pf" key={p.i}>
 <input className="sx" value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..."/>
 <span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{coordFilt.length} of {coordVO.length} · Read only · Approved: {coordVO.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length}</span>
 </div>
-<div style={{overflowX:"auto",overflowY:"auto",maxHeight:"calc(100vh - 220px)"}}><table className="vt vt-ro" style={{width:coordColW.reduce((a,b)=>a+b,0)+"px",minWidth:coordColW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{coordColW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
-{["Project","Type","Var No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<8?"tg":ci<11?"ty":ci<16?"tp":"tg"} style={{width:coordColW[ci],...(ci<4?{position:"sticky",left:coordColW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===3?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startCoordResize(ci,e)}/></th>)}
+<div className="vsc-fx"><table className="vt vt-ro" style={{width:coordColW.reduce((a,b)=>a+b,0)+"px",minWidth:coordColW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{coordColW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
+{["Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:coordColW[ci],...(ci<5?{position:"sticky",left:coordColW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===4?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startCoordResize(ci,e)}/></th>)}
 </tr></thead><tbody>
-{coordFilt.length===0?<tr><td colSpan={18} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
-coordFilt.map((v,vi)=><CoordRow key={vi} v={v} vi={vi} coordColW={coordColW}/>)}
+{coordFilt.length===0?<tr><td colSpan={19} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
+coordFilt.map((v,vi)=><CoordRow key={vi} v={v} vi={vi} coordColW={coordColW} onOpenNote={setCoordNoteView}/>)}
 </tbody></table></div>
 </div>}
  
 {noteEdit!==null&&<NoteEditModal initial={vo[noteEdit]?.notes||""} title={vo[noteEdit]?.vnm||vo[noteEdit]?.pj||"Entry"} onSave={t=>{uV(noteEdit,"notes",t);setNoteEdit(null)}} onCancel={()=>setNoteEdit(null)}/>}
+{coordNoteView!==null&&coordFilt[coordNoteView]&&<div className="notes-modal" onClick={()=>setCoordNoteView(null)}>
+<div className="notes-box" onClick={e=>e.stopPropagation()}>
+<h4>Notes — {coordFilt[coordNoteView].vnm||coordFilt[coordNoteView].pj||"Entry"} <span style={{fontSize:9,color:"var(--t2)",fontWeight:400,marginLeft:8}}>(read only)</span></h4>
+<textarea readOnly value={coordFilt[coordNoteView].notes||""} style={{cursor:"default",background:"var(--s2)"}}/>
+<div className="nbtn">
+<button className="pl" onClick={()=>setCoordNoteView(null)}>Close</button>
+</div></div></div>}
 {selCells.length>0&&<div className="stat-bar" onClick={clearSel}>
 <span className="stat-lbl">Click to clear · {selCells.length} cell{selCells.length>1?"s":""}</span>
 <span className="stat-lbl">Sum: </span><span>{fm(selCells.reduce((a,b)=>a+b,0))}</span>

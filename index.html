@@ -113,6 +113,8 @@
 .vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
+/* Browser-level virtualization — skips rendering rows outside the viewport */
+.vt tbody tr{content-visibility:auto;contain-intrinsic-size:auto 24px}
 .vt tr:nth-child(even) td{background:#f8f9fb}
 .vt tr:hover td{background:rgba(68,114,196,.08)}
 /* Coord VO read-only: solid frozen-column backgrounds (4 frozen cols) — fixes scroll-bleed */
@@ -281,13 +283,14 @@ input[type=number]{-moz-appearance:textfield}
 /* VO freeze panes - left positions handled inline via colW state */
 .vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
 .vt th{position:sticky;top:0;z-index:3}
-/* Read-only VO - first 4 cols frozen (Project,Type,VarNo,Name) */
+/* Read-only VO - first 5 cols frozen (Project,Type,VarNo,SubRefNo,Name) */
 .vt-ro th:nth-child(1),.vt-ro td:nth-child(1){left:0}
 .vt-ro th:nth-child(2),.vt-ro td:nth-child(2){left:150px}
 .vt-ro th:nth-child(3),.vt-ro td:nth-child(3){left:210px}
-.vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px;border-right:2px solid var(--bd)!important}
-.vt-ro th:nth-child(5),.vt-ro td:nth-child(5){position:static;left:auto;border-right:none!important}
+.vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px}
+.vt-ro th:nth-child(5),.vt-ro td:nth-child(5){left:340px;border-right:2px solid var(--bd)!important}
 .vt-ro th:nth-child(6),.vt-ro td:nth-child(6){position:static;left:auto;border-right:none!important}
+.vt-ro th:nth-child(7),.vt-ro td:nth-child(7){position:static;left:auto;border-right:none!important}
  
  
 .gh>div:nth-child(-n+7){z-index:20!important;background:var(--s2)}
@@ -376,11 +379,11 @@ return<div className="notes-modal" onClick={onCancel}>
 <button className="pl gn" onClick={()=>onSave(t)}>Save</button>
 </div></div></div>});
  
-const VORow=React.memo(function VORow({v,colW,pjOpts,uV,dVO,onOpenNote}){
+const VORow=React.memo(function VORow({v,colW,uV,dVO,onOpenNote}){
 const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const styleC={color:rc};
 return<tr style={{color:rc}}>
 <td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
-<td style={{position:"sticky",left:colW[0],zIndex:2}}><input list={"pl"+v.i} value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/><datalist id={"pl"+v.i}>{pjOpts.map(p=><option key={p.nm} value={p.nm}/>)}</datalist></td>
+<td style={{position:"sticky",left:colW[0],zIndex:2}}><input list="vo-projects-list" value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/></td>
 <td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
 <td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
 <td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2}}><input value={v.srn} onChange={e=>uV(v.i,"srn",e.target.value)} style={{color:rc}} placeholder="—"/></td>
@@ -739,6 +742,7 @@ return<div className="pr pr-pf" key={p.i}>
  
 {/* VO REGISTER */}
 {vw==="vos"&&<div className="vw-fx">
+<datalist id="vo-projects-list">{pjOpts.map(p=><option key={p.nm} value={p.nm}/>)}</datalist>
 <div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
 <div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
 <span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
@@ -760,7 +764,7 @@ return<div className="pr pr-pf" key={p.i}>
 {voFilt.length===0?<div className="em">No entries match filter.</div>:
 <div className="vsc-fx"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
 {["","Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<6?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===5?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
-</tr></thead><tbody>{voFilt.map(v=><VORow key={v.i} v={v} colW={colW} pjOpts={pjOpts} uV={uV} dVO={dVO} onOpenNote={setNoteEdit}/>)}</tbody></table></div>}
+</tr></thead><tbody>{voFilt.map(v=><VORow key={v.i} v={v} colW={colW} uV={uV} dVO={dVO} onOpenNote={setNoteEdit}/>)}</tbody></table></div>}
 </div>}
  
 {/* COORDINATOR VO VIEW (read-only, styled to match vo.html) */}

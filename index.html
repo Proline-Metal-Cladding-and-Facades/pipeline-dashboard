@@ -297,6 +297,31 @@ input[type=number]{-moz-appearance:textfield}
 .sticky-top{position:sticky;top:0;z-index:25;background:#f4f6f9;padding-bottom:4px;box-shadow:0 2px 4px rgba(0,0,0,.06)}
  
  
+/* Activity / Presence panel — slides in from right */
+.act-panel{position:fixed;top:0;right:0;width:300px;height:100vh;background:#fff;border-left:1px solid var(--bd);box-shadow:-2px 0 8px rgba(0,0,0,.08);z-index:100;overflow-y:auto;transform:translateX(100%);transition:transform .2s ease;font-family:var(--ft)}
+.act-panel.open{transform:translateX(0)}
+.act-overlay{position:fixed;inset:0;z-index:99;background:transparent;display:none}
+.act-overlay.open{display:block}
+.act-hdr{padding:10px 14px;border-bottom:2px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.act-hdr h3{font-size:12px;font-weight:700;color:var(--pu);margin:0}
+.act-hdr button{background:none;border:none;font-size:16px;cursor:pointer;color:var(--t2);padding:0 4px}
+.act-section{padding:10px 14px;border-bottom:1px solid var(--bd)}
+.act-section h4{font-size:9px;text-transform:uppercase;color:var(--t2);margin:0 0 8px 0;letter-spacing:.5px;font-weight:700}
+.act-pres{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px;color:var(--tx)}
+.act-pres-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.act-pres-dot.live{background:var(--gn);box-shadow:0 0 4px var(--gn)}
+.act-pres-dot.idle{background:var(--am)}
+.act-pres-self{font-weight:700;color:var(--ac)}
+.act-pres-when{font-size:9px;color:var(--t2);margin-left:auto}
+.act-item{padding:8px 0;border-bottom:1px solid #f0f0f0}
+.act-item:last-child{border-bottom:none}
+.act-item-user{font-weight:700;font-size:11px;color:var(--ac)}
+.act-item-target{font-size:10px;color:var(--tx);margin-top:1px;line-height:1.3}
+.act-item-when{font-size:9px;color:var(--t2);margin-top:2px}
+.act-empty{font-size:10px;color:var(--t2);font-style:italic;padding:6px 0}
+.act-btn{background:transparent;border:1px solid var(--bd);border-radius:4px;padding:3px 8px;cursor:pointer;font-family:var(--ft);font-size:10px;color:var(--tx);display:flex;align-items:center;gap:4px}
+.act-btn:hover{background:var(--s2)}
+.act-btn-count{background:var(--gn);color:#fff;font-weight:700;border-radius:8px;padding:0 5px;font-size:9px;min-width:14px;text-align:center}
 .vo-cards{display:flex;gap:6px;padding:8px 10px;flex-wrap:wrap}
 .vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
 .vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
@@ -330,8 +355,10 @@ const isAp=s=>{const u=String(s||"").toLowerCase();return u.includes("fully clai
 const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
 const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
 const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";
-async function aG(a){try{const r=await fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch{return null}}
-async function aP(p){try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(p)});return true}catch{return false}}
+function getPP(){try{return localStorage.getItem("pipeline-pp")||""}catch{return""}}
+async function aG(a){try{const pp=getPP();const r=await fetch(API+"?action="+a+(pp?"&passphrase="+encodeURIComponent(pp):"")+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch{return null}}
+const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
+async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)});return true}catch{return false}}
 const fm=v=>v?Number(v).toLocaleString("en-AU",{maximumFractionDigits:0}):"";
 const fK=v=>{if(!v&&v!==0)return"-";if(v===0)return"$0";return(v<0?"-":"")+"$"+Math.abs(Math.round(Number(v))).toLocaleString("en-AU")};
 const N=v=>Number(v)||0;
@@ -381,7 +408,7 @@ return<div className="notes-modal" onClick={onCancel}>
  
 const VORow=React.memo(function VORow({v,colW,uV,dVO,onOpenNote}){
 const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const styleC={color:rc};
-return<tr style={{color:rc}}>
+return<tr style={{color:rc}} title={editTip(v.eb,v.ea)}>
 <td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
 <td style={{position:"sticky",left:colW[0],zIndex:2}}><input list="vo-projects-list" value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/></td>
 <td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
@@ -405,7 +432,7 @@ return<tr style={{color:rc}}>
  
 const CoordRow=React.memo(function CoordRow({v,vi,coordColW,onOpenNote}){
 const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const bg=vi%2===1?"#f8f9fb":"#fff";
-return<tr style={{color:rc}}>
+return<tr style={{color:rc}} title={editTip(v.eb,v.ea)}>
 <td style={{position:"sticky",left:0,zIndex:2,background:bg}}>{v.pj}</td>
 <td style={{position:"sticky",left:coordColW[0],zIndex:2,background:bg}}>{v.ty}</td>
 <td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:bg}}>{v.vn}</td>
@@ -429,14 +456,17 @@ return<tr style={{color:rc}}>
  
 function App(){
 const wqRef=useRef(Promise.resolve());
-const enq=fn=>{wqRef.current=wqRef.current.then(fn).catch(()=>{});return wqRef.current};
+const[saveErr,setSaveErr]=useState(null);
+const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
+const[pp,setPp]=useState(getPP());const[ppI,setPpI]=useState("");
+const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp",v)}catch{};setPp(v);setPpI("")};
 const[months,setMonths]=useState(()=>{const saved=localStorage.getItem("pipeline-months");return saved?JSON.parse(saved):DEF_MO});
 const MO=months;
 const addMonth=()=>{const last=MO[MO.length-1];const ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];const p=last.split("-");const mi=ms.indexOf(p[0]);const yr=parseInt(p[1]);const nm=mi===11?ms[0]+"-"+String(yr+1).padStart(2,"0"):ms[mi+1]+"-"+p[1];const nw=[...MO,nm];setMonths(nw);localStorage.setItem("pipeline-months",JSON.stringify(nw))};
 const[un,sU]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
 const unRef=useRef(un);unRef.current=un;
 const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useState(null);
-const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);
+const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);const[moE,sMoE]=useState({});
 const voRef=useRef([]);voRef.current=vo;
 const[vw,sVw]=useState("grid");const[sbOpen,sSbO]=useState(false);const[stFilt,setStFilt]=useState([]);const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
 const sr_d=useDeferredValue(sr);
@@ -494,6 +524,7 @@ const load=useCallback(async()=>{
     setCached(true);r=cc}}catch(e){}
     if(!r){sEr("No response & no cache available.");sLd(false);return}}
   if(r.error){
+    if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("");sEr("Wrong team passphrase. Please re-enter.");sLd(false);return}
     try{const cc=JSON.parse(localStorage.getItem("pipeline-cache"));
     if(cc&&cc.projects){const age=Math.round((Date.now()-cc.ts)/60000);
     sEr("Error: "+r.error+" — showing cached data ("+age+" min ago).");
@@ -503,12 +534,23 @@ const load=useCallback(async()=>{
   if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,cellColors:ccD,ts:Date.now()}))}catch(e){}}
   // Populate cell colors from server (overrides any localStorage state)
   if(ccD.length>=0){const ccm={};ccD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=String(F(row,"Month","MONTH")).trim();const cc=String(F(row,"Column","COLUMN")).trim();const co=String(F(row,"Color","COLOR")).trim();if(pn&&mn&&cc&&co)ccm[nk(pn)+"|||"+mn+"|||"+cc]=co});setCellColors(ccm);try{localStorage.setItem("pipeline-cellColors",JSON.stringify(ccm))}catch{}}
-  sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),pt:String(F(p,"Payment Terms","PAYMENT TERMS")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
-  const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
-  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 
+  sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),pt:String(F(p,"Payment Terms","PAYMENT TERMS")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live",eb:String(F(p,"EditedBy","EDITED BY")||""),ea:String(F(p,"EditedAt","EDITED AT")||"")})));
+  const mm={},mE={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts};const eb=String(F(row,"EditedBy","EDITED BY")||""),ea=String(F(row,"EditedAt","EDITED AT")||"");if(eb||ea)mE[key]={by:eb,at:ea}});sMo(mm);sMoE(mE);
+  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),eb:String(F(v,"EditedBy","EDITED BY")||""),ea:String(F(v,"EditedAt","EDITED AT")||"")}))); 
   sLd(false)},[]);
  
 useEffect(()=>{if(un)load()},[un,load]);
+const[actOpen,setActOpen]=useState(false);
+const[actData,setActData]=useState({presence:[],activity:[]});
+// Heartbeat: ping every 60s while logged in (lock-free on server)
+useEffect(()=>{if(!un||!pp)return;const ping=()=>{fetch(API+"?action=heartbeat&user="+encodeURIComponent(un)+"&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).catch(()=>{})};ping();const id=setInterval(ping,60000);return()=>clearInterval(id)},[un,pp]);
+// Refresh activity every 30s while panel is open
+useEffect(()=>{if(!actOpen)return;let cancelled=false;const refresh=async()=>{const r=await aG("getActivity");if(!cancelled&&r&&!r.error)setActData(r)};refresh();const id=setInterval(refresh,30000);return()=>{cancelled=true;clearInterval(id)}},[actOpen]);
+// "Live" presence count for the header badge — refresh every 60s independently
+const[liveCount,setLiveCount]=useState(0);
+useEffect(()=>{if(!un||!pp)return;const tick=async()=>{const r=await aG("getActivity");if(r&&r.presence){const now=Date.now();const live=r.presence.filter(p=>p.lastSeen&&(now-new Date(p.lastSeen).getTime())<120000).length;setLiveCount(live)}};tick();const id=setInterval(tick,60000);return()=>clearInterval(id)},[un,pp]);
+const tAgo=(ts)=>{if(!ts)return"";const d=Date.now()-new Date(ts).getTime();if(d<60000)return"just now";if(d<3600000)return Math.floor(d/60000)+" min ago";if(d<86400000)return Math.floor(d/3600000)+"h ago";return Math.floor(d/86400000)+"d ago"};
+const presStatus=(ts)=>{if(!ts)return"gone";const d=Date.now()-new Date(ts).getTime();if(d<120000)return"live";if(d<600000)return"idle";return"gone"};
 const gv=(p,m,c)=>mo[nk(p)+"|||"+m]?.[c]||0;
 const voP=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m[nk(v.pj)]||0)+v.pr});return m},[vo]);
 const voExt=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m[nk(v.pj)]||0)+v.em});return m},[vo]);
@@ -518,7 +560,7 @@ const pjOpts=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")),[pj]);
 const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[nk(p)+"|||"+m]:{...(pr[nk(p)+"|||"+m]||{}),[c]:val}}));sSv(true);await enq(()=>aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
 const uP=useCallback(async(nm,fd,val)=>{const fl=fd.toLowerCase();sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fl.includes("contract")?"cp":fl.includes("job")?"jid":fl.includes("status")?"st":"v"]:val}:p));sSv(true);await enq(()=>aP({action:"updateProject",name:nm,field:fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
 const renP=useCallback(async(old,nw)=>{sPj(pr=>pr.map(p=>p.nm===old?{...p,nm:nw}:p));sMo(prev=>{const next={};Object.entries(prev).forEach(([k,v])=>{next[k.startsWith(nk(old)+"|||")?nk(nw)+"|||"+k.split("|||")[1]:k]=v});return next});sSv(true);await aP({action:"updateProject",name:old,field:"Project",value:nw,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[]);
-const loadCoordVO=async(user)=>{setCoordUser(user);sLd(true);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user));const d=await r.json();if(d.vos){setCoordVO(d.vos.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),pushed:String(F(v,"PUSHED","")||"")})))}sLd(false)}catch(e){sEr("Failed: "+e.message);sLd(false)}};
+const loadCoordVO=async(user)=>{setCoordUser(user);sLd(true);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+"&passphrase="+encodeURIComponent(getPP()));const d=await r.json();if(d.vos){setCoordVO(d.vos.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),pushed:String(F(v,"PUSHED","")||""),eb:String(F(v,"EditedBy","EDITED BY")||""),ea:String(F(v,"EditedAt","EDITED AT")||"")})))}sLd(false)}catch(e){sEr("Failed: "+e.message);sLd(false)}};
 const dVO=useCallback(async(v)=>{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return;sSv(true);await aP({action:"deleteVO",row:v._r});sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()},[load]);
 const calcDLPrice=(v,fd,val)=>{const u={...v,[fd]:val};const m=N(u.nmn)||1;return(m*N(u.nh)*N(u.nr))+(m*N(u.oh)*N(u.or2))};
 const uV=useCallback(async(vi,fd,val)=>{const v=voRef.current[vi];if(!v)return;const autoP=v.ty==="DL"&&["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcDLPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","srn":"SUB REF NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};sSv(true);await enq(()=>aP({action:"updateVO",row:v._r,field:m2[fd]||fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));if(autoP)await enq(()=>aP({action:"updateVO",row:v._r,field:"PRICE",value:newPr,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
@@ -527,7 +569,7 @@ const aPj=async()=>{if(!nn.trim())return;if(pj.some(p=>nk(p.nm)===nk(nn.trim()))
 const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nk(nm)+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
  
 const isLk=m=>gv(LK,m,"Sales")===1;
-const doLock=async m=>{if(!isLk(m)){const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);await uC(LK,m,"Sales",1);await uC(LS,m,"Sales",s);await uC(LE,m,"Sales",e);await uC(LP,m,"Sales",p2);await uC(LO,m,"Sales",o)}else{await uC(LK,m,"Sales",0)}};
+const doLock=async m=>{const at=new Date().toLocaleString("en-AU");const u=unRef.current;if(!isLk(m)){const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);sMo(pr=>({...pr,[nk(LK)+"|||"+m]:{...(pr[nk(LK)+"|||"+m]||{}),Sales:1},[nk(LS)+"|||"+m]:{...(pr[nk(LS)+"|||"+m]||{}),Sales:s},[nk(LE)+"|||"+m]:{...(pr[nk(LE)+"|||"+m]||{}),Sales:e},[nk(LP)+"|||"+m]:{...(pr[nk(LP)+"|||"+m]||{}),Sales:p2},[nk(LO)+"|||"+m]:{...(pr[nk(LO)+"|||"+m]||{}),Sales:o}}));sSv(true);await enq(()=>aP({action:"lockMonth",month:m,lock:1,salesTotal:s,extTotal:e,pfabTotal:p2,otherTotal:o,editedBy:u,editedAt:at}));sLs(new Date());sSv(false)}else{sMo(pr=>({...pr,[nk(LK)+"|||"+m]:{...(pr[nk(LK)+"|||"+m]||{}),Sales:0}}));sSv(true);await enq(()=>aP({action:"lockMonth",month:m,lock:0,editedBy:u,editedAt:at}));sLs(new Date());sSv(false)}};
  
 const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{let sT=0,eT=0,pT=0,oT=0;MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});const avo=voP[nk(p.nm)]||0,tot=p.cp+p.v+avo,gp=tot-eT-pT-oT;const fc=MO.findIndex(m=>gv(p.nm,m,"Sales")>0);return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba:tot-sT,fc:fc===-1?999:fc}}).sort((a,b)=>{const re=/extra\s*sales|day\s*lab[ou]r/i;const ae=re.test(a.nm),be=re.test(b.nm);if(ae&&!be)return 1;if(!ae&&be)return -1;return a.fc-b.fc}),[pj,mo,voP]);
 const flt=useMemo(()=>{let f=comp;if(stFilt.length>0)f=f.filter(p=>stFilt.includes(p.st));if(sr_d){const q=sr_d.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q))}return f},[comp,sr_d,stFilt]);
@@ -543,14 +585,28 @@ const pfPSR=[{k:"_FC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_FM",n:"Mater
 const pfASR=[{k:"_HC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_HM",n:"Materials (COGS)",g:"fmat",cl:"#c45e10"},{k:"_HH",n:"PFAB Overhead",g:"foh"},{k:"_HS",n:"Subcontractors: Non Full-Time",g:"fsub"},{k:"_HW",n:"Wages: PFAB and Internal Subbies",g:"fwg"},{k:"_HE",n:"No. of Employees On-site",nc:true,g:"femp"}];
 const aSR=[{k:"_AS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_AO",n:"Group Overhead",g:"oh"},{k:"_AW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_AM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_AE",n:"No. of Employees On-site",nc:true,g:"emp"}];
  
+if(!pp)return<div className="np"><div className="nc"><div style={{fontSize:40}}>🔒</div><h2>Team Access</h2><p>Please enter the team passphrase to continue.</p><input className="nin" type="password" placeholder="Team passphrase..." value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} autoFocus/><button className="nbt" disabled={!ppI.trim()} onClick={submitPp}>Unlock →</button><div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div></div></div>;
 if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>👤</div><h2>Welcome</h2><p>Enter your name.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
  
 // SAME column template as the working version: 7 fixed + 12 months = 19 cols
 const gC="240px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
  
 return<div className="app" onClick={e=>{if(e.target.closest('button,input,select,a'))return;const el=e.target.closest('.cl')||e.target;const txt=(el.textContent||'').replace(/[$,]/g,'').trim();const v=parseFloat(txt);if(!isNaN(v)&&v!==0&&txt.length<15){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}>
-<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":vw==="pfab"?"PFAB Pipeline":vw==="coord"?coordUser+"\u2019s VO Register":"Variation Register"}</h1><span className="dot" style={{background:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}>{sv?"Saving...":cached?"Offline":"Connected"}</span></div>
-<div className="hr"><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
+<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":vw==="pfab"?"PFAB Pipeline":vw==="coord"?coordUser+"\u2019s VO Register":"Variation Register"}</h1><span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":cached?"var(--rd)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":cached?"Offline":"Connected"}</span></div>
+<div className="hr"><button className="act-btn" onClick={()=>setActOpen(true)} title="See who's active and recent edits">👥 {liveCount>0&&<span className="act-btn-count">{liveCount}</span>}</button><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
+{/* ACTIVITY PANEL */}
+<div className={"act-overlay"+(actOpen?" open":"")} onClick={()=>setActOpen(false)}/>
+<div className={"act-panel"+(actOpen?" open":"")}>
+<div className="act-hdr"><h3>Activity</h3><button onClick={()=>setActOpen(false)} title="Close">✕</button></div>
+<div className="act-section">
+<h4>Active Now ({actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").length})</h4>
+{actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").length===0?<div className="act-empty">No one online right now.</div>:actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").sort((a,b)=>new Date(b.lastSeen)-new Date(a.lastSeen)).map(p=><div key={p.user} className="act-pres"><span className={"act-pres-dot "+presStatus(p.lastSeen)}/><span className={p.user===un?"act-pres-self":""}>{p.user}{p.user===un?" (you)":""}</span><span className="act-pres-when">{p.user===un?"":tAgo(p.lastSeen)}</span></div>)}
+</div>
+<div className="act-section">
+<h4>Recent Edits</h4>
+{actData.activity.length===0?<div className="act-empty">No recent activity.</div>:actData.activity.map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
+</div>
+</div>
 {colorMenu&&<><div onClick={()=>setColorMenu(null)} onContextMenu={e=>{e.preventDefault();setColorMenu(null)}} style={{position:"fixed",inset:0,zIndex:100}}/>
 <div style={{position:"fixed",left:Math.min(colorMenu.x,window.innerWidth-180),top:Math.min(colorMenu.y,window.innerHeight-44),zIndex:101,background:"#fff",border:"1px solid var(--bd)",borderRadius:6,padding:4,display:"flex",gap:3,boxShadow:"0 2px 12px rgba(0,0,0,.15)"}}>
 {[{k:"default",c:"#3a3f4a",l:"Forecast (default)"},{k:"red",c:"var(--rd)",l:"Not Final"},{k:"green",c:"var(--gn)",l:"Approved / Claimed"},{k:"orange",c:"#c45e10",l:"Orange"},{k:"blue",c:"var(--ac)",l:"Blue"}].map(opt=><button key={opt.k} title={opt.l} onClick={()=>{setCC(colorMenu.p,colorMenu.m,colorMenu.col,opt.k);setColorMenu(null)}} style={{width:26,height:26,border:"1px solid var(--bd)",background:opt.c,borderRadius:4,cursor:"pointer"}}/>)}
@@ -612,7 +668,7 @@ return<div className="pg" key={p.i}>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.tot)}</div>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.sT)}</div>
 <div className={hovOn&&hovR===p.nm?"rh":""} style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)",fontFamily:"var(--mn)"}}>{fm(p.tba)}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" color={getCC(p.nm,m,"Sales")} onContext={e=>openCM(e,p.nm,m,"Sales")}/></div>)}
+{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null} title={editTip(moE[nk(p.nm)+"|||"+m]?.by,moE[nk(p.nm)+"|||"+m]?.at)}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" color={getCC(p.nm,m,"Sales")} onContext={e=>openCM(e,p.nm,m,"Sales")}/></div>)}
 </div>
 {/* Collapsible sub-rows */}
 {open&&<>{RK.map((rk,ri)=>{
@@ -628,7 +684,7 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 <div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{(cTot||cClaimed)?fm(cTot):""}</div>
 <div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(cClaimed)}</div>
 <div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:cTba<0?"var(--rd)":cTba>0?"var(--am)":"var(--gn)"}}>{(cTot||cClaimed)?fm(cTba):""}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm+"_r"+ri?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm+"_r"+ri)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" color={getCC(p.nm,m,rk)} onContext={e=>openCM(e,p.nm,m,rk)}/></div>)}</div>})}
+{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm+"_r"+ri?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm+"_r"+ri)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null} title={editTip(moE[nk(p.nm)+"|||"+m]?.by,moE[nk(p.nm)+"|||"+m]?.at)}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" color={getCC(p.nm,m,rk)} onContext={e=>openCM(e,p.nm,m,rk)}/></div>)}</div>})}
 <div className="rg"><div className={"rl"+(hovOn&&hovR===p.nm+"_gp"?" rh":"")} onMouseEnter={()=>hovOn&&sHR(p.nm+"_gp")} onMouseLeave={()=>sHR(null)}>Gross Profit</div><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/>
 <div className={hovOn&&hovR===p.nm+"_gp"?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_gp")} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.gp)}</div><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/>
 {vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovOn&&hovR===p.nm+"_gp"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm+"_gp")}} onMouseLeave={()=>{sHR(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:"#3a3f4a"}}>{v?fm(v):""}</div>})}</div>

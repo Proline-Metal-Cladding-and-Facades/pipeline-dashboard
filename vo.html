@@ -104,6 +104,7 @@ function fmP(v){if(!v&&v!==0)return"";return"$"+Number(v).toLocaleString("en-AU"
 function fmN(v){if(!v&&v!==0)return"";return Math.round(Number(v)).toLocaleString("en-AU")}
 function fm2(v){if(!v&&v!==0)return"";return Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
 const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
+const cleanActivity=(arr)=>{if(!arr)return[];const r=[];for(const a of arr){if(a.sheet!=="Monthly"){r.push(a);continue}const t=String(a.target||"");const idx=t.indexOf(" / ");const proj=idx>=0?t.slice(0,idx):t;const month=idx>=0?t.slice(idx+3):"";if(["_LS","_LE","_LP","_LO"].includes(proj))continue;if(proj==="_LK"){r.push({...a,sheet:"Pipeline",target:"Locked "+month});continue}if(month==="_BC"){r.push({...a,target:proj+" — Construction Budget"});continue}if(month==="_BV"){r.push({...a,target:proj+" — Variations Budget"});continue}r.push(a)}return r};
 function fmD(v){if(!v)return"";var s=String(v).trim();var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 if(s.includes("T")||/^\d{4}-\d{2}-\d{2}/.test(s)){var d=new Date(s);if(!isNaN(d)){return String(d.getDate()).padStart(2,"0")+"-"+ms[d.getMonth()]+"-"+String(d.getFullYear()).slice(2)}}
 var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m[2])-1;if(mi>=0&&mi<12)return m[1].padStart(2,"0")+"-"+ms[mi]+"-"+(m[3].length===4?m[3].slice(2):m[3])}
@@ -131,8 +132,8 @@ function App(){
 const wqRef=useRef(Promise.resolve());
 const[saveErr,setSaveErr]=useState(null);
 const[pp,setPp]=useState(getPP());const[ppI,setPpI]=useState("");
-const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp",v)}catch{};setPp(v);setPpI("")};
-const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
+const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp-coord",v)}catch{};setPp(v);setPpI("")};
+const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
 const urlUser=new URLSearchParams(window.location.search).get("user")||"";
 const[identity,setIdentity]=useState(()=>localStorage.getItem("vo-identity")||"");
 const[user,setUser]=useState(urlUser);
@@ -158,10 +159,10 @@ const defCW=[24,28,130,60,70,60,140,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
 const[colW,setColW]=useState(defCW);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(30,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 
-function getPP(){try{return localStorage.getItem("pipeline-pp")||""}catch{return""}}
+function getPP(){try{return localStorage.getItem("pipeline-pp-coord")||""}catch{return""}}
 async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)});return true}catch{return false}}
 
-const load=useCallback(async()=>{sLd(true);sEr(null);try{const pp=getPP();const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+(pp?"&passphrase="+encodeURIComponent(pp):""));const d=await r.json();if(d.error){if(d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("");sEr("Wrong team passphrase. Please re-enter.");sLd(false);return}sEr(d.error);sLd(false);return}
+const load=useCallback(async()=>{sLd(true);sEr(null);try{const pp=getPP();const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+(pp?"&passphrase="+encodeURIComponent(pp):""));const d=await r.json();if(d.error){if(d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("");sEr("Wrong coordinator passphrase. Please re-enter.");sLd(false);return}sEr(d.error);sLd(false);return}
 const vD=d.vos||[];const pD=d.projects||[];
 sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT")).trim()})).filter(p=>!p.nm.startsWith("_")));
 sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,
@@ -216,7 +217,7 @@ const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().
 
 const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
 
-if(!pp)return<div className="np"><div style={{textAlign:"center"}}><div style={{fontSize:40}}>🔒</div><h2 style={{marginBottom:12}}>Team Access</h2>
+if(!pp)return<div className="np"><div style={{textAlign:"center"}}><div style={{fontSize:40}}>🔒</div><h2 style={{marginBottom:12}}>Coordinator Access</h2>
 <p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>Enter the team passphrase to continue.</p>
 <input type="password" value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} placeholder="Passphrase..." autoFocus style={{padding:"10px 14px",fontSize:14,border:"1px solid var(--bd)",borderRadius:6,fontFamily:"var(--ft)",marginBottom:8,width:200}}/>
 <br/><button disabled={!ppI.trim()} onClick={submitPp} style={{padding:"8px 30px",fontSize:13,fontWeight:700,fontFamily:"var(--ft)",background:ppI.trim()?"var(--ac)":"var(--bd)",color:"#fff",border:"none",borderRadius:6,cursor:ppI.trim()?"pointer":"default"}}>Unlock →</button>
@@ -241,7 +242,7 @@ return<div className="app">
 <div className={"act-panel"+(actOpen?" open":"")}>
 <div className="act-hdr"><h3>Recent Activity</h3><button onClick={()=>setActOpen(false)} title="Close">✕</button></div>
 <div className="act-section">
-{(actData.activity||[]).length===0?<div className="act-empty">No recent activity.</div>:(actData.activity||[]).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
+{(actData.activity||[]).length===0?<div className="act-empty">No recent activity.</div>:cleanActivity(actData.activity||[]).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
 </div>
 </div>
 

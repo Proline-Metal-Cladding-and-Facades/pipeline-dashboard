@@ -136,6 +136,10 @@ const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pi
 const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
 const urlUser=new URLSearchParams(window.location.search).get("user")||"";
 const[identity,setIdentity]=useState(()=>localStorage.getItem("vo-identity")||"");
+const[idCheck,setIdCheck]=useState(true);
+// On pp change/mount, server tells us who we are. For coord passphrases identity is locked,
+// so it's impossible to impersonate another coord by typing their name in the prompt.
+useEffect(()=>{if(!pp){setIdCheck(false);return}let cancelled=false;setIdCheck(true);fetch(API+"?action=getIdentity&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).then(r=>r.json()).then(d=>{if(cancelled)return;if(d&&d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("")}else if(d&&d.identity){setIdentity(d.identity);try{localStorage.setItem("vo-identity",d.identity)}catch{}};setIdCheck(false)}).catch(()=>{if(!cancelled)setIdCheck(false)});return()=>{cancelled=true}},[pp]);
 const[user,setUser]=useState(urlUser);
 const[vo,sVo]=useState([]);
 const[pj,sPj]=useState([]);
@@ -224,6 +228,7 @@ if(!pp)return<div className="np"><div style={{textAlign:"center"}}><div style={{
 <div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div>
 </div></div>;
 
+if(idCheck)return<div className="np"><div style={{textAlign:"center",color:"var(--t2)",fontSize:12}}>Verifying access...</div></div>;
 if(!identity)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Who are you?</h2>
 <p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>This is saved so we know who made changes.</p>
 {USERS.map(u=><button key={u} onClick={()=>{setIdentity(u);localStorage.setItem("vo-identity",u);if(!user)setUser(u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}

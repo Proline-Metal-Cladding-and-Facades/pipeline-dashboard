@@ -358,6 +358,7 @@ const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";
 function getPP(){try{return localStorage.getItem("pipeline-pp")||""}catch{return""}}
 async function aG(a){try{const pp=getPP();const r=await fetch(API+"?action="+a+(pp?"&passphrase="+encodeURIComponent(pp):"")+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch{return null}}
 const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
+const cleanActivity=(arr)=>{if(!arr)return[];const r=[];for(const a of arr){if(a.sheet!=="Monthly"){r.push(a);continue}const t=String(a.target||"");const idx=t.indexOf(" / ");const proj=idx>=0?t.slice(0,idx):t;const month=idx>=0?t.slice(idx+3):"";if(["_LS","_LE","_LP","_LO"].includes(proj))continue;if(proj==="_LK"){r.push({...a,sheet:"Pipeline",target:"Locked "+month});continue}if(month==="_BC"){r.push({...a,target:proj+" — Construction Budget"});continue}if(month==="_BV"){r.push({...a,target:proj+" — Variations Budget"});continue}r.push(a)}return r};
 async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)});return true}catch{return false}}
 const fm=v=>v?Number(v).toLocaleString("en-AU",{maximumFractionDigits:0}):"";
 const fK=v=>{if(!v&&v!==0)return"-";if(v===0)return"$0";return(v<0?"-":"")+"$"+Math.abs(Math.round(Number(v))).toLocaleString("en-AU")};
@@ -464,6 +465,10 @@ const[months,setMonths]=useState(()=>{const saved=localStorage.getItem("pipeline
 const MO=months;
 const addMonth=()=>{const last=MO[MO.length-1];const ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];const p=last.split("-");const mi=ms.indexOf(p[0]);const yr=parseInt(p[1]);const nm=mi===11?ms[0]+"-"+String(yr+1).padStart(2,"0"):ms[mi+1]+"-"+p[1];const nw=[...MO,nm];setMonths(nw);localStorage.setItem("pipeline-months",JSON.stringify(nw))};
 const[un,sU]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
+const[idCheck,setIdCheck]=useState(true);
+// On pp change, ask server for our enforced identity. If returned, lock it (no name prompt).
+// If null, fall back to manual name entry (shared TEAM_PASSPHRASE case).
+useEffect(()=>{if(!pp){setIdCheck(false);return}let cancelled=false;setIdCheck(true);fetch(API+"?action=getIdentity&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).then(r=>r.json()).then(d=>{if(cancelled)return;if(d&&d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else if(d&&d.identity){sU(d.identity);try{localStorage.setItem(UK,d.identity)}catch{}};setIdCheck(false)}).catch(()=>{if(!cancelled)setIdCheck(false)});return()=>{cancelled=true}},[pp]);
 const unRef=useRef(un);unRef.current=un;
 const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useState(null);
 const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);const[moE,sMoE]=useState({});
@@ -586,6 +591,7 @@ const pfASR=[{k:"_HC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_HM",n:"Mater
 const aSR=[{k:"_AS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_AO",n:"Group Overhead",g:"oh"},{k:"_AW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_AM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_AE",n:"No. of Employees On-site",nc:true,g:"emp"}];
  
 if(!pp)return<div className="np"><div className="nc"><div style={{fontSize:40}}>🔒</div><h2>Team Access</h2><p>Please enter the team passphrase to continue.</p><input className="nin" type="password" placeholder="Team passphrase..." value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} autoFocus/><button className="nbt" disabled={!ppI.trim()} onClick={submitPp}>Unlock →</button><div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div></div></div>;
+if(idCheck)return<div className="np"><div className="nc"><div style={{textAlign:"center",color:"var(--t2)",fontSize:12}}>Verifying access...</div></div></div>;
 if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>👤</div><h2>Welcome</h2><p>Enter your name.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
  
 // SAME column template as the working version: 7 fixed + 12 months = 19 cols
@@ -604,7 +610,7 @@ return<div className="app" onClick={e=>{if(e.target.closest('button,input,select
 </div>
 <div className="act-section">
 <h4>Recent Edits</h4>
-{actData.activity.length===0?<div className="act-empty">No recent activity.</div>:actData.activity.map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
+{actData.activity.length===0?<div className="act-empty">No recent activity.</div>:cleanActivity(actData.activity).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
 </div>
 </div>
 {colorMenu&&<><div onClick={()=>setColorMenu(null)} onContextMenu={e=>{e.preventDefault();setColorMenu(null)}} style={{position:"fixed",inset:0,zIndex:100}}/>

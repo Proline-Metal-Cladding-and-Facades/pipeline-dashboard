@@ -676,9 +676,13 @@ return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR=
 {/* PFAB Cards */}
 {(()=>{
 const monthsToUse=selM.length?selM:MO;
-const activeProjects=selM.length?comp.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)):comp.filter(p=>MO.some(m=>gv(p.nm,m,"ProfabMaterials")>0));
+// Same filter chain as the PFAB row renderer below — keeps cards & rows in sync
+let pfBase=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});
+if(pfStFilt.length>0)pfBase=pfBase.filter(p=>pfStFilt.includes(p.st));
+if(pfSr_d)pfBase=pfBase.filter(p=>p.nm.toLowerCase().includes(pfSr_d.toLowerCase()));
+const activeProjects=selM.length?pfBase.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)):pfBase.filter(p=>MO.some(m=>gv(p.nm,m,"ProfabMaterials")>0));
 const totalEstSales=activeProjects.reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials"),0);
-const totalRevenue=comp.reduce((t,p)=>t+monthsToUse.reduce((s,m)=>s+gv(p.nm,m,"ProfabMaterials"),0),0);
+const totalRevenue=pfBase.reduce((t,p)=>t+monthsToUse.reduce((s,m)=>s+gv(p.nm,m,"ProfabMaterials"),0),0);
 return<div className="cds">
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Est. Sales</div><div className="vl" style={{color:"var(--ac)"}}>{fK(totalEstSales)}</div><div className="sb">{activeProjects.length} project{activeProjects.length===1?"":"s"} · {selM.length?selM.join(", "):"any month"}</div></div>
 <div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Revenue</div><div className="vl" style={{color:"var(--gn)"}}>{fK(totalRevenue)}</div><div className="sb">{selM.length?selM.join(", "):"All months"}</div></div>

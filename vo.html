@@ -78,7 +78,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
-const{useState,useEffect,useRef,useMemo,useCallback}=React;
+const{useState,useEffect,useRef,useMemo,useCallback,useDeferredValue}=React;
 const API="https://script.google.com/macros/s/AKfycbxZSeOefNZ7nPHiq_Y7ZJNUnIGgfXe8p89KNGLQWhyNdS1SDFy0ZZu5_MdWyc1jrrpFDw/exec";
 
 const USERS=["Luka","Lizzie","Lachlan"];
@@ -124,9 +124,12 @@ const[sa,sSa]=useState(false);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 
 const[filtPj,setFiltPj]=useState("");
-const[selRows,setSelRows]=useState(new Set());
+const filtPj_d=useDeferredValue(filtPj);
 const[filtTy,setFiltTy]=useState("all");
 const[filtSt,setFiltSt]=useState([]);
+const filtTy_d=useDeferredValue(filtTy);
+const filtSt_d=useDeferredValue(filtSt);
+const[selRows,setSelRows]=useState(new Set());
 const[noteEdit,setNoteEdit]=useState(null);
 const[noteText,setNoteText]=useState("");
 
@@ -163,9 +166,10 @@ sLd(false)}catch(e){sEr("Failed to connect: "+e.message);sLd(false)}},[user]);
 
 useEffect(()=>{if(user)load()},[user,load]);
 
-const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val}:x));
+const calcDLPrice=(v,fd,val)=>{const u={...v,[fd]:val};const m=N(u.nmn)||1;return(m*N(u.nh)*N(u.nr))+(m*N(u.oh)*N(u.or2))};
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;const autoP=v.ty==="DL"&&["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcDLPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));
 const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","srn":"SUB REF NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};
-sSv(true);await enq(()=>aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));sSv(false)},[vo,user]);
+sSv(true);await enq(()=>aP({action:"updateCoordVO",user,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));if(autoP)await enq(()=>aP({action:"updateCoordVO",user,row:v._r,field:"PRICE",value:newPr,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));sSv(false)},[vo,user,identity]);
 
 const dVO=async(v)=>{if(v.pushed){if(!confirm("⚠️ This VO was pushed to Master on "+v.pushed+".\n\nDeleting here will NOT remove it from the Master Pipeline.\nContact admin to remove it from Master.\n\nDelete from your register anyway?"))return}else{if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?"))return}sSv(true);await enq(()=>aP({action:"deleteCoordVO",user,row:v._r}));sVo(prev=>prev.filter(x=>x._r!==v._r));sSv(false);load()};
 
@@ -177,7 +181,7 @@ sSv(false);load()};
 
 const addV=async()=>{if(!nvo.project)return;sSv(true);await enq(()=>aP({action:"addCoordVO",user,project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf,notes:""}));sSa(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);setTimeout(load,1500)};
 
-const voFilt=useMemo(()=>{let f=vo;if(filtPj)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj.toLowerCase()));if(filtTy!=="all")f=f.filter(v=>v.ty===filtTy);if(filtSt.length>0)f=f.filter(v=>filtSt.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[vo,filtPj,filtTy,filtSt]);
+const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj_d.toLowerCase()));if(filtTy_d!=="all")f=f.filter(v=>v.ty===filtTy_d);if(filtSt_d.length>0)f=f.filter(v=>filtSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[vo,filtPj_d,filtTy_d,filtSt_d]);
 
 const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
 

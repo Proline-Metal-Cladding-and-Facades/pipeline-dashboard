@@ -444,7 +444,7 @@ const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState(
 const[er,sEr]=useState(null);const[cached,setCached]=useState(false);const[sav,sSav]=useState(false);
 const[selM,sSM]=useState([]);const[startM,setStartM]=useState(0);const[exp,sExp]=useState({});
 const[cellColors,setCellColors]=useState(()=>{try{const nc=localStorage.getItem("pipeline-cellColors");if(nc)return JSON.parse(nc);const oc=localStorage.getItem("pipeline-tent");if(oc){const old=JSON.parse(oc);const m={};Object.keys(old).forEach(k=>{if(old[k])m[k]="red"});localStorage.setItem("pipeline-cellColors",JSON.stringify(m));return m}}catch{}return{}});
-const setCC=(p,m,col,color)=>{const k=nk(p)+"|||"+m+"|||"+col;setCellColors(prev=>{const n={...prev};if(!color||color==="default")delete n[k];else n[k]=color;localStorage.setItem("pipeline-cellColors",JSON.stringify(n));return n})};
+const setCC=(p,m,col,color)=>{const k=nk(p)+"|||"+m+"|||"+col;setCellColors(prev=>{const n={...prev};if(!color||color==="default")delete n[k];else n[k]=color;try{localStorage.setItem("pipeline-cellColors",JSON.stringify(n))}catch{}return n});sSv(true);enq(()=>aP({action:"setCellColor",project:p,month:m,column:col,color:color||"default",editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")})).then(()=>{sLs(new Date());sSv(false)})};
 const getCC=(p,m,col)=>cellColors[nk(p)+"|||"+m+"|||"+col]||"default";
 const[colorMenu,setColorMenu]=useState(null);
 const openCM=(e,p,m,col)=>{e.preventDefault();setColorMenu({x:e.clientX,y:e.clientY,p,m,col})};const[hovR,sHR]=useState(null);const[hovC,sHC]=useState(null);const[hovOn,setHovOn]=useState(true);const[selCells,setSelCells]=useState([]);
@@ -499,8 +499,10 @@ const load=useCallback(async()=>{
     sEr("Error: "+r.error+" — showing cached data ("+age+" min ago).");
     setCached(true);r=cc}}catch(e){}
     if(r.error&&!cached){sEr(r.error);sLd(false);return}}
-  const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[];
-  if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,ts:Date.now()}))}catch(e){}}
+  const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[],ccD=r.cellColors||[];
+  if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,cellColors:ccD,ts:Date.now()}))}catch(e){}}
+  // Populate cell colors from server (overrides any localStorage state)
+  if(ccD.length>=0){const ccm={};ccD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=String(F(row,"Month","MONTH")).trim();const cc=String(F(row,"Column","COLUMN")).trim();const co=String(F(row,"Color","COLOR")).trim();if(pn&&mn&&cc&&co)ccm[nk(pn)+"|||"+mn+"|||"+cc]=co});setCellColors(ccm);try{localStorage.setItem("pipeline-cellColors",JSON.stringify(ccm))}catch{}}
   sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),pt:String(F(p,"Payment Terms","PAYMENT TERMS")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live"})));
   const mm={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts}});sMo(mm);
   sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||"")}))); 

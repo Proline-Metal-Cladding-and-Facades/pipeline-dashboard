@@ -74,6 +74,23 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
 .vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;flex-shrink:0}
 .vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
+.act-panel{position:fixed;top:0;right:0;width:300px;height:100vh;background:#fff;border-left:1px solid var(--bd);box-shadow:-2px 0 8px rgba(0,0,0,.08);z-index:100;overflow-y:auto;transform:translateX(100%);transition:transform .2s ease;font-family:var(--ft)}
+.act-panel.open{transform:translateX(0)}
+.act-overlay{position:fixed;inset:0;z-index:99;background:transparent;display:none}
+.act-overlay.open{display:block}
+.act-hdr{padding:10px 14px;border-bottom:2px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.act-hdr h3{font-size:12px;font-weight:700;color:var(--pu);margin:0}
+.act-hdr button{background:none;border:none;font-size:16px;cursor:pointer;color:var(--t2);padding:0 4px}
+.act-section{padding:10px 14px;border-bottom:1px solid var(--bd)}
+.act-section h4{font-size:9px;text-transform:uppercase;color:var(--t2);margin:0 0 8px 0;letter-spacing:.5px;font-weight:700}
+.act-item{padding:8px 0;border-bottom:1px solid #f0f0f0}
+.act-item:last-child{border-bottom:none}
+.act-item-user{font-weight:700;font-size:11px;color:var(--ac)}
+.act-item-target{font-size:10px;color:var(--tx);margin-top:1px;line-height:1.3}
+.act-item-when{font-size:9px;color:var(--t2);margin-top:2px}
+.act-empty{font-size:10px;color:var(--t2);font-style:italic;padding:6px 0}
+.act-btn{background:transparent;border:1px solid var(--bd);border-radius:4px;padding:3px 8px;cursor:pointer;font-family:var(--ft);font-size:10px;color:var(--tx)}
+.act-btn:hover{background:var(--s2)}
 .vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
 .vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
 </style></head><body><div id="root"></div>
@@ -86,6 +103,7 @@ const USERS=["Luka","Lizzie","Lachlan"];
 function fmP(v){if(!v&&v!==0)return"";return"$"+Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmN(v){if(!v&&v!==0)return"";return Math.round(Number(v)).toLocaleString("en-AU")}
 function fm2(v){if(!v&&v!==0)return"";return Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
+const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
 function fmD(v){if(!v)return"";var s=String(v).trim();var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 if(s.includes("T")||/^\d{4}-\d{2}-\d{2}/.test(s)){var d=new Date(s);if(!isNaN(d)){return String(d.getDate()).padStart(2,"0")+"-"+ms[d.getMonth()]+"-"+String(d.getFullYear()).slice(2)}}
 var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m[2])-1;if(mi>=0&&mi<12)return m[1].padStart(2,"0")+"-"+ms[mi]+"-"+(m[3].length===4?m[3].slice(2):m[3])}
@@ -111,7 +129,10 @@ onBlur={()=>{clearTimeout(tR.current);if(format){const f=format(v);if(f!==v){sV(
 
 function App(){
 const wqRef=useRef(Promise.resolve());
-const enq=fn=>{wqRef.current=wqRef.current.then(fn).catch(()=>{});return wqRef.current};
+const[saveErr,setSaveErr]=useState(null);
+const[pp,setPp]=useState(getPP());const[ppI,setPpI]=useState("");
+const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp",v)}catch{};setPp(v);setPpI("")};
+const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
 const urlUser=new URLSearchParams(window.location.search).get("user")||"";
 const[identity,setIdentity]=useState(()=>localStorage.getItem("vo-identity")||"");
 const[user,setUser]=useState(urlUser);
@@ -137,9 +158,10 @@ const defCW=[24,28,130,60,70,60,140,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
 const[colW,setColW]=useState(defCW);
 const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(30,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
 
-async function aP(p){try{await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(p)});return true}catch{return false}}
+function getPP(){try{return localStorage.getItem("pipeline-pp")||""}catch{return""}}
+async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;await fetch(API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)});return true}catch{return false}}
 
-const load=useCallback(async()=>{sLd(true);sEr(null);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user));const d=await r.json();if(d.error){sEr(d.error);sLd(false);return}
+const load=useCallback(async()=>{sLd(true);sEr(null);try{const pp=getPP();const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+(pp?"&passphrase="+encodeURIComponent(pp):""));const d=await r.json();if(d.error){if(d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("");sEr("Wrong team passphrase. Please re-enter.");sLd(false);return}sEr(d.error);sLd(false);return}
 const vD=d.vos||[];const pD=d.projects||[];
 sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT")).trim()})).filter(p=>!p.nm.startsWith("_")));
 sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,
@@ -160,11 +182,20 @@ nr:N(F(v,"NORMAL RATE")),
 oh:N(F(v,"OVERTIME HOURS")),
 or2:N(F(v,"OVERTIME RATE")),
 notes:String(F(v,"NOTES","Notes")||""),
-pushed:String(F(v,"PUSHED","")||"")
+pushed:String(F(v,"PUSHED","")||""),
+eb:String(F(v,"EditedBy","EDITED BY")||""),
+ea:String(F(v,"EditedAt","EDITED AT")||"")
 })));
 sLd(false)}catch(e){sEr("Failed to connect: "+e.message);sLd(false)}},[user]);
 
 useEffect(()=>{if(user)load()},[user,load]);
+// Heartbeat: ping every 60s while logged in (lock-free on server)
+useEffect(()=>{if(!identity||!pp)return;const ping=()=>{fetch(API+"?action=heartbeat&user="+encodeURIComponent(identity)+"&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).catch(()=>{})};ping();const id=setInterval(ping,60000);return()=>clearInterval(id)},[identity,pp]);
+// Activity panel — recent edits only (no presence list)
+const[actOpen,setActOpen]=useState(false);
+const[actData,setActData]=useState({activity:[]});
+useEffect(()=>{if(!actOpen)return;let cancelled=false;const refresh=async()=>{try{const ppv=getPP();const r=await fetch(API+"?action=getActivity"+(ppv?"&passphrase="+encodeURIComponent(ppv):"")+"&t="+Date.now());const d=await r.json();if(!cancelled&&d&&!d.error)setActData(d)}catch{}};refresh();const id=setInterval(refresh,30000);return()=>{cancelled=true;clearInterval(id)}},[actOpen]);
+const tAgo=(ts)=>{if(!ts)return"";const d=Date.now()-new Date(ts).getTime();if(d<60000)return"just now";if(d<3600000)return Math.floor(d/60000)+" min ago";if(d<86400000)return Math.floor(d/3600000)+"h ago";return Math.floor(d/86400000)+"d ago"};
 
 const calcDLPrice=(v,fd,val)=>{const u={...v,[fd]:val};const m=N(u.nmn)||1;return(m*N(u.nh)*N(u.nr))+(m*N(u.oh)*N(u.or2))};
 const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;const autoP=v.ty==="DL"&&["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcDLPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));
@@ -185,6 +216,13 @@ const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().
 
 const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
 
+if(!pp)return<div className="np"><div style={{textAlign:"center"}}><div style={{fontSize:40}}>🔒</div><h2 style={{marginBottom:12}}>Team Access</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>Enter the team passphrase to continue.</p>
+<input type="password" value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} placeholder="Passphrase..." autoFocus style={{padding:"10px 14px",fontSize:14,border:"1px solid var(--bd)",borderRadius:6,fontFamily:"var(--ft)",marginBottom:8,width:200}}/>
+<br/><button disabled={!ppI.trim()} onClick={submitPp} style={{padding:"8px 30px",fontSize:13,fontWeight:700,fontFamily:"var(--ft)",background:ppI.trim()?"var(--ac)":"var(--bd)",color:"#fff",border:"none",borderRadius:6,cursor:ppI.trim()?"pointer":"default"}}>Unlock →</button>
+<div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div>
+</div></div>;
+
 if(!identity)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Who are you?</h2>
 <p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>This is saved so we know who made changes.</p>
 {USERS.map(u=><button key={u} onClick={()=>{setIdentity(u);localStorage.setItem("vo-identity",u);if(!user)setUser(u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}
@@ -196,8 +234,16 @@ if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={
 </div></div>;
 
 return<div className="app">
-<div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:sv?"var(--am)":"var(--gn)"}}>{sv?"Saving...":"Connected"}</span></div>
-<div style={{display:"flex",gap:4}}><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
+<div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":"Connected"}</span></div>
+<div style={{display:"flex",gap:4}}><button className="act-btn" onClick={()=>setActOpen(true)} title="Recent edits across the team">📋 Activity</button><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
+{/* ACTIVITY PANEL */}
+<div className={"act-overlay"+(actOpen?" open":"")} onClick={()=>setActOpen(false)}/>
+<div className={"act-panel"+(actOpen?" open":"")}>
+<div className="act-hdr"><h3>Recent Activity</h3><button onClick={()=>setActOpen(false)} title="Close">✕</button></div>
+<div className="act-section">
+{(actData.activity||[]).length===0?<div className="act-empty">No recent activity.</div>:(actData.activity||[]).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
+</div>
+</div>
 
 {er&&<div className="er">{er}</div>}
 {ld?<div className="ld">Loading...</div>:<>
@@ -232,7 +278,7 @@ return<div className="app">
 {["","☐","Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<11?"tg":ci<14?"ty":ci<19?"tp":"tg"} style={{width:colW[ci],minWidth:30,...(ci<7?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===6?"2px solid var(--bd)":undefined}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
 </tr></thead><tbody>
 {voFilt.length===0?<tr><td colSpan={20} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
-voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}}>
+voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc}} title={editTip(v.eb,v.ea)}>
 <td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
 <td style={{textAlign:"center",padding:0,position:"sticky",left:colW[0],zIndex:2}}><input type="checkbox" checked={selRows.has(v._r)} onChange={e=>{const n=new Set(selRows);if(e.target.checked)n.add(v._r);else n.delete(v._r);setSelRows(n)}} style={{cursor:"pointer"}}/></td>
 <td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><DebInput list="vo-projects-list" value={v.pj} onSave={val=>uV(v.i,"pj",val)} style={{color:rc,width:"100%"}}/></td>

@@ -289,8 +289,8 @@ input[type=number]{-moz-appearance:textfield}
 .vt-ro th:nth-child(3),.vt-ro td:nth-child(3){left:210px}
 .vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px}
 .vt-ro th:nth-child(5),.vt-ro td:nth-child(5){left:340px;border-right:2px solid var(--bd)!important}
-.vt-ro th:nth-child(6),.vt-ro td:nth-child(6){position:static;left:auto;border-right:none!important}
-.vt-ro th:nth-child(7),.vt-ro td:nth-child(7){position:static;left:auto;border-right:none!important}
+.vt-ro th:nth-child(6),.vt-ro td:nth-child(6){border-right:none!important}
+.vt-ro th:nth-child(7),.vt-ro td:nth-child(7){border-right:none!important}
  
  
 .gh>div:nth-child(-n+7){z-index:20!important;background:var(--s2)}
@@ -771,10 +771,10 @@ return<div className="pr pr-pf" key={p.i}>
 {vw==="coord"&&<div className="vw-fx">
 <div className="vo-cards">
 <div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordFilt.length}</div></div>
-<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${coordFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU")}</div></div>
-<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU")}</div></div>
-<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU")}</div></div>
-<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${coordFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU")}</div></div>
+<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${coordFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${coordFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
 </div>
 <div className="br" style={{padding:"6px 10px",margin:0,borderBottom:"1px solid var(--bd)"}}>
 <div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setVoFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:voFiltTy===t?"var(--ac)":"var(--bd)",background:voFiltTy===t?"var(--ac)":"transparent",color:voFiltTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>

@@ -222,7 +222,7 @@ sVo(prev=>prev.map(x=>x._r===v._r?{...x,pushed:new Date().toLocaleString("en-AU"
 await enq(()=>aP({action:"pushToMaster",user,row:v._r}));
 sSv(false)};
 
-const addV=async()=>{if(!nvo.project)return;setAdding(true);sSv(true);sSa(false);const newVo={...nvo};sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});await enq(()=>aP({action:"addCoordVO",user,project:newVo.project,type:newVo.type,varNo:(newVo.type==="DL"?"DL-":"VO-")+newVo.varNo,varName:newVo.varName,dateSubmitted:newVo.ds,dateApproved:newVo.da,price:newVo.price,status:newVo.status,extMaterials:newVo.em,pfabMaterials:newVo.pf,margin:newVo.price-newVo.em-newVo.pf,notes:""}));await load(true);sSv(false);setAdding(false)};
+const addV=async()=>{if(!nvo.project)return;sSv(true);sSa(false);const newVo={...nvo};sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});const fullVarNo=(newVo.type==="DL"?"DL-":"VO-")+newVo.varNo;const tempRow={i:Date.now(),_r:Date.now(),pj:newVo.project,ty:newVo.type,vn:fullVarNo,srn:"",vnm:newVo.varName,ds:newVo.ds,da:newVo.da,pr:Number(newVo.price)||0,st:newVo.status,em:Number(newVo.em)||0,pf:Number(newVo.pf)||0,nmn:0,nh:0,nr:0,oh:0,or2:0,notes:"",pushed:"",eb:identity,ea:new Date().toLocaleString("en-AU"),_pending:true};sVo(prev=>[tempRow,...prev]);enq(()=>aP({action:"addCoordVO",user,project:newVo.project,type:newVo.type,varNo:fullVarNo,varName:newVo.varName,dateSubmitted:newVo.ds,dateApproved:newVo.da,price:newVo.price,status:newVo.status,extMaterials:newVo.em,pfabMaterials:newVo.pf,margin:newVo.price-newVo.em-newVo.pf,notes:""})).then(()=>{load(true).then(()=>sSv(false))});};
 
 const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj_d.toLowerCase()));if(filtTy_d!=="all")f=f.filter(v=>v.ty===filtTy_d);if(filtSt_d.length>0)f=f.filter(v=>filtSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[vo,filtPj_d,filtTy_d,filtSt_d]);
 
@@ -247,7 +247,6 @@ if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={
 </div></div>;
 
 return<div className="app">
-{adding&&<div className="spnr-bg"><div className="spnr-bx"><div className="spnr-cir"/><div className="spnr-tx">Adding VO...</div></div></div>}
 <div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":"Connected"}</span></div>
 <div style={{display:"flex",gap:4}}><button className="act-btn" onClick={()=>setActOpen(true)} title="Recent edits across the team">📋 Activity</button><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
 {/* ACTIVITY PANEL */}

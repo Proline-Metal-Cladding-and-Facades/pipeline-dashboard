@@ -75,6 +75,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;flex-shrink:0}
 .vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
 .act-panel{position:fixed;top:0;right:0;width:300px;height:100vh;background:#fff;border-left:1px solid var(--bd);box-shadow:-2px 0 8px rgba(0,0,0,.08);z-index:100;overflow-y:auto;transform:translateX(100%);transition:transform .2s ease;font-family:var(--ft)}
+.spnr-bg{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.spnr-bx{background:#fff;border:1px solid var(--bd);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.12);padding:20px 28px;display:flex;align-items:center;gap:14px;font-family:var(--ft)}
+.spnr-cir{width:22px;height:22px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spnr 0.7s linear infinite}
+.spnr-tx{font-size:13px;color:var(--tx);font-weight:600}
+@keyframes spnr{to{transform:rotate(360deg)}}
 .act-panel.open{transform:translateX(0)}
 .act-overlay{position:fixed;inset:0;z-index:99;background:transparent;display:none}
 .act-overlay.open{display:block}
@@ -147,6 +152,7 @@ const[ld,sLd]=useState(true);
 const[sv,sSv]=useState(false);
 const[er,sEr]=useState(null);
 const[sa,sSa]=useState(false);
+const[adding,setAdding]=useState(false);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
 
 const[filtPj,setFiltPj]=useState("");
@@ -216,7 +222,7 @@ sVo(prev=>prev.map(x=>x._r===v._r?{...x,pushed:new Date().toLocaleString("en-AU"
 await enq(()=>aP({action:"pushToMaster",user,row:v._r}));
 sSv(false)};
 
-const addV=async()=>{if(!nvo.project)return;sSv(true);sSa(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});await enq(()=>aP({action:"addCoordVO",user,project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf,notes:""}));sSv(false);load(true)};
+const addV=async()=>{if(!nvo.project)return;setAdding(true);sSv(true);sSa(false);const newVo={...nvo};sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});await enq(()=>aP({action:"addCoordVO",user,project:newVo.project,type:newVo.type,varNo:(newVo.type==="DL"?"DL-":"VO-")+newVo.varNo,varName:newVo.varName,dateSubmitted:newVo.ds,dateApproved:newVo.da,price:newVo.price,status:newVo.status,extMaterials:newVo.em,pfabMaterials:newVo.pf,margin:newVo.price-newVo.em-newVo.pf,notes:""}));await load(true);sSv(false);setAdding(false)};
 
 const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj_d.toLowerCase()));if(filtTy_d!=="all")f=f.filter(v=>v.ty===filtTy_d);if(filtSt_d.length>0)f=f.filter(v=>filtSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return 1;if(ad&&!bd)return -1;return bd-ad})},[vo,filtPj_d,filtTy_d,filtSt_d]);
 
@@ -241,6 +247,7 @@ if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={
 </div></div>;
 
 return<div className="app">
+{adding&&<div className="spnr-bg"><div className="spnr-bx"><div className="spnr-cir"/><div className="spnr-tx">Adding VO...</div></div></div>}
 <div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":"Connected"}</span></div>
 <div style={{display:"flex",gap:4}}><button className="act-btn" onClick={()=>setActOpen(true)} title="Recent edits across the team">📋 Activity</button><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
 {/* ACTIVITY PANEL */}

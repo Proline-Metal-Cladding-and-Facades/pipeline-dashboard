@@ -211,9 +211,10 @@ const dVO=async(v)=>{if(v.pushed){if(!confirm("⚠️ This VO was pushed to Mast
 
 const pushVO=async(v)=>{
 if(!confirm(v.pushed?"Re-push \""+v.vnm+"\" to update Master?":"Push \""+v.vnm+"\" to Master VO Register?"))return;
-sSv(true);await enq(()=>aP({action:"pushToMaster",user,row:v._r}));
+sSv(true);
 sVo(prev=>prev.map(x=>x._r===v._r?{...x,pushed:new Date().toLocaleString("en-AU")}:x));
-sSv(false);load()};
+await enq(()=>aP({action:"pushToMaster",user,row:v._r}));
+sSv(false)};
 
 const addV=async()=>{if(!nvo.project)return;sSv(true);await enq(()=>aP({action:"addCoordVO",user,project:nvo.project,type:nvo.type,varNo:(nvo.type==="DL"?"DL-":"VO-")+nvo.varNo,varName:nvo.varName,dateSubmitted:nvo.ds,dateApproved:nvo.da,price:nvo.price,status:nvo.status,extMaterials:nvo.em,pfabMaterials:nvo.pf,margin:nvo.price-nvo.em-nvo.pf,notes:""}));sSa(false);sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});sSv(false);setTimeout(load,1500)};
 
@@ -267,7 +268,7 @@ return<div className="app">
 <div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:filtTy===t?"var(--ac)":"var(--bd)",background:filtTy===t?"var(--ac)":"transparent",color:filtTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
 <div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=vo.filter(v=>{const pjM=!filtPj||v.pj.toLowerCase().includes(filtPj.toLowerCase());const tyM=filtTy==="all"||v.ty===filtTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length;return<button key={s.v} onClick={()=>setFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:filtSt.includes(s.v)?s.c:"var(--bd)",background:filtSt.includes(s.v)?s.c:"transparent",color:filtSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
 <input className="sx" placeholder="Search project..." value={filtPj} onChange={e=>setFiltPj(e.target.value)}/>
-<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length} · Approved: {apCount}</span>{selRows.size>0&&<button className="pl gn" onClick={async()=>{if(!confirm("Push "+selRows.size+" selected VOs to Master?"))return;sSv(true);for(const r of selRows){const v=vo.find(x=>x._r===r);if(v){await enq(()=>aP({action:"pushToMaster",user,row:v._r}));sVo(prev=>prev.map(x=>x._r===r?{...x,pushed:new Date().toLocaleString("en-AU")}:x))}}setSelRows(new Set());sSv(false);load()}}>{selRows.size} Push Selected</button>}
+<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length} · Approved: {apCount}</span>{selRows.size>0&&<button className="pl gn" onClick={async()=>{if(!confirm("Push "+selRows.size+" selected VOs to Master?"))return;sSv(true);for(const r of selRows){const v=vo.find(x=>x._r===r);if(v){sVo(prev=>prev.map(x=>x._r===r?{...x,pushed:new Date().toLocaleString("en-AU")}:x));await enq(()=>aP({action:"pushToMaster",user,row:v._r}))}}setSelRows(new Set());sSv(false)}}>{selRows.size} Push Selected</button>}
 </div>
 
 {/* Add form */}

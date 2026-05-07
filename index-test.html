@@ -1,303 +1,79 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>PMC & PF Pipeline</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Variation Register</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f6f9;--s1:#ffffff;--s2:#edf0f5;--s3:#e2e6ed;--bd:#cdd3de;--tx:#1e2330;--t2:#6b7489;--ac:#4472c4;--a2:#3560b5;--gn:#1a9a6b;--am:#a07008;--rd:#dc4a4a;--pu:#a78bfa;--ft:'Outfit',sans-serif;--mn:'Aptos','Calibri','Segoe UI',sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--tx);font-family:var(--ft)}
-.np{position:fixed;inset:0;background:#f4f6f9;display:flex;align-items:center;justify-content:center;z-index:100}
-.nc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
-.nc h2{font-size:22px;font-weight:800;margin:12px 0 6px}.nc p{font-size:12px;color:var(--t2);margin-bottom:14px}
-.nin{width:100%;padding:12px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-family:var(--ft);font-size:16px;text-align:center;outline:none;margin-bottom:12px}
-.nin:focus{border-color:var(--ac)}.nin::placeholder{color:#a0a8b8}
-.nbt{width:100%;padding:12px;border-radius:10px;border:none;background:var(--a2);color:#fff;font-family:var(--ft);font-size:14px;font-weight:700;cursor:pointer}
-.nbt:hover:not(:disabled){background:var(--ac)}.nbt:disabled{opacity:.3}
-.app{padding:10px 12px 28px 12px}
-.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:0;flex-wrap:wrap;gap:6px;position:sticky;top:0;z-index:25;background:#f4f6f9;padding:4px 0 10px 0}
-.hl{display:flex;align-items:center;gap:8px}.hl h1{font-size:18px;font-weight:800}
-.dot{width:7px;height:7px;border-radius:50%;animation:pul 2s infinite}@keyframes pul{0%,100%{opacity:1}50%{opacity:.4}}
-.dx{font-size:10px;font-weight:600}.hr{display:flex;align-items:center;gap:6px}
-.ub{background:var(--s2);border:1px solid var(--bd);padding:3px 10px;border-radius:14px;font-size:10px;font-weight:600}
-.svt{font-size:9px;color:var(--t2)}.rb{padding:3px 8px;border-radius:4px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer}
+:root{--bg:#f4f6f9;--s1:#ffffff;--s2:#edf0f5;--s3:#e2e6ed;--bd:#cdd3de;--tx:#1e2330;--t2:#6b7489;--ac:#4472c4;--a2:#3560b5;--rd:#dc4a4a;--gn:#1a9a6b;--am:#a07008;--pu:#7c3aed;--ft:'Outfit',sans-serif;--mn:'Aptos','Calibri','Segoe UI',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+#root{height:100%}
+body{font-family:var(--ft);background:var(--bg);color:var(--tx);font-size:11px}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield}
+.app{padding:8px 12px 0 12px;height:100%;display:flex;flex-direction:column;min-height:0}
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-shrink:0}
+.hl{display:flex;align-items:center;gap:8px}
+.hl h1{font-size:16px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dx{font-size:9px;font-weight:600}
+.rb{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
 .rb:hover{color:var(--tx);border-color:var(--ac)}
-.cds{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-bottom:8px;}
-.cd{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:8px 10px}
-.cd.se{border-color:var(--pu);background:rgba(167,139,250,.05)}
-.cd .lb{font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;font-weight:700}
-.cd .vl{font-size:16px;font-weight:800;font-family:var(--mn);margin-top:1px}.cd .sb{font-size:9px;color:var(--t2)}
-.br{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;align-items:center;}
-.pl{padding:4px 12px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:var(--ft);font-size:10px;font-weight:600;cursor:pointer}
-.pl.on{background:var(--a2);border-color:var(--a2);color:#fff}.pl:hover:not(.on){border-color:var(--t2);color:var(--tx)}
-.pl.gn{border-color:var(--gn);color:var(--gn)}.pl.gn:hover{background:var(--gn);color:var(--bg)}
-.dv{width:1px;height:16px;background:var(--bd);margin:0 3px}
-.sx{flex:1;min-width:120px;padding:4px 10px;border-radius:4px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-family:var(--ft);font-size:10px;outline:none}
-.sx:focus{border-color:var(--ac)}.sx::placeholder{color:var(--t2)}
-.af{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:8px;margin-bottom:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:end}
-.af label{font-size:9px;color:var(--t2);display:block;text-transform:uppercase;font-weight:700}
-.af input,.af select{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:4px 7px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none}
-.af input:focus,.af select:focus{border-color:var(--ac)}
-.mn2{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
-.mn2 button{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:3px 7px;border-radius:4px;cursor:pointer;font-size:9px;font-weight:600;font-family:var(--ft)}
-.mn2 button:hover{color:var(--tx)}.mn2 span{font-size:9px;color:var(--t2)}
-/* GRID - EXACT same column structure as the working version */
-.gc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px;background:#fff;scrollbar-gutter:stable}
-.g{display:grid;min-width:fit-content}
-.gh{display:contents}
-.gh>div{position:sticky;top:0;z-index:15;background:var(--s2);padding:5px 6px;font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.2px;font-weight:700;border-bottom:2px solid var(--bd);white-space:nowrap;text-align:right;cursor:pointer;user-select:none}
-.gh>div:hover{color:var(--tx);background:var(--s3)}
-.gh>div:first-child{text-align:left;position:sticky;left:0;z-index:6;min-width:240px;cursor:default}
-.gh>div.ms{color:var(--pu);background:rgba(167,139,250,.1);border-bottom-color:var(--pu)}
-.pg{display:contents}
-/* Project row = Sales merged */
-.pr{display:contents}
-.pr>div{padding:4px 6px;font-size:9px;font-weight:700;background:#f9f9f7;font-family:var(--mn);border-top:0.5px solid #e4e6eb;border-bottom:0.5px solid #e4e6eb;text-align:right;font-family:var(--mn)}
-.pr>div:first-child{text-align:left;position:sticky;left:0;z-index:3;background:#f9f9f7;font-family:var(--ft);display:flex;align-items:flex-start;justify-content:flex-start;gap:2px;min-width:240px;padding-left:4px!important}
-.eb{background:none;border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:9px;border-radius:3px;padding:0 4px;font-weight:700;font-family:var(--mn);line-height:16px;flex-shrink:0}
-.eb:hover{color:var(--ac);border-color:var(--ac)}
-.xb{background:none;border:none;color:var(--t2);cursor:pointer;font-size:11px;opacity:.3;padding:0 1px;flex-shrink:0}.xb:hover{color:var(--rd);opacity:1}
-.pne{cursor:pointer;color:var(--ac);font-size:9px;font-weight:700;white-space:nowrap}.pne:hover{color:var(--am)}
-.st-tag{font-size:7px;font-weight:700;padding:1px 5px;border-radius:8px;flex-shrink:0;cursor:pointer}
-.st-live{background:rgba(52,211,153,.15);color:var(--gn)}.st-done{background:rgba(125,137,166,.15);color:var(--t2)}.st-pend{background:rgba(220,74,74,.15);color:var(--rd)}.st-awd{background:rgba(68,114,196,.15);color:var(--ac)}
-.jid-tag{font-size:9px;color:var(--t2);font-family:var(--mn);flex-shrink:0;background:var(--bg);border:1px solid var(--bd);padding:0 4px;border-radius:3px;outline:none;width:50px}
-.jid-tag:focus{border-color:var(--ac);color:var(--tx)}
-.cin{background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--ft);font-size:9px;padding:2px 4px;border-radius:2px;outline:none;width:140px}
-/* Sub rows */
-.rw{display:contents}.rw>div{padding:3px 6px;font-size:9px;border-bottom:1px solid rgba(45,52,80,.4);text-align:right}
-.rl{text-align:left!important;font-family:var(--ft);font-weight:500;padding-left:4px!important;font-size:9px}
-.r1 .rl,.r2 .rl,.r3 .rl{color:#c45e10}
-.rg{display:contents}.rg>div{padding:3px 6px;font-size:9px;font-weight:700;border-bottom:2px solid var(--bd);text-align:right}
-.rg>div:nth-child(1){color:var(--gn)!important}
-/* Cells */
-.cl{padding:2px 3px;min-height:14px;font-variant-numeric:tabular-nums;cursor:pointer;border-radius:2px;font-family:var(--mn);font-size:9px;text-align:right}
-.cl:hover{background:rgba(91,141,239,.06)}.cs{color:#3a3f4a}.cc{color:#3a3f4a}
-.ce{color:#3a3f4a;border-bottom:1px dashed rgba(58,63,74,.3)}.ce:hover{background:rgba(58,63,74,.06)}
-.ci{width:100%;background:var(--bg);border:1px solid var(--ac);color:var(--tx);font-family:var(--mn);font-size:9px;padding:2px 3px;border-radius:2px;outline:none;text-align:right}
-.ld{display:flex;flex-direction:column;align-items:center;padding:40px;gap:8px}.ld p{font-size:11px;color:var(--t2)}
-.sp{width:22px;height:22px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sn .7s linear infinite}
-@keyframes sn{to{transform:rotate(360deg)}}
-.er{padding:6px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:5px;font-size:10px;color:var(--rd);margin-bottom:6px}
-.em{text-align:center;padding:20px;color:var(--t2);font-size:11px}
-/* SUMMARY - uses SAME grid template, label spans first 7 cols */
-.sum-hdr{padding:5px 8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;margin-top:6px;border:1px solid var(--bd);border-radius:4px 4px 0 0}
-.sum-hdr-p{color:var(--ac);background:rgba(91,141,239,.06);border-color:var(--ac)}
-.sum-hdr-a{color:var(--gn);background:rgba(52,211,153,.06);border-color:var(--gn)}
-.sum-hdr .tog{font-size:9px;color:var(--t2);font-weight:400}
-.lkr{margin-left:auto;display:flex;gap:2px}
-.lk{background:#fff;border:1px solid var(--bd);border-radius:3px;padding:0 3px;cursor:pointer;font-size:9px;color:var(--t2);line-height:16px}
-.lk:hover{border-color:var(--am);color:var(--am)}
-.lk.on{background:#c5cad3;color:#fff;border-color:#b5bbc6}
-.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1);scrollbar-gutter:stable}
-.sr{display:contents}
-.sr>div{padding:2px 6px;font-size:9px;font-family:var(--mn);font-weight:400;border-bottom:1px solid rgba(45,52,80,.25);text-align:right;font-family:var(--mn)}
-.sr .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
-.sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
-.sr-t{display:contents}.sr-t>div{padding:3px 6px;font-size:9px;font-family:var(--mn);font-weight:400;font-weight:800;border-top:1px solid var(--bd);border-bottom:2px solid var(--bd);text-align:right;font-family:var(--mn)}
-.sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
-/* Weeks row */
-.wk-row{display:flex;align-items:center;margin:6px 0;padding:4px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:4px}
-.wk-label{font-size:10px;font-weight:800;color:var(--am);text-transform:uppercase;letter-spacing:.3px;min-width:160px}
-.wk-vals{display:flex;gap:0;flex:1}
-.wk-v{width:72px;text-align:center;font-family:var(--mn);font-size:11px;font-weight:700;color:var(--am);padding:2px 0}
-/* VO */
-.vw{background:#fff;border:none;margin:-10px -12px;padding:0}
-.vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px}
-.vhd h3{font-size:12px;font-weight:700;color:var(--pu)}
-.vsc{overflow-x:auto;max-height:calc(100vh - 240px);overflow-y:auto}
-/* VO/Coord flex layout — fills viewport, no grey strip at top or bottom */
-.vw-fx{background:#fff;margin:-10px -12px;padding:0;display:flex;flex-direction:column;height:calc(100vh - 65px);min-height:0;overflow:hidden}
-.vw-fx>*{flex-shrink:0}
-.vw-fx>.vsc-fx{flex:1;min-height:0;overflow:auto;max-height:none}
-.vw-fx>.em{flex:1;display:flex;align-items:center;justify-content:center}
-.vt{width:100%;border-collapse:separate;border-spacing:0;font-size:9px;font-family:var(--mn);table-layout:fixed}
-.vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);white-space:nowrap}
+.er{background:rgba(220,74,74,.1);color:var(--rd);padding:6px 10px;border-radius:4px;font-size:10px;margin-bottom:8px;flex-shrink:0}
+.ld{text-align:center;padding:40px;color:var(--t2);font-size:14px}
+.em{text-align:center;padding:30px;color:var(--t2);font-size:11px}
+/* Toolbar */
+.br{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap;flex-shrink:0}
+.pl{padding:4px 12px;border-radius:4px;font-weight:700;font-size:10px;cursor:pointer;font-family:var(--ft);border:1px solid var(--bd);background:var(--s2);color:var(--tx)}
+.pl.gn{background:var(--gn);color:#fff;border-color:var(--gn)}
+.pl.rd{background:var(--rd);color:#fff;border-color:var(--rd)}
+.sx{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:4px 10px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none;width:180px}
+/* VO Table */
+.vw{background:#fff;border:none;margin:0;padding:0;flex:1;min-height:0;display:flex;flex-direction:column}
+.vhd{padding:4px 10px;background:var(--s2);border-bottom:2px solid var(--bd);display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-shrink:0}
+.vsc{overflow:auto;flex:1;min-height:0}
+.vt{width:100%;border-collapse:separate;border-spacing:0;font-size:10px;font-family:var(--mn);table-layout:fixed}
+.vt th{text-align:center;padding:6px 8px;font-size:9px;color:var(--tx);font-weight:700;border:1px solid var(--bd);background:var(--s2);position:sticky;top:0;z-index:1;white-space:nowrap;position:relative}
 .vt th.tg{background:#e8f5e9;color:#2e7d32}.vt th.ty{background:#fff8e1;color:#f57f17}.vt th.tp{background:#f3e5f5;color:#7b1fa2}
 .vt td{padding:4px 8px;border:1px solid var(--bd);background:#fff}
 /* Browser-level virtualization — skips rendering rows outside the viewport */
 .vt tbody tr{content-visibility:auto;contain-intrinsic-size:auto 24px}
 .vt tr:nth-child(even) td{background:#f8f9fb}
 .vt tr:hover td{background:rgba(68,114,196,.08)}
-/* Coord VO read-only: solid frozen-column backgrounds (4 frozen cols) — fixes scroll-bleed */
-.vt-ro td:nth-child(-n+5){background:#fff}
-.vt-ro tr:nth-child(even) td:nth-child(-n+5){background:#f8f9fb}
-.vt-ro tr:hover td:nth-child(-n+5){background:#e8eef9!important}
-.vt-ro tr:nth-child(even):hover td:nth-child(-n+5){background:#dde5f3!important}
-.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:9px;outline:none;width:100%;box-sizing:border-box}
+.vt input,.vt select{background:transparent;border:none;color:var(--tx);padding:2px 0;font-family:var(--mn);font-size:10px;outline:none;width:100%;box-sizing:border-box}
 .vt input:focus,.vt select:focus{background:rgba(68,114,196,.06);border-bottom:1px solid var(--ac)}
-.vt input.nm{text-align:right;width:100%}.vt input.sm{width:100%}.vt input.md{width:100%}
-.sa{background:rgba(52,211,153,.15)!important;color:var(--gn)!important}.sp3{background:rgba(248,113,113,.15)!important;color:var(--rd)!important}.srej{background:rgba(107,114,128,.2)!important;color:#6b7280!important}
- 
-.sum-body{border:1px solid var(--bd);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;background:var(--s1);scrollbar-gutter:stable}
-.slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-weight:600;font-size:9px;padding-left:8px!important;white-space:normal;position:sticky;left:0;z-index:1;background:var(--s1)}
-.sr-c .slbl{color:var(--ac)}.sr-e .slbl{color:var(--tx)}
-.sr-t .slbl{grid-column:1/8;text-align:left;font-family:var(--ft);font-size:9px;padding-left:8px!important;position:sticky;left:0;z-index:1;background:var(--s1);white-space:normal}
- 
-.ss{scrollbar-width:none;-ms-overflow-style:none}
-.ss::-webkit-scrollbar{display:none}
-.scroll-ctrl{overflow-x:auto;margin-top:4px;scrollbar-width:auto!important}
-.scroll-ctrl::-webkit-scrollbar{height:10px!important;display:block!important}
-.scroll-ctrl::-webkit-scrollbar-track{background:var(--s2);border-radius:4px}
-.scroll-ctrl::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px}
-.scroll-ctrl::-webkit-scrollbar-thumb:hover{background:var(--t2)}
- 
-/* FREEZE PANES - first 7 columns sticky */
-.gh>div:nth-child(1),.pr>div:nth-child(1),.rw>div:nth-child(1),.rg>div:nth-child(1){position:sticky;left:0;z-index:6}
-.gh>div:nth-child(2),.pr>div:nth-child(2),.rw>div:nth-child(2),.rg>div:nth-child(2){position:sticky;left:240px;z-index:6}
-.gh>div:nth-child(3),.pr>div:nth-child(3),.rw>div:nth-child(3),.rg>div:nth-child(3){position:sticky;left:312px;z-index:6}
-.gh>div:nth-child(4),.pr>div:nth-child(4),.rw>div:nth-child(4),.rg>div:nth-child(4){position:sticky;left:374px;z-index:6}
-.gh>div:nth-child(5),.pr>div:nth-child(5),.rw>div:nth-child(5),.rg>div:nth-child(5){position:sticky;left:439px;z-index:6}
-.gh>div:nth-child(6),.pr>div:nth-child(6),.rw>div:nth-child(6),.rg>div:nth-child(6){position:sticky;left:511px;z-index:6}
-.gh>div:nth-child(7),.pr>div:nth-child(7),.rw>div:nth-child(7),.rg>div:nth-child(7){position:sticky;left:583px;z-index:6;border-right:2px solid var(--bd)}
-/* Header z-index higher */
-.gh>div:nth-child(-n+7){z-index:6}
-/* Backgrounds must be opaque for freeze to work */
-.gh>div:nth-child(-n+7){background:var(--s2)}
-.pr>div:nth-child(-n+7){background:#f9f9f7}
-.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
-.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
-.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
- 
-/* Center monthly columns */
-.gh>div:nth-child(n+8){text-align:center;color:var(--tx)}
-.pr>div:nth-child(n+8),.rw>div:nth-child(n+8),.rg>div:nth-child(n+8){text-align:right}
-/* Row + Column highlight */
- 
- 
- 
- 
-/* Sidebar */
-.sb-toggle{background:none;border:1px solid var(--bd);color:var(--t2);font-size:16px;cursor:pointer;padding:2px 8px;border-radius:4px;line-height:1}
-.sb-toggle:hover{color:var(--tx);border-color:var(--ac)}
-.sidebar{position:fixed;top:0;left:0;height:100vh;width:220px;background:var(--s1);border-right:1px solid var(--bd);z-index:50;transform:translateX(-100%);transition:transform .2s ease;display:flex;flex-direction:column;padding:16px 0}
-.sidebar.open{transform:translateX(0)}
-.sb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:49;display:none}
-.sb-overlay.open{display:block}
-.sb-hdr{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);margin-bottom:8px}
-.sb-hdr h2{font-size:14px;font-weight:800;color:var(--ac)}
-.sb-close{background:none;border:none;color:var(--t2);font-size:18px;cursor:pointer}.sb-close:hover{color:var(--tx)}
-.sb-menu{flex:1;overflow-y:auto}
-.sb-item{display:flex;align-items:center;gap:10px;padding:10px 16px;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;border-left:3px solid transparent}
-.sb-item:hover{background:var(--s2);color:var(--tx)}
-.sb-item.active{background:rgba(91,141,239,.08);color:var(--ac);border-left-color:var(--ac)}
-.sb-item .sb-ico{font-size:16px;width:22px;text-align:center}
-.sb-item .sb-badge{margin-left:auto;font-size:9px;background:var(--s3);padding:1px 6px;border-radius:8px;color:var(--t2)}
-.sb-divider{height:1px;background:var(--bd);margin:8px 16px}
-.sb-footer{padding:10px 16px;font-size:9px;color:var(--t2);border-top:1px solid var(--bd)}
-/* Alternate row shading */
-.pg:nth-child(even) .pr>div{background:#f9f9f7}
-.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
-.pg:nth-child(even) .pr>div:nth-child(-n+7){background:#f9f9f7}
-.rw>div:nth-child(-n+7),.rg>div:nth-child(-n+7){background:#fff}
-/* Current month highlight */
-.cur-month{background:var(--ac)!important;color:#fff!important;border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;font-weight:800!important}
-/* Status filter */
-.sf{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:3px 8px;border-radius:4px;font-family:var(--ft);font-size:10px;outline:none;cursor:pointer}
-.sf:focus{border-color:var(--ac)}
-.sb-logo{width:160px;height:36px;background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMzYiPjx0ZXh0IHg9IjAiIHk9IjI1IiBmb250LWZhbWlseT0iT3V0Zml0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjNDQ3MmM0Ij5Qcm9saW5lPC90ZXh0Pjwvc3ZnPg==") center/contain no-repeat;flex-shrink:0}
- 
-/* Tabular nums for all number cells */
-[style*="font-family:var(--mn)"]{font-variant-numeric:tabular-nums}
-.sr>div,.sr-t>div,.sr-w>div,.pr>div,.rw>div,.rg>div{font-variant-numeric:tabular-nums}
- 
-.cm-hl{border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important;background:rgba(68,114,196,.12)!important}
- 
-.sr-e .ce{color:var(--tx);border-bottom:1px dashed rgba(30,35,48,.3)}
-.sr-e .ce:hover{background:rgba(30,35,48,.06)}
- 
-/* Universal hover fix - overrides ALL backgrounds */
- 
- 
-.rh.ch{background:#cddaf0!important}
- 
-.cl-wk{color:var(--tx)!important;text-align:center!important;font-weight:700}
- 
- 
- 
- 
- 
- 
- 
- 
-.pg:nth-child(odd) .pr>div{background:#f9f9f7}
-.pg:nth-child(even) .pr>div{background:#f9f9f7}
- 
-.rw>div,.rg>div{background:#fff}
-.rw>div:nth-child(n+8),.rg>div:nth-child(n+8){background:#fff}
-.pg:nth-child(odd) .rw>div,.pg:nth-child(odd) .rg>div{background:#fff}
-.pg:nth-child(even) .rw>div,.pg:nth-child(even) .rg>div{background:#fff}
- 
-.app div.sel-cell{outline:2px solid var(--ac)!important;background:rgba(68,114,196,.12)!important}
- 
-.sum-body .g>div:nth-child(1),.sum-body .sr>div:first-child,.sum-body .sr-t>div:first-child,.sum-body .sr-c>div:first-child,.sum-body .sr-e>div:first-child{position:sticky;left:0;z-index:4;background:var(--s1)}
-.sum-body .slbl{position:sticky;left:0;z-index:4;background:var(--s1)}
-/* Column separators - light grey gridlines */
-.gh>div{border-right:1px solid #e8eaef}
-.pr>div{border-right:1px solid #e8eaef}
-.rw>div{border-right:1px solid #e8eaef}
-.rg>div{border-right:1px solid #e8eaef}
-.sr>div{border-right:1px solid #e8eaef}
-.sr-t>div{border-right:1px solid #e8eaef}
-.sr-w>div{border-right:1px solid #e8eaef}
- 
-.cl.tent{color:var(--rd)!important;font-style:italic;position:relative}
-.cl.tent::after{content:"*";position:absolute;top:-2px;right:-1px;font-size:6px;color:var(--rd)}
- 
-/* Freeze panes for summary tables */
- 
-.sum-body .sr:first-child>div{position:sticky;top:0;z-index:3;background:var(--s2)}
-.sum-body .sr:first-child .slbl{background:var(--s2);z-index:4}
- 
-.sr>div:first-child,.sr-t>div:first-child,.sr-w>div:first-child{border-right:2px solid var(--bd)}
- 
-/* Column resize */
-.vt th{position:relative}
+
+
+
+
+
 .vt .col-resize{position:absolute;right:0;top:0;bottom:0;width:4px;cursor:col-resize;background:transparent}
 .vt .col-resize:hover{background:var(--ac)}
-.vt .col-resize.dragging{background:var(--ac)}
- 
-/* Remove number input spinners */
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}
-input[type=number]{-moz-appearance:textfield}
- 
+/* Push button */
+.push-btn{background:var(--gn);color:#fff;border:none;padding:2px 8px;border-radius:3px;font-size:8px;font-weight:700;cursor:pointer;font-family:var(--ft)}
+.push-btn:hover{background:#158a5e}
+.push-btn.done{background:var(--s3);color:var(--t2);cursor:default}
+/* Notes modal */
 .notes-modal{position:fixed;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;z-index:60}
 .notes-box{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:16px;width:360px;max-width:90%}
 .notes-box h4{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--tx)}
 .notes-box textarea{width:100%;height:120px;border:1px solid var(--bd);border-radius:4px;padding:8px;font-family:var(--ft);font-size:11px;outline:none;resize:vertical;color:var(--tx)}
 .notes-box textarea:focus{border-color:var(--ac)}
 .notes-box .nbtn{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
- 
-.pr-pf>div{background:#fff;border-top:1px solid #e8eaef;border-bottom:1px solid #e8eaef}
-.pr-pf>div:nth-child(-n+7){background:#fff}
- 
-.pr>div:nth-child(n+8){font-weight:400}
-/* Cell selection + status bar */
-.cl.sel{outline:1px solid var(--ac);background:rgba(91,141,239,.12)!important}
-.stat-bar{position:fixed;bottom:0;left:0;right:0;background:var(--s2);border-top:1px solid var(--bd);padding:3px 12px;display:flex;gap:16px;align-items:center;justify-content:flex-end;font-size:9px;color:var(--t2);font-family:var(--mn);z-index:40;height:22px}
-.stat-bar span{color:var(--tx);font-weight:600}
-.stat-bar .stat-lbl{color:var(--t2);font-weight:400}
- 
- 
- 
- 
- 
-/* VO freeze panes - left positions handled inline via colW state */
-.vt th:nth-child(1),.vt td:nth-child(1){position:sticky;left:0;z-index:2}
+/* Status colors */
+.np{position:fixed;inset:0;background:#f4f6f9;display:flex;align-items:center;justify-content:center;z-index:99}
+.nin{font-size:14px;padding:8px 12px;border:2px solid var(--ac);border-radius:6px;outline:none;width:200px;font-family:var(--ft);color:var(--tx)}
+
+/* VO freeze panes */
+
+.vt th:nth-child(-n+7){z-index:5;background:var(--s2)}
+.vt td:nth-child(-n+7){background:#fff}
+.vt tr:nth-child(even) td:nth-child(-n+7){background:#f8f9fb}
+.vt tr:hover td:nth-child(-n+7){background:#e8eef9!important}
+.vt tr:nth-child(even):hover td:nth-child(-n+7){background:#dde5f3!important}
 .vt th{position:sticky;top:0;z-index:3}
-/* Read-only VO - first 5 cols frozen (Project,Type,VarNo,SubRefNo,Name) */
-.vt-ro th:nth-child(1),.vt-ro td:nth-child(1){left:0}
-.vt-ro th:nth-child(2),.vt-ro td:nth-child(2){left:150px}
-.vt-ro th:nth-child(3),.vt-ro td:nth-child(3){left:210px}
-.vt-ro th:nth-child(4),.vt-ro td:nth-child(4){left:280px}
-.vt-ro th:nth-child(5),.vt-ro td:nth-child(5){left:340px;border-right:2px solid var(--bd)!important}
-.vt-ro th:nth-child(6),.vt-ro td:nth-child(6){border-right:none!important}
-.vt-ro th:nth-child(7),.vt-ro td:nth-child(7){border-right:none!important}
- 
- 
-.gh>div:nth-child(-n+7){z-index:20!important;background:var(--s2)}
-.sticky-top{position:sticky;top:0;z-index:25;background:#f4f6f9;padding-bottom:4px;box-shadow:0 2px 4px rgba(0,0,0,.06)}
- 
- 
-/* Activity / Presence panel — slides in from right */
+
+.vo-cards{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;flex-shrink:0}
+.vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
 .act-panel{position:fixed;top:0;right:0;width:300px;height:100vh;background:#fff;border-left:1px solid var(--bd);box-shadow:-2px 0 8px rgba(0,0,0,.08);z-index:100;overflow-y:auto;transform:translateX(100%);transition:transform .2s ease;font-family:var(--ft)}
 .spnr-bg{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
 .spnr-bx{background:#fff;border:1px solid var(--bd);border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,.12);padding:20px 28px;display:flex;align-items:center;gap:14px;font-family:var(--ft)}
@@ -312,563 +88,250 @@ input[type=number]{-moz-appearance:textfield}
 .act-hdr button{background:none;border:none;font-size:16px;cursor:pointer;color:var(--t2);padding:0 4px}
 .act-section{padding:10px 14px;border-bottom:1px solid var(--bd)}
 .act-section h4{font-size:9px;text-transform:uppercase;color:var(--t2);margin:0 0 8px 0;letter-spacing:.5px;font-weight:700}
-.act-pres{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px;color:var(--tx)}
-.act-pres-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.act-pres-dot.live{background:var(--gn);box-shadow:0 0 4px var(--gn)}
-.act-pres-dot.idle{background:var(--am)}
-.act-pres-self{font-weight:700;color:var(--ac)}
-.act-pres-when{font-size:9px;color:var(--t2);margin-left:auto}
 .act-item{padding:8px 0;border-bottom:1px solid #f0f0f0}
 .act-item:last-child{border-bottom:none}
 .act-item-user{font-weight:700;font-size:11px;color:var(--ac)}
 .act-item-target{font-size:10px;color:var(--tx);margin-top:1px;line-height:1.3}
 .act-item-when{font-size:9px;color:var(--t2);margin-top:2px}
 .act-empty{font-size:10px;color:var(--t2);font-style:italic;padding:6px 0}
-.act-btn{background:transparent;border:1px solid var(--bd);border-radius:4px;padding:3px 8px;cursor:pointer;font-family:var(--ft);font-size:10px;color:var(--tx);display:flex;align-items:center;gap:4px}
+.act-btn{background:transparent;border:1px solid var(--bd);border-radius:4px;padding:3px 8px;cursor:pointer;font-family:var(--ft);font-size:10px;color:var(--tx)}
 .act-btn:hover{background:var(--s2)}
-.act-btn-count{background:var(--gn);color:#fff;font-weight:700;border-radius:8px;padding:0 5px;font-size:9px;min-width:14px;text-align:center}
-.vo-cards{display:flex;gap:6px;padding:8px 10px;flex-wrap:wrap}
-.vo-card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:6px 12px;flex:1;min-width:100px}
 .vo-card .lb{font-size:8px;color:var(--t2);text-transform:uppercase;font-weight:700;letter-spacing:.3px}
 .vo-card .vl{font-size:16px;font-weight:800;margin-top:2px}
- 
-.vt th:nth-child(-n+6){z-index:5!important;background:var(--s2)}
-.vt td:nth-child(-n+6){background:#fff}
-.vt tr:nth-child(even) td:nth-child(-n+6){background:#f8f9fb}
-.vt tr:hover td:nth-child(-n+6){background:#e8eef9!important}
-.vt tr:nth-child(even):hover td:nth-child(-n+6){background:#dde5f3!important}
-/* ROW HOVER */
-div.rh{background:#dce6f5!important}
-/* Gross Profit row tint */
-.rg>div{background:#f0f9f4!important}
-.rg>div.cm-hl{background:rgba(68,114,196,.18)!important;border-left:2px solid var(--ac)!important;border-right:2px solid var(--ac)!important}
-.rg>div.rh{background:#c8e6d0!important}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
-const{useState,useMemo,useEffect,useCallback,useRef,useDeferredValue}=React;
+const{useState,useEffect,useRef,useMemo,useCallback,useDeferredValue}=React;
 const API="https://gqcemmuntzddkdwzqenq.supabase.co/functions/v1/api";
-const DEF_MO=["Jan-25","Feb-25","Mar-25","Apr-25","May-25","Jun-25","Jul-25","Aug-25","Sep-25","Oct-25","Nov-25","Dec-25","Jan-26","Feb-26","Mar-26","Apr-26","May-26","Jun-26","Jul-26","Aug-26","Sep-26","Oct-26","Nov-26","Dec-26"];
-const RN=["External Materials","ProFab Materials","Other Costs"];
-const RK=["ExtMaterials","ProfabMaterials","OtherCosts"];
-const UK="pipeline-v9";
-const COORDS=["Luka","Lizzie","Lachlan"];
-const NOW=new Date();const CUR_M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][NOW.getMonth()]+"-"+String(NOW.getFullYear()).slice(2);
-const LK="_LK",LS="_LS",LE="_LE",LP="_LP",LO="_LO",WK="_WK";
-const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
-const voRowColor=st=>{const s=String(st||"").toLowerCase();if(s.includes("fully claimed"))return"#1a9a6b";if(s.includes("partially"))return"#c45e10";if(s.includes("accepted"))return"#7c3aed";if(s.includes("rejected"))return"#b5b5b5";return"var(--tx)"};
-const isAp=s=>{const u=String(s||"").toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")};
-const isPn=s=>{const u=String(s||"").toUpperCase();return u.includes("PENDING")||u.includes("PRICED")};
-const isRj=s=>{const u=String(s||"").toUpperCase();return u.includes("REJECTED")||u.includes("NOT PROCEEDING")};
-const sC=s=>isAp(s)?"sa":isPn(s)?"sp3":isRj(s)?"srej":"";
-function getPP(){try{return localStorage.getItem("pipeline-pp")||""}catch{return""}}
-async function aG(a){try{const pp=getPP();const r=await fetch(API+"?action="+a+(pp?"&passphrase="+encodeURIComponent(pp):"")+"&t="+Date.now(),{redirect:"follow"});return JSON.parse(await r.text())}catch{return null}}
-const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
-const cleanActivity=(arr)=>{if(!arr)return[];const r=[];for(const a of arr){if(a.sheet!=="Monthly"){r.push(a);continue}const t=String(a.target||"");const idx=t.indexOf(" / ");const proj=idx>=0?t.slice(0,idx):t;const month=idx>=0?t.slice(idx+3):"";if(["_LS","_LE","_LP","_LO"].includes(proj))continue;if(proj==="_LK"){r.push({...a,sheet:"Pipeline",target:"Locked "+month});continue}if(month==="_BC"){r.push({...a,target:proj+" — Construction Budget"});continue}if(month==="_BV"){r.push({...a,target:proj+" — Variations Budget"});continue}r.push(a)}return r};
-async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json();if(d&&d.error){console.warn("Write error:",d.error);alert(d.error);return false}return true}catch(e){console.warn("Write failed:",e);return false}}
-const fm=v=>v?Number(v).toLocaleString("en-AU",{maximumFractionDigits:0}):"";
-const fK=v=>{if(!v&&v!==0)return"-";if(v===0)return"$0";return(v<0?"-":"")+"$"+Math.abs(Math.round(Number(v))).toLocaleString("en-AU")};
-const N=v=>Number(v)||0;
-function F(o,...ns){const nr=s=>String(s).toLowerCase().replace(/[\s_.\-]+/g,"");const ks=Object.keys(o);for(const n of ns){if(o[n]!==undefined&&o[n]!=="")return o[n];const nn=nr(n);for(const k of ks){if(nr(k)===nn&&o[k]!==""&&o[k]!==undefined)return o[k]}}return""}
-function pM(v){var s=String(v||"").trim();if(/^[A-Za-z]{3}-\d{2}$/.test(s))return s.charAt(0).toUpperCase()+s.slice(1,3).toLowerCase()+s.slice(3);if(s.includes("T")||/^\d{4}-/.test(s)){var d=new Date(s);if(!isNaN(d)){var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return ms[d.getUTCMonth()]+"-"+String(d.getUTCFullYear()).slice(2)}}return s}
-function countWed(m){try{const ms={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};const p=m.split("-");const y=2000+parseInt(p[1]);const days=new Date(y,ms[p[0]]+1,0).getDate();let c=0;for(let d=1;d<=days;d++){if(new Date(y,ms[p[0]],d).getDay()===3)c++}return c}catch{return 4}}
- 
+
+const USERS=["Luka","Lizzie","Lachlan"];
+
+function fmP(v){if(!v&&v!==0)return"";return"$"+Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmN(v){if(!v&&v!==0)return"";return Math.round(Number(v)).toLocaleString("en-AU")}
 function fm2(v){if(!v&&v!==0)return"";return Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function fmP(v){if(!v&&v!==0)return"";return"$"+Number(v).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2})}
+const editTip=(by,at)=>{if(!by&&!at)return"";if(by&&at)return"Last edited by "+by+" on "+at;if(by)return"Last edited by "+by;return"Last edited "+at};
+const cleanActivity=(arr)=>{if(!arr)return[];const r=[];for(const a of arr){if(a.sheet!=="Monthly"){r.push(a);continue}const t=String(a.target||"");const idx=t.indexOf(" / ");const proj=idx>=0?t.slice(0,idx):t;const month=idx>=0?t.slice(idx+3):"";if(["_LS","_LE","_LP","_LO"].includes(proj))continue;if(proj==="_LK"){r.push({...a,sheet:"Pipeline",target:"Locked "+month});continue}if(month==="_BC"){r.push({...a,target:proj+" — Construction Budget"});continue}if(month==="_BV"){r.push({...a,target:proj+" — Variations Budget"});continue}r.push(a)}return r};
 function fmD(v){if(!v)return"";var s=String(v).trim();var ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 if(s.includes("T")||/^\d{4}-\d{2}-\d{2}/.test(s)){var d=new Date(s);if(!isNaN(d)){return String(d.getDate()).padStart(2,"0")+"-"+ms[d.getMonth()]+"-"+String(d.getFullYear()).slice(2)}}
 var m=s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})$/);if(m){var mi=parseInt(m[2])-1;if(mi>=0&&mi<12)return m[1].padStart(2,"0")+"-"+ms[mi]+"-"+(m[3].length===4?m[3].slice(2):m[3])}
 var m2=s.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/);if(m2)return m2[1].padStart(2,"0")+"-"+m2[2].charAt(0).toUpperCase()+m2[2].slice(1,3).toLowerCase()+"-"+(m2[3].length===4?m2[3].slice(2):m2[3]);
 return s}
-function nk(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
+function N(v){return parseFloat(v)||0}
 function dsToTs(ds){if(!ds)return 0;const m=/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{2,4})$/.exec(String(ds).trim());if(!m)return 0;const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};const mi=months[m[2].toLowerCase()];if(mi===undefined)return 0;let y=parseInt(m[3]);if(y<100)y+=2000;return y*10000+mi*100+parseInt(m[1])}
-const EC_COLORS={red:"var(--rd)",green:"var(--gn)",orange:"#c45e10",blue:"var(--ac)"};
-const EC=React.memo(function EC({value,onChange,cls,color,onContext,style,fmt}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
-useEffect(()=>{if(e&&r.current)r.current.focus()},[e]);
-const c=()=>{sE(false);const n=parseFloat(d.replace(/,/g,""))||0;if(n!==(value||0))onChange(n)};
-if(e)return<input ref={r} className="ci" value={d} onChange={x=>sD(x.target.value)} onBlur={c} onKeyDown={x=>{if(x.key==="Enter")c();if(x.key==="Escape")sE(false)}}/>;
-const isRed=color==="red";
-const inlineColor=color&&color!=="default"&&color!=="red"?{color:EC_COLORS[color]}:{};
-return<div className={(cls||"cl cs")+(isRed?" tent":"")} style={{...(style||{}),...inlineColor}} onContextMenu={e=>{e.preventDefault();if(onContext)onContext(e)}} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?(fmt?fmt(value):fm(value)):""}</div>},(a,b)=>a.value===b.value&&a.cls===b.cls&&a.color===b.color&&a.fmt===b.fmt&&((a.style&&a.style.color)||"")===((b.style&&b.style.color)||""));
- 
-const EN=React.memo(function EN({value,onSave,style}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
-useEffect(()=>{if(e&&r.current){r.current.focus();r.current.select()}},[e]);
-const c=()=>{sE(false);if(d.trim()&&d.trim()!==value)onSave(d.trim())};
-if(e)return<input ref={r} className="cin" value={d} onChange={x=>sD(x.target.value)} onBlur={c} onKeyDown={x=>{if(x.key==="Enter")c();if(x.key==="Escape")sE(false)}}/>;
-return<span className="pne" style={style} onDoubleClick={()=>{sD(value);sE(true)}}>{value}</span>},(a,b)=>a.value===b.value&&((a.style&&a.style.color)||"")===((b.style&&b.style.color)||""));
- 
-const JidInput=React.memo(function JidInput({value,onSave}){const[v,sV]=useState(value||"");const tR=useRef();const lastSavedRef=useRef(value||"");
-useEffect(()=>{if((value||"")!==lastSavedRef.current){sV(value||"");lastSavedRef.current=value||""}},[value]);
+function F(o,...ks){for(const k of ks){if(o[k]!==undefined&&o[k]!==null&&o[k]!=="")return o[k];const lk=k.toLowerCase();for(const ok of Object.keys(o)){if(ok.toLowerCase().replace(/[\s_.\-]+/g,"")===lk.replace(/[\s_.\-]+/g,""))return o[ok]}}return""}
+
+const VO_ST=[{v:"Priced - Not Yet Approved",c:"var(--tx)"},{v:"Fully Claimed",c:"#1a9a6b"},{v:"Partially Claimed",c:"#c45e10"},{v:"Accepted - Not Yet Claimed",c:"#7c3aed"},{v:"Rejected",c:"#b5b5b5"}];
+const voRowColor=st=>{const s=String(st||"").toLowerCase();if(s.includes("fully claimed"))return"#1a9a6b";if(s.includes("partially"))return"#c45e10";if(s.includes("accepted"))return"#7c3aed";if(s.includes("rejected"))return"#b5b5b5";return"var(--tx)"};
+
+function EC({value,onChange,cls,style,fmt}){const[e,sE]=useState(false);const[d,sD]=useState("");const r=useRef();
+if(e)return<input ref={r} autoFocus type="text" value={d} onChange={ev=>{sD(ev.target.value)}} onBlur={()=>{const v=parseFloat(d.replace(/[$,]/g,""))||0;onChange(v);sE(false)}} onKeyDown={ev=>{if(ev.key==="Enter"){const v=parseFloat(d.replace(/[$,]/g,""))||0;onChange(v);sE(false)}if(ev.key==="Escape")sE(false)}} style={{width:"100%",textAlign:"right",...(style||{})}}/>;
+return<div className={cls||"cl"} style={{textAlign:"right",fontFamily:"var(--mn)",cursor:"pointer",padding:"2px 4px",...(style||{})}} onDoubleClick={()=>{sD(value?String(value):"");sE(true)}}>{value?(fmt?fmt(value):String(value)):""}</div>}
+
+function DebInput({value,onSave,style,list,placeholder,format,maxLen}){const[v,sV]=useState(value||"");const tR=useRef();const lastSavedRef=useRef(value||"");
+useEffect(()=>{const cur=value==null?"":String(value);if(cur!==lastSavedRef.current){sV(cur);lastSavedRef.current=cur}},[value]);
 const fire=val=>{if(val!==lastSavedRef.current){lastSavedRef.current=val;onSave(val)}};
-return<input className="jid-tag" value={v} placeholder="ID" onChange={e=>{const nv=e.target.value;sV(nv);clearTimeout(tR.current);tR.current=setTimeout(()=>fire(nv),500)}} onBlur={()=>{clearTimeout(tR.current);fire(v)}}/>},(a,b)=>a.value===b.value);
- 
-const NoteEditModal=React.memo(function NoteEditModal({initial,title,onSave,onCancel}){const[t,sT]=useState(initial||"");
-return<div className="notes-modal" onClick={onCancel}>
-<div className="notes-box" onClick={e=>e.stopPropagation()}>
-<h4>Notes — {title}</h4>
-<textarea value={t} onChange={e=>sT(e.target.value)} autoFocus placeholder="Type notes here..."/>
-<div className="nbtn">
-<button className="pl" onClick={onCancel}>Cancel</button>
-<button className="pl gn" onClick={()=>onSave(t)}>Save</button>
-</div></div></div>});
- 
-const VORow=React.memo(function VORow({v,colW,uV,dVO,onOpenNote}){
-const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const styleC={color:rc};
-return<tr style={{color:rc,opacity:v._pending?0.55:1}} title={v._pending?"Saving... please wait before editing":editTip(v.eb,v.ea)}>
-<td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
-<td style={{position:"sticky",left:colW[0],zIndex:2}}><input list="vo-projects-list" value={v.pj} onChange={e=>uV(v.i,"pj",e.target.value)} style={{color:rc,width:"100%"}}/></td>
-<td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,width:"100%"}}><option>VO</option><option>DL</option></select></td>
-<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><input value={v.vn} onChange={e=>uV(v.i,"vn",e.target.value)} style={{color:rc}}/></td>
-<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2}}><input value={v.srn} onChange={e=>uV(v.i,"srn",e.target.value)} style={{color:rc}} placeholder="—"/></td>
-<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4],zIndex:2,borderRight:"2px solid var(--bd)"}}><input value={v.vnm} onChange={e=>uV(v.i,"vnm",e.target.value.substring(0,100))} style={{color:rc}}/></td>
-<td><input value={v.ds} onChange={e=>uV(v.i,"ds",e.target.value)} onBlur={e=>uV(v.i,"ds",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
-<td><input value={v.da} onChange={e=>uV(v.i,"da",e.target.value)} onBlur={e=>uV(v.i,"da",fmD(e.target.value))} placeholder="dd-mm-yy" style={{color:rc}}/></td>
-<td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(v.i,"pr",val)} cls="cl" style={styleC} fmt={fmP}/></td>
-<td><select value={v.st} onChange={e=>uV(v.i,"st",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:9,fontWeight:600,width:"100%"}}><option value="">—</option>{VO_ST.map(s=><option key={s.v} value={s.v}>{s.v}</option>)}</select></td>
-<td style={{textAlign:"right"}}><EC value={v.em} onChange={val=>uV(v.i,"em",val)} cls="cl" style={styleC} fmt={fmP}/></td>
-<td style={{textAlign:"right"}}><EC value={v.pf} onChange={val=>uV(v.i,"pf",val)} cls="cl" style={styleC} fmt={fmP}/></td>
-<td style={{textAlign:"right",color:rc,fontFamily:"var(--mn)"}}>{mg?fmP(mg):""}</td>
-<td style={{textAlign:"right",color:rc}}><EC value={v.nmn} onChange={val=>uV(v.i,"nmn",val)} cls="cl" style={styleC} fmt={fmN}/></td>
-<td style={{textAlign:"right",color:rc}}><EC value={v.nh} onChange={val=>uV(v.i,"nh",val)} cls="cl" style={styleC} fmt={fm2}/></td>
-<td style={{textAlign:"right",color:rc}}><EC value={v.nr} onChange={val=>uV(v.i,"nr",val)} cls="cl" style={styleC} fmt={fmP}/></td>
-<td style={{textAlign:"right",color:rc}}><EC value={v.oh} onChange={val=>uV(v.i,"oh",val)} cls="cl" style={styleC} fmt={fm2}/></td>
-<td style={{textAlign:"right",color:rc}}><EC value={v.or2} onChange={val=>uV(v.i,"or2",val)} cls="cl" style={styleC} fmt={fmP}/></td>
-<td style={{textAlign:"center"}} onClick={()=>onOpenNote(v.i)}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
-</tr>});
- 
-const CoordRow=React.memo(function CoordRow({v,vi,coordColW,onOpenNote}){
-const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);const bg=vi%2===1?"#f8f9fb":"#fff";
-return<tr style={{color:rc}} title={editTip(v.eb,v.ea)}>
-<td style={{position:"sticky",left:0,zIndex:2,background:bg}}>{v.pj}</td>
-<td style={{position:"sticky",left:coordColW[0],zIndex:2,background:bg}}>{v.ty}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1],zIndex:2,background:bg}}>{v.vn}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2],zIndex:2,background:bg}}>{v.srn||""}</td>
-<td style={{position:"sticky",left:coordColW[0]+coordColW[1]+coordColW[2]+coordColW[3],zIndex:2,background:bg,borderRight:"2px solid var(--bd)"}}>{v.vnm}</td>
-<td>{v.ds}</td>
-<td>{v.da}</td>
-<td style={{textAlign:"right"}}>{v.pr?fmP(v.pr):""}</td>
-<td style={{fontWeight:600}}>{v.st}</td>
-<td style={{textAlign:"right"}}>{v.em?fmP(v.em):""}</td>
-<td style={{textAlign:"right"}}>{v.pf?fmP(v.pf):""}</td>
-<td style={{textAlign:"right",fontFamily:"var(--mn)"}}>{mg?fmP(mg):""}</td>
-<td style={{textAlign:"right"}}>{v.nmn?fmN(v.nmn):""}</td>
-<td style={{textAlign:"right"}}>{v.nh?fm2(v.nh):""}</td>
-<td style={{textAlign:"right"}}>{v.nr?fmP(v.nr):""}</td>
-<td style={{textAlign:"right"}}>{v.oh?fm2(v.oh):""}</td>
-<td style={{textAlign:"right"}}>{v.or2?fmP(v.or2):""}</td>
-<td style={{textAlign:"center"}} onClick={()=>v.notes&&onOpenNote&&onOpenNote(vi)}>{v.notes?<span title="Click to view full note" style={{cursor:"pointer",fontSize:14}}>💬</span>:""}</td>
-<td style={{textAlign:"center",fontSize:8,color:"var(--t2)"}}>{v.pushed||""}</td>
-</tr>});
- 
+return<input list={list} value={v} placeholder={placeholder} style={style}
+onChange={e=>{let nv=e.target.value;if(maxLen&&nv.length>maxLen)nv=nv.substring(0,maxLen);sV(nv);clearTimeout(tR.current);tR.current=setTimeout(()=>fire(nv),500)}}
+onBlur={()=>{clearTimeout(tR.current);if(format){const f=format(v);if(f!==v){sV(f);fire(f);return}}fire(v)}}/>}
+
 function App(){
 const wqRef=useRef(Promise.resolve());
 const[saveErr,setSaveErr]=useState(null);
-const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
 const[pp,setPp]=useState(getPP());const[ppI,setPpI]=useState("");
-const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp",v)}catch{};setPp(v);setPpI("")};
-const[months,setMonths]=useState(()=>{const saved=localStorage.getItem("pipeline-months");return saved?JSON.parse(saved):DEF_MO});
-const MO=months;
-const addMonth=()=>{const last=MO[MO.length-1];const ms=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];const p=last.split("-");const mi=ms.indexOf(p[0]);const yr=parseInt(p[1]);const nm=mi===11?ms[0]+"-"+String(yr+1).padStart(2,"0"):ms[mi+1]+"-"+p[1];const nw=[...MO,nm];setMonths(nw);localStorage.setItem("pipeline-months",JSON.stringify(nw))};
-const[un,sU]=useState(localStorage.getItem(UK)||"");const[ni,sNi]=useState("");
+const submitPp=()=>{const v=ppI.trim();if(!v)return;try{localStorage.setItem("pipeline-pp-coord",v)}catch{};setPp(v);setPpI("")};
+const enq=fn=>{wqRef.current=wqRef.current.then(()=>fn()).then(r=>{if(r===false){setSaveErr("Save failed - network or server error. Refresh to verify.")}else if(r&&r.error){if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("")}else{setSaveErr(String(r.error))}}else if(r){setSaveErr(null)};return r}).catch(e=>{setSaveErr("Save failed: "+(e&&e.message||String(e))+" - refresh to verify")});return wqRef.current};
+const urlUser=new URLSearchParams(window.location.search).get("user")||"";
+const[identity,setIdentity]=useState(()=>localStorage.getItem("vo-identity")||"");
 const[idCheck,setIdCheck]=useState(true);
-// On pp change, ask server for our enforced identity. If returned, lock it (no name prompt).
-// If null, fall back to manual name entry (shared TEAM_PASSPHRASE case).
-useEffect(()=>{if(!pp){setIdCheck(false);return}let cancelled=false;setIdCheck(true);fetch(API+"?action=getIdentity&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).then(r=>r.json()).then(d=>{if(cancelled)return;if(d&&d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("")}else if(d&&d.identity){sU(d.identity);try{localStorage.setItem(UK,d.identity)}catch{}};setIdCheck(false)}).catch(()=>{if(!cancelled)setIdCheck(false)});return()=>{cancelled=true}},[pp]);
-const unRef=useRef(un);unRef.current=un;
-const[ld,sLd]=useState(true);const[sv,sSv]=useState(false);const[ls,sLs]=useState(null);
-const[pj,sPj]=useState([]);const[mo,sMo]=useState({});const[vo,sVo]=useState([]);const[moE,sMoE]=useState({});
-const voRef=useRef([]);voRef.current=vo;
-const[vw,sVw]=useState("grid");const[sbOpen,sSbO]=useState(false);const[stFilt,setStFilt]=useState([]);const[sr,sSr]=useState("");const[sc,sSc]=useState(12);
-const sr_d=useDeferredValue(sr);
-const[sa,sSa]=useState(false);const[nn,sNn]=useState("");const[nc,sNc]=useState("");
-const[er,sEr]=useState(null);const[cached,setCached]=useState(false);const[sav,sSav]=useState(false);const[adding,setAdding]=useState(false);
-const[selM,sSM]=useState([]);const[startM,setStartM]=useState(0);const[exp,sExp]=useState({});
-const[cellColors,setCellColors]=useState(()=>{try{const nc=localStorage.getItem("pipeline-cellColors");if(nc)return JSON.parse(nc);const oc=localStorage.getItem("pipeline-tent");if(oc){const old=JSON.parse(oc);const m={};Object.keys(old).forEach(k=>{if(old[k])m[k]="red"});localStorage.setItem("pipeline-cellColors",JSON.stringify(m));return m}}catch{}return{}});
-const setCC=(p,m,col,color)=>{const k=nk(p)+"|||"+m+"|||"+col;setCellColors(prev=>{const n={...prev};if(!color||color==="default")delete n[k];else n[k]=color;try{localStorage.setItem("pipeline-cellColors",JSON.stringify(n))}catch{}return n});sSv(true);enq(()=>aP({action:"setCellColor",project:p,month:m,column:col,color:color||"default",editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")})).then(()=>{sLs(new Date());sSv(false)})};
-const getCC=(p,m,col)=>cellColors[nk(p)+"|||"+m+"|||"+col]||"default";
-const[colorMenu,setColorMenu]=useState(null);
-const openCM=(e,p,m,col)=>{e.preventDefault();setColorMenu({x:e.clientX,y:e.clientY,p,m,col})};const[hovR,sHR]=useState(null);const[hovC,sHC]=useState(null);const[hovOn,setHovOn]=useState(true);const[selCells,setSelCells]=useState([]);
- 
-const handleCellClick=(val,e)=>{if(!val&&val!==0)return;const v=Number(val);if(isNaN(v))return;if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}};
-const clearSel=()=>setSelCells([]);
-const handleSumHover=(e,enter)=>{
-  if(!enter){sHR(null);return}
-  const cell=e.target.closest('[data-sr]');
-  if(cell){sHR(cell.dataset.sr);if(cell.dataset.sc)sHC(cell.dataset.sc)}
-};
- 
-const[pjO,sPjO]=useState(false);const[acO,sAcO]=useState(false);
-const defCW=[24,130,60,70,60,140,90,90,85,170,80,80,80,60,60,60,60,60,50];
-const[colW,setColW]=useState(defCW);
-const defCoordCW=[150,60,70,60,160,90,90,85,170,80,80,80,60,60,60,60,60,50,70];
-const[coordColW,setCoordColW]=useState(defCoordCW);
-const resRef=useRef(null);
-const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
-const startCoordResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=coordColW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setCoordColW(prev=>{const n=[...prev];n[ci]=Math.max(40,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
-const[noteEdit,setNoteEdit]=useState(null);
-const[coordNoteView,setCoordNoteView]=useState(null);
-const[coordVO,setCoordVO]=useState([]);
-const[coordUser,setCoordUser]=useState("");
-const[voFiltPj,setVoFiltPj]=useState("");
-const voFiltPj_d=useDeferredValue(voFiltPj);
-const[pfSr,setPfSr]=useState("");const[pfStFilt,setPfStFilt]=useState([]);
-const pfSr_d=useDeferredValue(pfSr);
-const[voFiltTy,setVoFiltTy]=useState("all");
-const[voFiltSt,setVoFiltSt]=useState([]);
-const voFiltTy_d=useDeferredValue(voFiltTy);
-const voFiltSt_d=useDeferredValue(voFiltSt);
-const voFilt=useMemo(()=>{let f=vo;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy_d!=="all")f=f.filter(v=>v.ty===voFiltTy_d);if(voFiltSt_d.length>0)f=f.filter(v=>voFiltSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[vo,voFiltPj_d,voFiltTy_d,voFiltSt_d]);
-const coordFilt=useMemo(()=>{let f=coordVO;if(voFiltPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase()));if(voFiltTy_d!=="all")f=f.filter(v=>v.ty===voFiltTy_d);if(voFiltSt_d.length>0)f=f.filter(v=>voFiltSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[coordVO,voFiltPj_d,voFiltTy_d,voFiltSt_d]);
+// On pp change/mount, server tells us who we are. For coord passphrases identity is locked,
+// so it's impossible to impersonate another coord by typing their name in the prompt.
+useEffect(()=>{if(!pp){setIdCheck(false);return}let cancelled=false;setIdCheck(true);fetch(API+"?action=getIdentity&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).then(r=>r.json()).then(d=>{if(cancelled)return;if(d&&d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("")}else if(d&&d.identity){setIdentity(d.identity);try{localStorage.setItem("vo-identity",d.identity)}catch{}};setIdCheck(false)}).catch(()=>{if(!cancelled)setIdCheck(false)});return()=>{cancelled=true}},[pp]);
+const[user,setUser]=useState(urlUser);
+const[vo,sVo]=useState([]);
+const[pj,sPj]=useState([]);
+const[ld,sLd]=useState(true);
+const[sv,sSv]=useState(false);
+const[er,sEr]=useState(null);
+const[sa,sSa]=useState(false);
+const[adding,setAdding]=useState(false);
 const[nvo,sNvo]=useState({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});
-const sub=n=>{localStorage.setItem(UK,n);sU(n)};
-const togM=m=>sSM(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
-const togExp=nm=>sExp(p=>({...p,[nm]:!p[nm]}));
-const syncScroll=e=>{const sl=e.target.scrollLeft;document.querySelectorAll('.ss').forEach(el=>{if(el!==e.target)el.scrollLeft=sl})};
- 
-const load=useCallback(async(silent)=>{
-  if(!silent)sLd(true);sEr(null);const r=await aG("getAll");
-  if(!r){
-    try{const cc=JSON.parse(localStorage.getItem("pipeline-cache"));
-    if(cc&&cc.projects){const age=Math.round((Date.now()-cc.ts)/60000);
-    sEr("Offline — cached data ("+age+" min ago). Changes won't save until reconnected.");
-    setCached(true);r=cc}}catch(e){}
-    if(!r){sEr("No response & no cache available.");sLd(false);return}}
-  if(r.error){
-    if(r.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp")}catch{};setPp("");sEr("Wrong team passphrase. Please re-enter.");sLd(false);return}
-    try{const cc=JSON.parse(localStorage.getItem("pipeline-cache"));
-    if(cc&&cc.projects){const age=Math.round((Date.now()-cc.ts)/60000);
-    sEr("Error: "+r.error+" — showing cached data ("+age+" min ago).");
-    setCached(true);r=cc}}catch(e){}
-    if(r.error&&!cached){sEr(r.error);sLd(false);return}}
-  const pD=r.projects||[],mD=r.monthly||[],vD=r.voRegister||[],ccD=r.cellColors||[];
-  if(!cached){try{localStorage.setItem("pipeline-cache",JSON.stringify({projects:pD,monthly:mD,voRegister:vD,cellColors:ccD,ts:Date.now()}))}catch(e){}}
-  // Populate cell colors from server (overrides any localStorage state)
-  if(ccD.length>=0){const ccm={};ccD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=String(F(row,"Month","MONTH")).trim();const cc=String(F(row,"Column","COLUMN")).trim();const co=String(F(row,"Color","COLOR")).trim();if(pn&&mn&&cc&&co)ccm[nk(pn)+"|||"+mn+"|||"+cc]=co});setCellColors(ccm);try{localStorage.setItem("pipeline-cellColors",JSON.stringify(ccm))}catch{}}
-  sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT","Title")).trim(),jid:String(F(p,"Job ID","JOB ID","JobID")||""),pt:String(F(p,"Payment Terms","PAYMENT TERMS")||""),cp:N(F(p,"ContractPrice","Contract Price","CONTRACT PRICE")),v:N(F(p,"Variations","VARIATIONS")),st:String(F(p,"Status","STATUS"))||"Live",eb:String(F(p,"EditedBy","EDITED BY")||""),ea:String(F(p,"EditedAt","EDITED AT")||"")})));
-  const mm={},mE={};mD.forEach(row=>{const pn=String(F(row,"Project","PROJECT")).trim();const mn=pM(F(row,"Month","MONTH"));if(!pn||!mn)return;const key=nk(pn)+"|||"+mn;const sV=N(F(row,"Sales","SALES")),eV=N(F(row,"ExtMaterials","EXT-MATERIALS","EXTERNAL MATERIALS")),pV=N(F(row,"ProfabMaterials","PROFAB MATERIALS")),oV=N(F(row,"OtherCosts","OTHER COSTS"));const prev=mm[key]||{Sales:0,ExtMaterials:0,ProfabMaterials:0,OtherCosts:0};mm[key]={Sales:sV||prev.Sales,ExtMaterials:eV||prev.ExtMaterials,ProfabMaterials:pV||prev.ProfabMaterials,OtherCosts:oV||prev.OtherCosts};const eb=String(F(row,"EditedBy","EDITED BY")||""),ea=String(F(row,"EditedAt","EDITED AT")||"");if(eb||ea)mE[key]={by:eb,at:ea}});sMo(mm);sMoE(mE);
-  sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,vid:String(F(v,"VO_ID")||""),pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),eb:String(F(v,"EditedBy","EDITED BY")||""),ea:String(F(v,"EditedAt","EDITED AT")||"")}))); 
-  sLd(false)},[]);
- 
-useEffect(()=>{if(un)load()},[un,load]);
-const[actOpen,setActOpen]=useState(false);
-const[actData,setActData]=useState({presence:[],activity:[]});
+
+const[filtPj,setFiltPj]=useState("");
+const filtPj_d=useDeferredValue(filtPj);
+const[filtTy,setFiltTy]=useState("all");
+const[filtSt,setFiltSt]=useState([]);
+const filtTy_d=useDeferredValue(filtTy);
+const filtSt_d=useDeferredValue(filtSt);
+const[selRows,setSelRows]=useState(new Set());
+const[noteEdit,setNoteEdit]=useState(null);
+const[noteText,setNoteText]=useState("");
+
+const defCW=[24,28,130,130,60,70,60,140,90,90,85,70,170,80,80,80,60,60,60,60,60,50,70];
+const[colW,setColW]=useState(defCW);
+const startResize=(ci,e)=>{e.preventDefault();const startX=e.clientX;const startW=colW[ci];const onMove=e2=>{const diff=e2.clientX-startX;setColW(prev=>{const n=[...prev];n[ci]=Math.max(30,startW+diff);return n})};const onUp=()=>{document.removeEventListener("mousemove",onMove);document.removeEventListener("mouseup",onUp)};document.addEventListener("mousemove",onMove);document.addEventListener("mouseup",onUp)};
+
+function getPP(){try{return localStorage.getItem("pipeline-pp-coord")||""}catch{return""}}
+async function aP(p){try{const pp=getPP();const body={...p};if(pp)body.passphrase=pp;const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json();if(d&&d.error){alert("⚠ Server error: "+d.error+(d.message?"\n\n"+d.message:""));return false}return true}catch(e){alert("⚠ Network error: "+e.message);return false}}
+
+const load=useCallback(async(silent)=>{if(!silent)sLd(true);sEr(null);try{const pp=getPP();const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+(pp?"&passphrase="+encodeURIComponent(pp):""));const d=await r.json();if(d.error){if(d.error==="AUTH_FAILED"){try{localStorage.removeItem("pipeline-pp-coord")}catch{};setPp("");sEr("Wrong coordinator passphrase. Please re-enter.");sLd(false);return}sEr(d.error);sLd(false);return}
+const vD=d.vos||[];const pD=d.projects||[];
+sPj(pD.map(p=>({nm:String(F(p,"Project","PROJECT")).trim()})).filter(p=>!p.nm.startsWith("_")));
+sVo(vD.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,
+vid:String(F(v,"VO_ID")||""),
+pj:String(F(v,"PROJECT","Project")).trim(),
+area:String(F(v,"AREA ON JOB","")||""),
+ty:String(F(v,"TYPE","Type")),
+vn:String(F(v,"VARIATION NO.")),
+srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),
+vnm:String(F(v,"VARIATION NAME")),
+ds:fmD(String(F(v,"DATE SUBMITTED"))),
+da:fmD(String(F(v,"DATE APPROVED"))),
+pr:N(F(v,"PRICE","REVENUE")),
+claim:String(F(v,"CLAIM %","")||""),
+st:String(F(v,"STATUS","Status")),
+em:N(F(v,"EXTERNAL MATERIALS")),
+pf:N(F(v,"PFAB MATERIALS")),
+nmn:N(F(v,"NO. OF MEN")),
+nh:N(F(v,"NORMAL HOURS")),
+nr:N(F(v,"NORMAL RATE")),
+oh:N(F(v,"OVERTIME HOURS")),
+or2:N(F(v,"OVERTIME RATE")),
+notes:String(F(v,"NOTES","Notes")||""),
+pushed:String(F(v,"PUSHED","")||""),
+eb:String(F(v,"EditedBy","EDITED BY")||""),
+ea:String(F(v,"EditedAt","EDITED AT")||"")
+})));
+sLd(false)}catch(e){sEr("Failed to connect: "+e.message);sLd(false)}},[user]);
+
+useEffect(()=>{if(user)load()},[user,load]);
 // Heartbeat: ping every 60s while logged in (lock-free on server)
-useEffect(()=>{if(!un||!pp)return;const ping=()=>{fetch(API+"?action=heartbeat&user="+encodeURIComponent(un)+"&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).catch(()=>{})};ping();const id=setInterval(ping,60000);return()=>clearInterval(id)},[un,pp]);
-// Refresh activity every 30s while panel is open
-useEffect(()=>{if(!actOpen)return;let cancelled=false;const refresh=async()=>{const r=await aG("getActivity");if(!cancelled&&r&&!r.error)setActData(r)};refresh();const id=setInterval(refresh,30000);return()=>{cancelled=true;clearInterval(id)}},[actOpen]);
-// "Live" presence count for the header badge — refresh every 60s independently
-const[liveCount,setLiveCount]=useState(0);
-useEffect(()=>{if(!un||!pp)return;const tick=async()=>{const r=await aG("getActivity");if(r&&r.presence){const now=Date.now();const live=r.presence.filter(p=>p.lastSeen&&(now-new Date(p.lastSeen).getTime())<120000).length;setLiveCount(live)}};tick();const id=setInterval(tick,60000);return()=>clearInterval(id)},[un,pp]);
+useEffect(()=>{if(!identity||!pp)return;const ping=()=>{fetch(API+"?action=heartbeat&user="+encodeURIComponent(identity)+"&passphrase="+encodeURIComponent(pp)+"&t="+Date.now()).catch(()=>{})};ping();const id=setInterval(ping,60000);return()=>clearInterval(id)},[identity,pp]);
+// Activity panel — recent edits only (no presence list)
+const[actOpen,setActOpen]=useState(false);
+const[actData,setActData]=useState({activity:[]});
+useEffect(()=>{if(!actOpen)return;let cancelled=false;const refresh=async()=>{try{const ppv=getPP();const r=await fetch(API+"?action=getActivity"+(ppv?"&passphrase="+encodeURIComponent(ppv):"")+"&t="+Date.now());const d=await r.json();if(!cancelled&&d&&!d.error)setActData(d)}catch{}};refresh();const id=setInterval(refresh,30000);return()=>{cancelled=true;clearInterval(id)}},[actOpen]);
 const tAgo=(ts)=>{if(!ts)return"";const d=Date.now()-new Date(ts).getTime();if(d<60000)return"just now";if(d<3600000)return Math.floor(d/60000)+" min ago";if(d<86400000)return Math.floor(d/3600000)+"h ago";return Math.floor(d/86400000)+"d ago"};
-const presStatus=(ts)=>{if(!ts)return"gone";const d=Date.now()-new Date(ts).getTime();if(d<120000)return"live";if(d<600000)return"idle";return"gone"};
-const gv=(p,m,c)=>mo[nk(p)+"|||"+m]?.[c]||0;
-const voP=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m[nk(v.pj)]||0)+v.pr});return m},[vo]);
-const voExt=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m[nk(v.pj)]||0)+v.em});return m},[vo]);
-const voPfab=useMemo(()=>{const m={};vo.forEach(v=>{if(isAp(v.st))m[nk(v.pj)]=(m[nk(v.pj)]||0)+v.pf});return m},[vo]);
-const pjOpts=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")),[pj]);
- 
-const uC=useCallback(async(p,m,c,val)=>{sMo(pr=>({...pr,[nk(p)+"|||"+m]:{...(pr[nk(p)+"|||"+m]||{}),[c]:val}}));sSv(true);await enq(()=>aP({action:"updateCell",project:p,month:m,column:c,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
-const uP=useCallback(async(nm,fd,val)=>{const fl=fd.toLowerCase();sPj(pr=>pr.map(p=>p.nm===nm?{...p,[fl.includes("contract")?"cp":fl.includes("job")?"jid":fl.includes("status")?"st":"v"]:val}:p));sSv(true);await enq(()=>aP({action:"updateProject",name:nm,field:fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
-const renP=useCallback(async(old,nw)=>{sPj(pr=>pr.map(p=>p.nm===old?{...p,nm:nw}:p));sMo(prev=>{const next={};Object.entries(prev).forEach(([k,v])=>{next[k.startsWith(nk(old)+"|||")?nk(nw)+"|||"+k.split("|||")[1]:k]=v});return next});sSv(true);await aP({action:"updateProject",name:old,field:"Project",value:nw,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")});sLs(new Date());sSv(false)},[]);
-const loadCoordVO=async(user)=>{setCoordUser(user);sLd(true);try{const r=await fetch(API+"?action=getCoordVO&user="+encodeURIComponent(user)+"&passphrase="+encodeURIComponent(getPP()));const d=await r.json();if(d.vos){setCoordVO(d.vos.map((v,i)=>({i,_r:v._row!==undefined?v._row:i,vid:String(F(v,"VO_ID")||""),pj:String(F(v,"PROJECT","Project")).trim(),ty:String(F(v,"TYPE","Type")),vn:String(F(v,"VARIATION NO.")),srn:String(F(v,"SUB REF NO.","Sub Ref No.")||""),vnm:String(F(v,"VARIATION NAME")),ds:fmD(String(F(v,"DATE SUBMITTED"))),da:fmD(String(F(v,"DATE APPROVED"))),pr:N(F(v,"PRICE","REVENUE")),st:String(F(v,"STATUS","Status")),em:N(F(v,"EXTERNAL MATERIALS")),pf:N(F(v,"PFAB MATERIALS")),nmn:N(F(v,"NO. OF MEN")),nh:N(F(v,"NORMAL HOURS")),nr:N(F(v,"NORMAL RATE")),oh:N(F(v,"OVERTIME HOURS")),or2:N(F(v,"OVERTIME RATE")),notes:String(F(v,"NOTES","Notes")||""),pushed:String(F(v,"PUSHED","")||""),eb:String(F(v,"EditedBy","EDITED BY")||""),ea:String(F(v,"EditedAt","EDITED AT")||"")})))}sLd(false)}catch(e){sEr("Failed: "+e.message);sLd(false)}};
-const dVO=useCallback(async(v)=>{if(v._pending){alert("⏳ This VO is still saving.\n\nPlease wait a few seconds, then try again.");return}const stL=String(v.st||"").toLowerCase();if(stL.indexOf("fully claimed")!==-1||stL.indexOf("partially claimed")!==-1){alert("⛔ Cannot delete this VO.\n\nThis VO has been marked as \""+v.st+"\".\n\nClaimed VOs are locked to protect the audit trail.");return}if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?\n\nThis will also remove it from any coordinator's register that has it."))return;sSv(true);sVo(prev=>prev.filter(x=>v.vid?x.vid!==v.vid:x.i!==v.i));await enq(()=>aP({action:"deleteVO",voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r}));sSv(false)},[]);
+
 const calcDLPrice=(v,fd,val)=>{const u={...v,[fd]:val};const m=N(u.nmn)||1;return(m*N(u.nh)*N(u.nr))+(m*N(u.oh)*N(u.or2))};
-const uV=useCallback(async(vi,fd,val)=>{const v=voRef.current[vi];if(!v)return;if(v._pending){alert("⏳ This VO is still saving.\n\nPlease wait a few seconds for it to finish, then try editing.");return}const autoP=v.ty==="DL"&&["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcDLPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));const m2={"pj":"PROJECT","ty":"TYPE","vn":"VARIATION NO.","srn":"SUB REF NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};sSv(true);await enq(()=>aP({action:"updateVO",voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r,field:m2[fd]||fd,value:val,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));if(autoP)await enq(()=>aP({action:"updateVO",voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r,field:"PRICE",value:newPr,editedBy:unRef.current,editedAt:new Date().toLocaleString("en-AU")}));sLs(new Date());sSv(false)},[]);
-const addV=async()=>{if(!nvo.project)return;sSv(true);sSav(false);const newVo={...nvo};sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});const fullVarNo=(newVo.type==="DL"?"DL-":"VO-")+newVo.varNo;aP({action:"addVO",project:newVo.project,type:newVo.type,varNo:fullVarNo,varName:newVo.varName,dateSubmitted:newVo.ds,dateApproved:newVo.da,price:newVo.price,status:newVo.status,extMaterials:newVo.em,pfabMaterials:newVo.pf,margin:newVo.price-newVo.em-newVo.pf,editedBy:un,editedAt:new Date().toLocaleString("en-AU")});setTimeout(()=>{load(true).then(()=>{sSv(false);sLs(new Date())})},2000)};
-const aPj=async()=>{if(!nn.trim())return;if(pj.some(p=>nk(p.nm)===nk(nn.trim()))){alert("Project \""+nn.trim()+"\" already exists.");return}const c=parseFloat(nc.replace(/,/g,""))||0;sSv(true);await aP({action:"addProject",name:nn.trim(),contractPrice:c,variations:0});sPj(p=>[{nm:nn.trim(),jid:"",cp:c,v:0,st:"Live",_new:true},...p]);sNn("");sNc("");sSa(false);sSv(false);sLs(new Date())};
-const dPj=async nm=>{if(!confirm('Delete "'+nm+'"?'))return;sSv(true);await aP({action:"deleteProject",name:nm});sPj(p=>p.filter(x=>x.nm!==nm));sMo(p=>{const x={...p};Object.keys(x).forEach(k=>{if(k.startsWith(nk(nm)+"|||"))delete x[k]});return x});sSv(false);sLs(new Date())};
- 
-const isLk=m=>gv(LK,m,"Sales")===1;
-const doLock=async m=>{const at=new Date().toLocaleString("en-AU");const u=unRef.current;if(!isLk(m)){const s=comp.reduce((a,p)=>a+gv(p.nm,m,"Sales"),0);const e=comp.reduce((a,p)=>a+gv(p.nm,m,"ExtMaterials"),0);const p2=comp.reduce((a,p)=>a+gv(p.nm,m,"ProfabMaterials"),0);const o=comp.reduce((a,p)=>a+gv(p.nm,m,"OtherCosts"),0);sMo(pr=>({...pr,[nk(LK)+"|||"+m]:{...(pr[nk(LK)+"|||"+m]||{}),Sales:1},[nk(LS)+"|||"+m]:{...(pr[nk(LS)+"|||"+m]||{}),Sales:s},[nk(LE)+"|||"+m]:{...(pr[nk(LE)+"|||"+m]||{}),Sales:e},[nk(LP)+"|||"+m]:{...(pr[nk(LP)+"|||"+m]||{}),Sales:p2},[nk(LO)+"|||"+m]:{...(pr[nk(LO)+"|||"+m]||{}),Sales:o}}));sSv(true);await enq(()=>aP({action:"lockMonth",month:m,lock:1,salesTotal:s,extTotal:e,pfabTotal:p2,otherTotal:o,editedBy:u,editedAt:at}));sLs(new Date());sSv(false)}else{sMo(pr=>({...pr,[nk(LK)+"|||"+m]:{...(pr[nk(LK)+"|||"+m]||{}),Sales:0}}));sSv(true);await enq(()=>aP({action:"lockMonth",month:m,lock:0,editedBy:u,editedAt:at}));sLs(new Date());sSv(false)}};
- 
-const comp=useMemo(()=>pj.filter(p=>!p.nm.startsWith("_")).map((p,i)=>{let sT=0,eT=0,pT=0,oT=0;MO.forEach(m=>{sT+=gv(p.nm,m,"Sales");eT+=gv(p.nm,m,"ExtMaterials");pT+=gv(p.nm,m,"ProfabMaterials");oT+=gv(p.nm,m,"OtherCosts")});const avo=voP[nk(p.nm)]||0,tot=p.cp+p.v+avo,eB=gv(p.nm,"_BC","ExtMaterials")+gv(p.nm,"_BV","ExtMaterials"),pB=gv(p.nm,"_BC","ProfabMaterials")+gv(p.nm,"_BV","ProfabMaterials"),oB=gv(p.nm,"_BC","OtherCosts")+gv(p.nm,"_BV","OtherCosts"),gp=tot-(eT||eB)-(pT||pB)-(oT||oB);const fc=MO.findIndex(m=>gv(p.nm,m,"Sales")>0);return{...p,i,sT,eT,pT,oT,avo,tot,gp,tba:tot-sT,fc:fc===-1?999:fc}}).sort((a,b)=>{if(a._new&&!b._new)return -1;if(!a._new&&b._new)return 1;const re=/extra\s*sales|day\s*lab[ou]r/i;const ae=re.test(a.nm),be=re.test(b.nm);if(ae&&!be)return 1;if(!ae&&be)return -1;return a.fc-b.fc}),[pj,mo,voP]);
-const flt=useMemo(()=>{let f=comp;if(stFilt.length>0)f=f.filter(p=>stFilt.includes(p.st));if(sr_d){const q=sr_d.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q)||(p.jid||"").toLowerCase().includes(q))}return f},[comp,sr_d,stFilt]);
-const vis=MO.slice(startM);
-const sumM=useMemo(()=>{const o={};MO.forEach(m=>{let s=0,e=0,p=0,ot=0;comp.forEach(pr=>{s+=gv(pr.nm,m,"Sales");e+=gv(pr.nm,m,"ExtMaterials");p+=gv(pr.nm,m,"ProfabMaterials");ot+=gv(pr.nm,m,"OtherCosts")});o[m]={s,e,p,ot}});return o},[comp,mo]);
-const cd=useMemo(()=>{const ms=selM.length>0?selM:null;let con=0,sal=0,ext=0,pfb=0,oth=0;flt.forEach(p=>{con+=p.tot;if(ms){ms.forEach(m=>{sal+=gv(p.nm,m,"Sales");ext+=gv(p.nm,m,"ExtMaterials");pfb+=gv(p.nm,m,"ProfabMaterials");oth+=gv(p.nm,m,"OtherCosts")})}else{sal+=p.sT;ext+=p.eT;pfb+=p.pT;oth+=p.oT}});const costs=ext+pfb+oth;return{con,sal,ext,pfb,oth,costs,gp:sal-costs,label:ms?ms.join(", "):"All months"}},[selM,flt,mo]);
-const pjStCnt=useMemo(()=>{const o={Pending:0,Awarded:0,Live:0,Completed:0};let f=comp;if(sr_d){const q=sr_d.toLowerCase();f=f.filter(p=>p.nm.toLowerCase().includes(q)||(p.jid||"").toLowerCase().includes(q))}f.forEach(p=>{if(o[p.st]!==undefined)o[p.st]++});return o},[comp,sr_d]);
-const pfPjStCnt=useMemo(()=>{const o={Pending:0,Awarded:0,Live:0,Completed:0};let f=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfSr_d)f=f.filter(p=>p.nm.toLowerCase().includes(pfSr_d.toLowerCase()));f.forEach(p=>{if(o[p.st]!==undefined)o[p.st]++});return o},[comp,pfSr_d,voPfab,mo]);
-const masterStCnt=useMemo(()=>{const o={};VO_ST.forEach(s=>{o[s.v]=vo.filter(v=>{const pjM=!voFiltPj_d||v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase());const tyM=voFiltTy==="all"||v.ty===voFiltTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length});return o},[vo,voFiltPj_d,voFiltTy]);
-const coordStCnt=useMemo(()=>{const o={};VO_ST.forEach(s=>{o[s.v]=coordVO.filter(v=>{const pjM=!voFiltPj_d||v.pj.toLowerCase().includes(voFiltPj_d.toLowerCase());const tyM=voFiltTy==="all"||v.ty===voFiltTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length});return o},[coordVO,voFiltPj_d,voFiltTy]);
-const pSR=[{k:"_PS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_PO",n:"Group Overhead",g:"oh"},{k:"_PW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_PM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_PE",n:"No. of Employees On-site",nc:true,g:"emp"}];
-const pfPSR=[{k:"_FC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_FM",n:"Materials (COGS)",g:"fmat",cl:"#c45e10"},{k:"_FH",n:"PFAB Overhead",g:"foh"},{k:"_FS",n:"Subcontractors: Non Full-Time",g:"fsub"},{k:"_FW",n:"Wages: PFAB and Internal Subbies",g:"fwg"},{k:"_FE",n:"No. of Employees On-site",nc:true,g:"femp"}];
-const pfASR=[{k:"_HC",n:"Consumables",g:"fcon",cl:"var(--ac)"},{k:"_HM",n:"Materials (COGS)",g:"fmat",cl:"#c45e10"},{k:"_HH",n:"PFAB Overhead",g:"foh"},{k:"_HS",n:"Subcontractors: Non Full-Time",g:"fsub"},{k:"_HW",n:"Wages: PFAB and Internal Subbies",g:"fwg"},{k:"_HE",n:"No. of Employees On-site",nc:true,g:"femp"}];
-const aSR=[{k:"_AS",n:"Subcontractors: Non Full-Time",g:"sub"},{k:"_AO",n:"Group Overhead",g:"oh"},{k:"_AW",n:"Wages: PFAB",g:"wp",nc:true},{k:"_AM",n:"Wages: PMC, PF & Internal Subbies",g:"wm"},{k:"_AE",n:"No. of Employees On-site",nc:true,g:"emp"}];
- 
-if(!pp)return<div className="np"><div className="nc"><div style={{fontSize:40}}>🔒</div><h2>Team Access</h2><p>Please enter the team passphrase to continue.</p><input className="nin" type="password" placeholder="Team passphrase..." value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} autoFocus/><button className="nbt" disabled={!ppI.trim()} onClick={submitPp}>Unlock →</button><div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div></div></div>;
-if(idCheck)return<div className="np"><div className="nc"><div style={{textAlign:"center",color:"var(--t2)",fontSize:12}}>Verifying access...</div></div></div>;
-if(!un)return<div className="np"><div className="nc"><div style={{fontSize:40}}>👤</div><h2>Welcome</h2><p>Enter your name.</p><input className="nin" placeholder="Your name..." value={ni} onChange={e=>sNi(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ni.trim())sub(ni.trim())}} autoFocus/><button className="nbt" disabled={!ni.trim()} onClick={()=>sub(ni.trim())}>Enter →</button></div></div>;
- 
-// SAME column template as the working version: 7 fixed + 12 months = 19 cols
-const gC="240px 72px 62px 65px 72px 72px 65px "+vis.map(()=>"72px").join(" ");
- 
-return<div className="app" onClick={e=>{if(e.target.closest('button,input,select,a'))return;const el=e.target.closest('.cl')||e.target;const txt=(el.textContent||'').replace(/[$,]/g,'').trim();const v=parseFloat(txt);if(!isNaN(v)&&v!==0&&txt.length<15){if(e.ctrlKey||e.metaKey){setSelCells(prev=>[...prev,v])}else{setSelCells([v])}}}}>
-<div className="hd"><div className="hl"><button className="sb-toggle" onClick={()=>sSbO(true)}>☰</button><h1>{vw==="grid"?"PMC & PF Pipeline":vw==="pfab"?"PFAB Pipeline":vw==="coord"?coordUser+"\u2019s VO Register":"Variation Register"}</h1><span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":cached?"var(--rd)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":cached?"var(--rd)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":cached?"Offline":"Connected"}</span></div>
-<div className="hr"><button className="act-btn" onClick={()=>setActOpen(true)} title="See who's active and recent edits">👥 {liveCount>0&&<span className="act-btn-count">{liveCount}</span>}</button><span className="ub">👤 {un}</span>{ls&&<span className="svt">{ls.toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</span>}<button className="rb" onClick={()=>setHovOn(!hovOn)} style={{color:hovOn?"var(--ac)":"var(--t2)"}}>{hovOn?"◉":"○"} Hover</button><button className="rb" onClick={load}>↻ Sync</button></div></div>
+const uV=useCallback(async(vi,fd,val)=>{const v=vo[vi];if(!v)return;if(v._pending){alert("⏳ This VO is still saving.\n\nPlease wait a few seconds for it to finish, then try editing.");return}const autoP=v.ty==="DL"&&["nmn","nh","nr","oh","or2"].includes(fd);const newPr=autoP?calcDLPrice(v,fd,val):null;sVo(pr=>pr.map((x,i)=>i===vi?{...x,[fd]:val,...(autoP?{pr:newPr}:{})}:x));
+const m2={"pj":"PROJECT","area":"AREA ON JOB","ty":"TYPE","vn":"VARIATION NO.","srn":"SUB REF NO.","vnm":"VARIATION NAME","ds":"DATE SUBMITTED","da":"DATE APPROVED","pr":"PRICE","claim":"CLAIM %","st":"STATUS","em":"EXTERNAL MATERIALS","pf":"PFAB MATERIALS","nmn":"NO. OF MEN","nh":"NORMAL HOURS","nr":"NORMAL RATE","oh":"OVERTIME HOURS","or2":"OVERTIME RATE","notes":"NOTES"};
+sSv(true);await enq(()=>aP({action:"updateCoordVO",user,voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r,field:m2[fd]||fd,value:val,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));if(autoP)await enq(()=>aP({action:"updateCoordVO",user,voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r,field:"PRICE",value:newPr,editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));sSv(false)},[vo,user,identity]);
+
+const dVO=async(v)=>{if(v._pending){alert("⏳ This VO is still saving.\n\nPlease wait a few seconds for it to finish syncing, then try again.");return}const stL=String(v.st||"").toLowerCase();if(stL.indexOf("fully claimed")!==-1||stL.indexOf("partially claimed")!==-1){alert("⛔ Cannot delete this VO.\n\nThis VO has been marked as \""+v.st+"\" in the Master VO Register.\n\nClaimed VOs are locked to protect the audit trail. If this needs to be removed, contact an admin.");return}if(!confirm("Delete VO: "+(v.vnm||v.pj||"entry")+"?\n\nThis will also remove it from the Master VO Register if it exists there."))return;sSv(true);sVo(prev=>prev.filter(x=>v.vid?x.vid!==v.vid:x.i!==v.i));await enq(()=>aP({action:"deleteCoordVO",user,voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r}));sSv(false)};
+
+const pushVO=async(v)=>{
+if(!confirm(v.pushed?"Re-push \""+v.vnm+"\" to update Master?":"Push \""+v.vnm+"\" to Master VO Register?"))return;
+sSv(true);
+sVo(prev=>prev.map(x=>(v.vid?x.vid===v.vid:x.i===v.i)?{...x,pushed:new Date().toLocaleString("en-AU")}:x));
+await enq(()=>aP({action:"pushToMaster",user,voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r}));
+sSv(false)};
+
+const addV=async()=>{if(!nvo.project)return;sSv(true);sSa(false);const newVo={...nvo};sNvo({project:"",type:"VO",varNo:"",varName:"",ds:"",da:"",price:0,status:"",em:0,pf:0});const fullVarNo=(newVo.type==="DL"?"DL-":"VO-")+newVo.varNo;enq(()=>aP({action:"addCoordVO",user,project:newVo.project,type:newVo.type,varNo:fullVarNo,varName:newVo.varName,dateSubmitted:newVo.ds,dateApproved:newVo.da,price:newVo.price,status:newVo.status,extMaterials:newVo.em,pfabMaterials:newVo.pf,margin:newVo.price-newVo.em-newVo.pf,notes:"",editedBy:identity,editedAt:new Date().toLocaleString("en-AU")}));setTimeout(()=>{load(true).then(()=>sSv(false))},2000)};
+
+const voFilt=useMemo(()=>{let f=vo;if(filtPj_d)f=f.filter(v=>v.pj.toLowerCase().includes(filtPj_d.toLowerCase()));if(filtTy_d!=="all")f=f.filter(v=>v.ty===filtTy_d);if(filtSt_d.length>0)f=f.filter(v=>filtSt_d.some(s=>v.st.toLowerCase().includes(s.toLowerCase())));return f.slice().sort((a,b)=>{const ad=dsToTs(a.ds),bd=dsToTs(b.ds);if(!ad&&bd)return -1;if(ad&&!bd)return 1;return bd-ad})},[vo,filtPj_d,filtTy_d,filtSt_d]);
+
+const apCount=vo.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length;
+
+if(!pp)return<div className="np"><div style={{textAlign:"center"}}><div style={{fontSize:40}}>🔒</div><h2 style={{marginBottom:12}}>Coordinator Access</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>Enter the team passphrase to continue.</p>
+<input type="password" value={ppI} onChange={e=>setPpI(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&ppI.trim())submitPp()}} placeholder="Passphrase..." autoFocus style={{padding:"10px 14px",fontSize:14,border:"1px solid var(--bd)",borderRadius:6,fontFamily:"var(--ft)",marginBottom:8,width:200}}/>
+<br/><button disabled={!ppI.trim()} onClick={submitPp} style={{padding:"8px 30px",fontSize:13,fontWeight:700,fontFamily:"var(--ft)",background:ppI.trim()?"var(--ac)":"var(--bd)",color:"#fff",border:"none",borderRadius:6,cursor:ppI.trim()?"pointer":"default"}}>Unlock →</button>
+<div style={{marginTop:12,fontSize:10,color:"var(--t2)"}}>Ask your team admin if you don't have it.</div>
+</div></div>;
+
+if(idCheck)return<div className="np"><div style={{textAlign:"center",color:"var(--t2)",fontSize:12}}>Verifying access...</div></div>;
+if(!identity)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Who are you?</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>This is saved so we know who made changes.</p>
+{USERS.map(u=><button key={u} onClick={()=>{setIdentity(u);localStorage.setItem("vo-identity",u);if(!user)setUser(u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}
+</div></div>;
+
+if(!user)return<div className="np"><div style={{textAlign:"center"}}><h2 style={{marginBottom:12}}>Select Register</h2>
+<p style={{color:"var(--t2)",fontSize:11,marginBottom:12}}>Logged in as <b>{identity}</b></p>
+{USERS.map(u=><button key={u} onClick={()=>{setUser(u);window.history.replaceState(null,"","?user="+u)}} style={{display:"block",margin:"6px auto",padding:"10px 40px",fontSize:14,fontWeight:700,fontFamily:"var(--ft)",background:"var(--ac)",color:"#fff",border:"none",borderRadius:6,cursor:"pointer"}}>{u}</button>)}
+</div></div>;
+
+return<div className="app">
+<div className="hd"><div className="hl"><h1>Variation Register — {user}</h1>{user!==identity&&<span style={{fontSize:9,color:"var(--am)",fontWeight:700,marginLeft:4}}>(edited by {identity})</span>}<span className="dot" style={{background:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)"}}/><span className="dx" style={{color:saveErr?"#d9534f":sv?"var(--am)":"var(--gn)",cursor:saveErr?"pointer":"default",fontWeight:saveErr?700:400}} onClick={saveErr?()=>{setSaveErr(null);load()}:undefined} title={saveErr||""}>{saveErr?"⚠ Save failed - click to retry":sv?"Saving...":"Connected"}</span></div>
+<div style={{display:"flex",gap:4}}><button className="act-btn" onClick={()=>setActOpen(true)} title="Recent edits across the team">📋 Activity</button><button className="rb" onClick={load}>↻ Sync</button><button className="rb" onClick={()=>setUser("")}>Switch Register</button><span style={{fontSize:9,color:"var(--t2)"}}>👤 {identity}</span></div></div>
 {/* ACTIVITY PANEL */}
 <div className={"act-overlay"+(actOpen?" open":"")} onClick={()=>setActOpen(false)}/>
 <div className={"act-panel"+(actOpen?" open":"")}>
-<div className="act-hdr"><h3>Activity</h3><button onClick={()=>setActOpen(false)} title="Close">✕</button></div>
+<div className="act-hdr"><h3>Recent Activity</h3><button onClick={()=>setActOpen(false)} title="Close">✕</button></div>
 <div className="act-section">
-<h4>Active Now ({actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").length})</h4>
-{actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").length===0?<div className="act-empty">No one online right now.</div>:actData.presence.filter(p=>presStatus(p.lastSeen)!=="gone").sort((a,b)=>new Date(b.lastSeen)-new Date(a.lastSeen)).map(p=><div key={p.user} className="act-pres"><span className={"act-pres-dot "+presStatus(p.lastSeen)}/><span className={p.user===un?"act-pres-self":""}>{p.user}{p.user===un?" (you)":""}</span><span className="act-pres-when">{p.user===un?"":tAgo(p.lastSeen)}</span></div>)}
-</div>
-<div className="act-section">
-<h4>Recent Edits</h4>
-{actData.activity.length===0?<div className="act-empty">No recent activity.</div>:cleanActivity(actData.activity).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
+{(actData.activity||[]).length===0?<div className="act-empty">No recent activity.</div>:cleanActivity(actData.activity||[]).map((a,i)=><div key={i} className="act-item"><div className="act-item-user">{a.user}</div><div className="act-item-target">{a.sheet}{a.target?" · "+a.target:""}</div><div className="act-item-when">{tAgo(a.when)}</div></div>)}
 </div>
 </div>
-{colorMenu&&<><div onClick={()=>setColorMenu(null)} onContextMenu={e=>{e.preventDefault();setColorMenu(null)}} style={{position:"fixed",inset:0,zIndex:100}}/>
-<div style={{position:"fixed",left:Math.min(colorMenu.x,window.innerWidth-180),top:Math.min(colorMenu.y,window.innerHeight-44),zIndex:101,background:"#fff",border:"1px solid var(--bd)",borderRadius:6,padding:4,display:"flex",gap:3,boxShadow:"0 2px 12px rgba(0,0,0,.15)"}}>
-{[{k:"default",c:"#3a3f4a",l:"Forecast (default)"},{k:"red",c:"var(--rd)",l:"Not Final"},{k:"green",c:"var(--gn)",l:"Approved / Claimed"},{k:"orange",c:"#c45e10",l:"Orange"},{k:"blue",c:"var(--ac)",l:"Blue"}].map(opt=><button key={opt.k} title={opt.l} onClick={()=>{setCC(colorMenu.p,colorMenu.m,colorMenu.col,opt.k);setColorMenu(null)}} style={{width:26,height:26,border:"1px solid var(--bd)",background:opt.c,borderRadius:4,cursor:"pointer"}}/>)}
-</div></>}
-{/* SIDEBAR */}
-<div className={"sb-overlay"+(sbOpen?" open":"")} onClick={()=>sSbO(false)}/>
-<div className={"sidebar"+(sbOpen?" open":"")}>
-<div className="sb-hdr"><div className="sb-logo"/><button className="sb-close" onClick={()=>sSbO(false)}>×</button></div>
-<div className="sb-menu">
-<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">📈</span>Dashboard<span className="sb-badge">Soon</span></div>
-<div className="sb-divider"/>
-<div className={"sb-item"+(vw==="grid"?" active":"")} onClick={()=>{sVw("grid");sSbO(false)}}><span className="sb-ico">📊</span>PMC & PF Pipeline</div>
-<div className={"sb-item"+(vw==="pfab"?" active":"")} onClick={()=>{sVw("pfab");sSbO(false)}}><span className="sb-ico">🏭</span>PFAB Pipeline</div>
-<div className={"sb-item"+(vw==="vos"?" active":"")} onClick={()=>{sVw("vos");sSbO(false)}}><span className="sb-ico">📋</span>Variation Register</div>
-{COORDS.map(u=><div key={u} className={"sb-item"+(vw==="coord"&&coordUser===u?" active":"")} onClick={()=>{sVw("coord");loadCoordVO(u);sSbO(false)}} style={{paddingLeft:36,fontSize:11}}><span className="sb-ico">👤</span>{u}</div>)}
-<div className="sb-item" style={{opacity:.4,cursor:"default"}}><span className="sb-ico">👷</span>Day Labour Dockets<span className="sb-badge">Soon</span></div>
-</div>
-<div className="sb-footer">Proline Group Pipeline v1.0</div>
-</div>
+
 {er&&<div className="er">{er}</div>}
-{ld?<div className="ld"><div className="sp"/><p>Loading...</p></div>:<>
-{vw==="grid"&&selM.length>0&&<div style={{fontSize:9,color:"var(--pu)",fontWeight:700,marginBottom:3}}>{cd.label} <button style={{background:"none",border:"none",color:"var(--t2)",cursor:"pointer",fontSize:9}} onClick={()=>sSM([])}>✕ Clear</button></div>}
-{vw==="grid"&&<div className="cds">
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Contract</div><div className="vl" style={{color:"var(--ac)"}}>{fK(selM.length?flt.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).reduce((t,p)=>t+p.tot,0):cd.con)}</div><div className="sb">{selM.length?flt.filter(p=>selM.some(m=>gv(p.nm,m,"Sales")>0)).length+" projects · "+cd.label:flt.length+" projects"}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Revenue</div><div className="vl">{fK(cd.sal)}</div><div className="sb">{cd.label}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.ext)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">ProFab Mat.</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.pfb)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Other Costs</div><div className="vl" style={{color:"var(--rd)"}}>{fK(cd.oth)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Costs</div><div className="vl" style={{color:"var(--am)"}}>{fK(cd.costs)}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Gross Profit</div><div className="vl" style={{color:"var(--gn)"}}>{fK(cd.gp)}</div><div className="sb">{cd.sal?Math.round(cd.gp/cd.sal*100)+"%":""}</div></div>
-</div>}
-{vw==="grid"&&<div className="br">
-<button className="pl gn" onClick={()=>sSa(!sa)}>+ Project</button>
-<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setStFilt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:stFilt.includes(s.v)?s.c:"var(--bd)",background:stFilt.includes(s.v)?s.c:"transparent",color:stFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v} ({pjStCnt[s.v]||0})</button>)}</div><input className="sx" placeholder="Search..." value={sr} onChange={e=>sSr(e.target.value)}/>
-</div>}
-{vw==="grid"&&sa&&<div className="af"><div><label>Project</label><input value={nn} onChange={e=>sNn(e.target.value)} placeholder="Project name" style={{width:200}}/></div><div><label>Contract</label><input value={nc} onChange={e=>sNc(e.target.value)} placeholder="0" style={{width:100}}/></div><button className="pl gn" onClick={aPj}>Add</button><button className="pl" onClick={()=>sSa(false)}>Cancel</button></div>}
- 
-{vw==="grid"&&<>
-<div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><button onClick={()=>sExp(comp.reduce((a,p)=>({...a,[p.nm]:true}),{}))} title="Expand All">+ All</button><button onClick={()=>sExp({})} title="Collapse All">- All</button><div className="dv"/><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft=Math.max(0,el.scrollLeft-300)})}}>←</button><span>{vis[0]} — {vis[vis.length-1]} ({vis.length} months)</span><button onClick={()=>{document.querySelectorAll(".ss").forEach(el=>{el.scrollLeft+=300})}}>→</button><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button>{selM.length>0&&<button onClick={()=>sSM([])} style={{color:"var(--pu)"}}>Clear</button>}</div>
- 
-{/* ====== MAIN TABLE ====== */}
-<div className="gc ss" onScroll={syncScroll} style={{maxHeight:"calc(100vh - 220px)",overflowY:"auto"}}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="gh"><div>Project</div><div style={{color:"var(--am)"}}>Contract</div><div style={{color:"var(--am)"}}>Var.</div><div style={{color:"var(--pu)"}}>Appr.VOs</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
-{vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} onMouseEnter={()=>hovOn&&sHC(m)} onMouseLeave={()=>sHC(null)}>{m}</div>)}</div>
- 
-{flt.map(p=>{
-const open=exp[p.nm];
-const gpM=m=>gv(p.nm,m,"Sales")-gv(p.nm,m,"ExtMaterials")-gv(p.nm,m,"ProfabMaterials")-gv(p.nm,m,"OtherCosts");
-return<div className="pg" key={p.i}>
-{/* Project row = Sales (Status+JobID inside first cell) */}
-<div className="pr">
-<div className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)} style={{display:"flex",flexDirection:"column",gap:1,width:"100%"}}>
-<div style={{display:"flex",alignItems:"center",gap:2}}><button className="xb" onClick={()=>dPj(p.nm)}>×</button><EN value={p.nm} onSave={nw=>renP(p.nm,nw)} style={p.st==="Pending"?{color:"var(--rd)"}:{}}/></div>
-<div style={{display:"flex",alignItems:"center",gap:2,opacity:.7,transform:"scale(0.85)",transformOrigin:"left center"}}><button className="eb" onClick={()=>togExp(p.nm)}>{open?"−":"+"}</button><span className={"st-tag "+(p.st==="Live"?"st-live":p.st==="Pending"?"st-pend":p.st==="Awarded"?"st-awd":"st-done")} onClick={()=>uP(p.nm,"Status",p.st==="Pending"?"Awarded":p.st==="Awarded"?"Live":p.st==="Live"?"Completed":"Pending")}>{p.st==="Live"?"LIVE":p.st==="Pending"?"PENDING":p.st==="Awarded"?"AWARDED":"DONE"}</span><JidInput value={p.jid} onSave={v=>uP(p.nm,"Job ID",v)}/>{p.pt&&<span style={{fontSize:7,color:"#fff",background:"var(--ac)",fontWeight:700,padding:"1px 4px",borderRadius:3,fontWeight:600,whiteSpace:"nowrap"}} title={p.pt}>{p.pt}</span>}</div>
-</div>
-<div className={hovOn&&hovR===p.nm?"rh":""}><EC value={p.cp} onChange={v=>uP(p.nm,"Contract Price",v)} cls="cl ce" color={getCC(p.nm,"_","cp")} onContext={e=>openCM(e,p.nm,"_","cp")}/></div>
-<div className={hovOn&&hovR===p.nm?"rh":""}><EC value={p.v} onChange={v=>uP(p.nm,"Variations",v)} cls="cl ce" color={getCC(p.nm,"_","var")} onContext={e=>openCM(e,p.nm,"_","var")}/></div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:"var(--pu)",fontStyle:"italic",fontFamily:"var(--mn)"}}>{p.avo?fm(p.avo):"-"}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.tot)}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.sT)}</div>
-<div className={hovOn&&hovR===p.nm?"rh":""} style={{color:p.tba<0?"var(--rd)":p.tba>0?"var(--am)":"var(--gn)",fontFamily:"var(--mn)"}}>{fm(p.tba)}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null} title={editTip(moE[nk(p.nm)+"|||"+m]?.by,moE[nk(p.nm)+"|||"+m]?.at)}><EC value={gv(p.nm,m,"Sales")} onChange={val=>uC(p.nm,m,"Sales",val)} cls="cl cs" color={getCC(p.nm,m,"Sales")} onContext={e=>openCM(e,p.nm,m,"Sales")}/></div>)}
-</div>
-{/* Collapsible sub-rows */}
-{open&&<>{RK.map((rk,ri)=>{
-const bCon=gv(p.nm,"_BC",rk);const bVar=gv(p.nm,"_BV",rk);
-const avoC=ri===0?(voExt[nk(p.nm)]||0):ri===1?(voPfab[nk(p.nm)]||0):0;
-const cTot=bCon+bVar+avoC;
-const cClaimed=[p.eT,p.pT,p.oT][ri];
-const cTba=cTot-cClaimed;
-return<div className={"rw r"+(ri+1)} key={rk}><div className={"rl"+(hovOn&&hovR===p.nm+"_r"+ri?" rh":"")} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)}>{RN[ri]}</div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""}><EC value={bCon} onChange={v=>uC(p.nm,"_BC",rk,v)} cls="cl ce" color={getCC(p.nm,"_BC",rk)} onContext={e=>openCM(e,p.nm,"_BC",rk)}/></div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""}><EC value={bVar} onChange={v=>uC(p.nm,"_BV",rk,v)} cls="cl ce" color={getCC(p.nm,"_BV",rk)} onContext={e=>openCM(e,p.nm,"_BV",rk)}/></div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"var(--pu)",fontStyle:"italic"}}>{avoC?fm(avoC):"-"}</div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{(cTot||cClaimed)?fm(cTot):""}</div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(cClaimed)}</div>
-<div className={hovOn&&hovR===p.nm+"_r"+ri?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_r"+ri)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:cTba<0?"var(--rd)":cTba>0?"var(--am)":"var(--gn)"}}>{(cTot||cClaimed)?fm(cTba):""}</div>
-{vis.map(m=><div key={m} className={(hovOn&&hovR===p.nm+"_r"+ri?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm+"_r"+ri)}} onMouseLeave={()=>{sHR(null)}} style={m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:null} title={editTip(moE[nk(p.nm)+"|||"+m]?.by,moE[nk(p.nm)+"|||"+m]?.at)}><EC value={gv(p.nm,m,rk)} onChange={val=>uC(p.nm,m,rk,val)} cls="cl cc" color={getCC(p.nm,m,rk)} onContext={e=>openCM(e,p.nm,m,rk)}/></div>)}</div>})}
-<div className="rg"><div className={"rl"+(hovOn&&hovR===p.nm+"_gp"?" rh":"")} onMouseEnter={()=>hovOn&&sHR(p.nm+"_gp")} onMouseLeave={()=>sHR(null)}>Gross Profit</div><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/>
-<div className={hovOn&&hovR===p.nm+"_gp"?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm+"_gp")} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",color:"#3a3f4a"}}>{fm(p.gp)}</div><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/><div className={hovOn&&hovR===p.nm+"_gp"?"rh":""}/>
-{vis.map(m=>{const v=gpM(m);return<div key={m} className={(hovOn&&hovR===p.nm+"_gp"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{hovOn&&sHR(p.nm+"_gp")}} onMouseLeave={()=>{sHR(null)}} style={{...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{}),fontFamily:"var(--mn)",fontSize:9,color:"#3a3f4a"}}>{v?fm(v):""}</div>})}</div>
-</>}
-</div>})}
-</div></div>
- 
-{/* ====== NO OF WEEKS (aligned with months via padding) ====== */}
-{/* No of Weeks - same grid for alignment */}
-<div className="ss" onScroll={syncScroll} style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto",scrollbarGutter:"stable"}}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
-<div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:9,color:"var(--tx)",textTransform:"uppercase",letterSpacing:".3px",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
-{vis.map(m=>{const manual=gv(WK,m,"Sales");const val=manual||countWed(m);return<div key={m} style={{padding:"2px 6px",textAlign:"center",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}><EC value={val} onChange={v=>uC(WK,m,"Sales",v)} cls="cl cl-wk" color={getCC(WK,m,"Sales")} onContext={e=>openCM(e,WK,m,"Sales")}/></div>})}
-</div></div>
- 
-{/* ====== PROJECTED (collapsible, same grid) ====== */}
-<div className="sum-hdr sum-hdr-p" onClick={()=>sPjO(!pjO)}>
-{pjO?"▾":"▸"} PROJECTED <span className="tog">{pjO?"collapse":"expand"}</span>
- 
-</div>
-{pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9,color:"var(--t2)",textTransform:"uppercase"}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr"><div className={"slbl"+(hovR==="_lkr"?" rh":"")} onMouseEnter={()=>sHR("_lkr")} onMouseLeave={()=>sHR(null)} style={{color:"var(--am)",fontSize:9}}>🔒 Lock Month</div>{vis.map(m=><div key={m} className={(hovR==="_lkr"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("_lkr")}} onMouseLeave={()=>{sHR(null)}} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Projected Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal")}} onMouseLeave={()=>{sHR(null)}} style={{color:"var(--ac)"}}>{fm(lk?gv(LS,m,"Sales"):(sumM[m]?.s||0))}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="ext"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="pfab"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="oct"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{fm(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))}</div>})}</div>
-{pSR.map(row=><div className="sr sr-e" key={row.k}><div className={"slbl"+(hovOn&&hovR===row.g?" rh":"")} onMouseEnter={()=>sHR(row.g)} onMouseLeave={()=>sHR(null)}>{row.n}</div>{vis.map(m=><div key={m} className={(hovOn&&hovR===row.g?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR(row.g)}} onMouseLeave={()=>{sHR(null)}}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce" color={getCC(row.k,m,"Sales")} onContext={e=>openCM(e,row.k,m,"Sales")}/></div>)}</div>)}
-<div className="sr-t"><div className={"slbl"+(hovOn&&hovR==="pnl"?" rh":"")} onMouseEnter={()=>sHR("pnl")} onMouseLeave={()=>sHR(null)} style={{color:"var(--ac)"}}>PMC & PF Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const s=lk?gv(LS,m,"Sales"):(sumM[m]?.s||0);const c2=(lk?gv(LE,m,"Sales"):(sumM[m]?.e||0))+(lk?gv(LP,m,"Sales"):(sumM[m]?.p||0))+(lk?gv(LO,m,"Sales"):(sumM[m]?.ot||0))+pSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=s-c2;return<div key={m} className={(hovOn&&hovR==="pnl"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pnl")}} onMouseLeave={()=>{sHR(null)}} style={{color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
-</div></div>}
- 
-{/* ====== ACTUAL (collapsible, same grid) ====== */}
-<div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>
-{acO?"▾":"▸"} ACTUAL <span className="tog">{acO?"collapse":"expand"}</span>
-</div>
-{acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9,color:"var(--t2)",textTransform:"uppercase"}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="sal"?" rh":"")} onMouseEnter={()=>sHR("sal")} onMouseLeave={()=>sHR(null)}>Actual Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="sal"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("sal")}} onMouseLeave={()=>{sHR(null)}} style={{color:"var(--ac)"}}>{lk?fm(sumM[m]?.s||0):""}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="ext"?" rh":"")} onMouseEnter={()=>sHR("ext")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>External Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="ext"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("ext")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.e||0):""}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="pfab"?" rh":"")} onMouseEnter={()=>sHR("pfab")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>ProFab Materials</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="pfab"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pfab")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="oct"?" rh":"")} onMouseEnter={()=>sHR("oct")} onMouseLeave={()=>sHR(null)} style={{color:"#c45e10"}}>Other Costs</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={(hovOn&&hovR==="oct"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("oct")}} onMouseLeave={()=>{sHR(null)}} style={{color:"#c45e10"}}>{lk?fm(sumM[m]?.ot||0):""}</div>})}</div>
-{aSR.map(row=><div className="sr sr-e" key={row.k}><div className={"slbl"+(hovOn&&hovR===row.g?" rh":"")} onMouseEnter={()=>sHR(row.g)} onMouseLeave={()=>sHR(null)}>{row.n}</div>{vis.map(m=><div key={m} className={(hovOn&&hovR===row.g?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR(row.g)}} onMouseLeave={()=>{sHR(null)}}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce" color={getCC(row.k,m,"Sales")} onContext={e=>openCM(e,row.k,m,"Sales")}/></div>)}</div>)}
-<div className="sr-t"><div className={"slbl"+(hovOn&&hovR==="pnl"?" rh":"")} onMouseEnter={()=>sHR("pnl")} onMouseLeave={()=>sHR(null)} style={{color:"var(--gn)"}}>PMC & PF Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m} className={(hovOn&&hovR==="pnl"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pnl")}} onMouseLeave={()=>{sHR(null)}}/>;const s=sumM[m]?.s||0;const c2=(sumM[m]?.e||0)+(sumM[m]?.p||0)+(sumM[m]?.ot||0)+aSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=s-c2;return<div key={m} className={(hovOn&&hovR==="pnl"?"rh":"")+(m===CUR_M?" cm-hl":"")} onMouseEnter={()=>{sHR("pnl")}} onMouseLeave={()=>{sHR(null)}} style={{color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
-</div></div>}
- 
-{/* Single scrollbar controller */}
-<div className="scroll-ctrl ss" onScroll={syncScroll}><div style={{height:1,minWidth:568+vis.length*72}}/></div>
- 
-{flt.length===0&&<div className="em">{pj.length===0?"No projects.":"No match."}</div>}
-</>}
- 
-{/* PFAB PIPELINE */}
-{vw==="pfab"&&<>
-{/* PFAB Cards */}
-{(()=>{
-const monthsToUse=selM.length?selM:MO;
-// Same filter chain as the PFAB row renderer below — keeps cards & rows in sync
-let pfBase=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});
-if(pfStFilt.length>0)pfBase=pfBase.filter(p=>pfStFilt.includes(p.st));
-if(pfSr_d)pfBase=pfBase.filter(p=>p.nm.toLowerCase().includes(pfSr_d.toLowerCase()));
-const activeProjects=selM.length?pfBase.filter(p=>selM.some(m=>gv(p.nm,m,"ProfabMaterials")>0)):pfBase.filter(p=>MO.some(m=>gv(p.nm,m,"ProfabMaterials")>0));
-const totalEstSales=activeProjects.reduce((t,p)=>t+gv(p.nm,"_BC","ProfabMaterials"),0);
-const totalRevenue=pfBase.reduce((t,p)=>t+monthsToUse.reduce((s,m)=>s+gv(p.nm,m,"ProfabMaterials"),0),0);
-return<div className="cds">
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Est. Sales</div><div className="vl" style={{color:"var(--ac)"}}>{fK(totalEstSales)}</div><div className="sb">{activeProjects.length} project{activeProjects.length===1?"":"s"} · {selM.length?selM.join(", "):"any month"}</div></div>
-<div className={"cd"+(selM.length?" se":"")}><div className="lb">Total Revenue</div><div className="vl" style={{color:"var(--gn)"}}>{fK(totalRevenue)}</div><div className="sb">{selM.length?selM.join(", "):"All months"}</div></div>
-</div>
-})()}
+{ld?<div className="ld">Loading...</div>:<>
+
 {/* Toolbar */}
-<div className="br">
-<div style={{display:"flex",gap:2,alignItems:"center"}}>{[{v:"Pending",c:"var(--rd)"},{v:"Awarded",c:"var(--ac)"},{v:"Live",c:"var(--gn)"},{v:"Completed",c:"var(--t2)"}].map(s=><button key={s.v} onClick={()=>setPfStFilt(p2=>p2.includes(s.v)?p2.filter(x=>x!==s.v):[...p2,s.v])} style={{padding:"2px 8px",borderRadius:10,border:"1px solid",borderColor:pfStFilt.includes(s.v)?s.c:"var(--bd)",background:pfStFilt.includes(s.v)?s.c:"transparent",color:pfStFilt.includes(s.v)?"#fff":s.c,fontFamily:"var(--ft)",fontSize:9,fontWeight:600,cursor:"pointer"}}>{s.v} ({pfPjStCnt[s.v]||0})</button>)}</div>
-<input className="sx" placeholder="Search project..." value={pfSr} onChange={e=>setPfSr(e.target.value)}/>
-</div>
-{/* Month nav */}
-<div className="mn2"><select value={startM} onChange={e=>setStartM(Number(e.target.value))} style={{background:"var(--s2)",border:"1px solid var(--bd)",color:"var(--tx)",padding:"2px 4px",borderRadius:3,fontSize:9,fontFamily:"var(--ft)"}}>{MO.map((m,i)=><option key={m} value={i}>{m}</option>)}</select><button onClick={()=>{const ci=MO.indexOf(CUR_M);if(ci>=0)setStartM(ci)}} style={{color:"var(--ac)"}}>Today</button><div className="dv"/><span>{vis[0]} — {vis[vis.length-1]}</span><div style={{flex:1}}/><button onClick={addMonth} style={{color:"var(--gn)",borderColor:"var(--gn)"}}>+ Month</button></div>
-{/* Main PFAB table */}
-<div className="gc ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="gh"><div>Project</div><div>Est. Sales</div><div>VO Sales</div><div style={{color:"var(--pu)"}}>Appr. VO</div><div>Total</div><div>Alloc.</div><div>To Alloc.</div>
-{vis.map(m=><div key={m} className={(selM.includes(m)?"ms":"")+" "+(m===CUR_M?"cur-month":"")} onClick={()=>togM(m)} style={{textAlign:"center",color:"var(--tx)"}}>{m}</div>)}</div>
-{(()=>{let pfs=comp.filter(p=>{const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;return(pfCon+pfVar+pfVO+p.pT)>0});if(pfStFilt.length>0)pfs=pfs.filter(p=>pfStFilt.includes(p.st));if(pfSr_d)pfs=pfs.filter(p=>p.nm.toLowerCase().includes(pfSr_d.toLowerCase()));return pfs.map(p=>{
-const pfCon=gv(p.nm,"_BC","ProfabMaterials");const pfVar=gv(p.nm,"_BV","ProfabMaterials");const pfVO=voPfab[nk(p.nm)]||0;const pfTot=pfCon+pfVar+pfVO;const pfAlloc=p.pT;const pfTba=pfTot-pfAlloc;
-return<div className="pr pr-pf" key={p.i}>
-<div style={{textAlign:"left",position:"sticky",left:0,zIndex:3,background:"#fff",fontFamily:"var(--ft)",color:"var(--ac)",fontSize:9,fontWeight:700,padding:"4px 6px",display:"flex",alignItems:"center",gap:4}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}><span className={"st-tag "+(p.st==="Live"?"st-live":p.st==="Pending"?"st-pend":p.st==="Awarded"?"st-awd":"st-done")} style={{fontSize:7}}>{p.st==="Live"?"LIVE":p.st==="Pending"?"PEND":p.st==="Awarded"?"AWRD":"DONE"}</span>{p.nm}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,textAlign:"right",padding:"4px 6px"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{pfCon?fm(pfCon):""}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,textAlign:"right",padding:"4px 6px"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{pfVar?fm(pfVar):""}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,color:"var(--pu)",fontStyle:"italic",textAlign:"right",padding:"4px 6px"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{pfVO?fm(pfVO):"-"}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,fontWeight:800,textAlign:"right",padding:"4px 6px"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{(pfTot||pfAlloc)?fm(pfTot):""}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,textAlign:"right",padding:"4px 6px"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{fm(pfAlloc)}</div>
-<div style={{fontFamily:"var(--mn)",fontSize:9,textAlign:"right",padding:"4px 6px",color:pfTba<0?"var(--rd)":pfTba>0?"var(--am)":"var(--gn)"}} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)}>{(pfTot||pfAlloc)?fm(pfTba):""}</div>
-{vis.map(m=>{const val=gv(p.nm,m,"ProfabMaterials");return<div key={m} className={hovOn&&hovR===p.nm?"rh":""} onMouseEnter={()=>hovOn&&sHR(p.nm)} onMouseLeave={()=>sHR(null)} style={{fontFamily:"var(--mn)",fontSize:9,textAlign:"right",padding:"4px 6px",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.06)"}:{})}}>{val?fm(val):""}</div>})}
-</div>})})()}
-</div></div>
-{/* No. of Weeks */}
-<div style={{marginTop:6,border:"1px solid var(--am)",borderRadius:4,overflowX:"auto",scrollbarGutter:"stable"}} className="ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC,background:"var(--s2)"}}>
-<div style={{gridColumn:"1/8",padding:"4px 8px",fontWeight:800,fontSize:9,color:"var(--tx)",textTransform:"uppercase",position:"sticky",left:0,background:"var(--s2)"}}>No. of Weeks</div>
-{vis.map(m=>{const wkVal=gv(WK,m,"Sales")||countWed(m);return<div key={m} style={{padding:"4px 6px",textAlign:"center",fontFamily:"var(--mn)",fontSize:9,fontWeight:700,color:"var(--tx)",...(m===CUR_M?{borderLeft:"2px solid var(--ac)",borderRight:"2px solid var(--ac)",background:"rgba(68,114,196,.1)"}:{})}}>{wkVal}</div>})}
-</div></div>
-{/* PFAB Projected */}
-<div className="sum-hdr sum-hdr-p" onClick={()=>sPjO(!pjO)}>{pjO?"▾":"▸"} <b>PROJECTED</b> <span className="tog">{pjO?"collapse":"expand"}</span></div>
-{pjO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr"><div className="slbl" style={{color:"var(--am)",fontSize:9}}>🔒 Lock Month</div>{vis.map(m=><div key={m} style={{textAlign:"center",padding:"2px 0"}}><button className={"lk"+(isLk(m)?" on":"")} onClick={()=>doLock(m)} title={m} style={{width:"100%"}}>{isLk(m)?"🔒":"🔓"}</button></div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="fpsal"?" rh":"")} onMouseEnter={()=>sHR("fpsal")} onMouseLeave={()=>sHR(null)} style={{fontWeight:700}}>Projects</div>{vis.map(m=>{const lk=isLk(m);const val=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);return<div key={m} className={hovOn&&hovR==="fpsal"?"rh":""} onMouseEnter={()=>sHR("fpsal")} onMouseLeave={()=>sHR(null)} style={{color:"var(--ac)"}}>{val?fm(val):""}</div>})}</div>
-{pfPSR.map(row=><div className="sr sr-e" key={row.k}><div className={"slbl"+(hovOn&&hovR===row.g?" rh":"")} onMouseEnter={()=>sHR(row.g)} onMouseLeave={()=>sHR(null)} style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m} className={hovOn&&hovR===row.g?"rh":""} onMouseEnter={()=>{sHR(row.g)}} onMouseLeave={()=>{sHR(null)}}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div className={"slbl"+(hovOn&&hovR==="fpnl"?" rh":"")} onMouseEnter={()=>sHR("fpnl")} onMouseLeave={()=>sHR(null)} style={{color:"var(--ac)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);const sales=lk?gv(LP,m,"Sales"):(sumM[m]?.p||0);const costs=pfPSR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} className={hovOn&&hovR==="fpnl"?"rh":""} onMouseEnter={()=>sHR("fpnl")} onMouseLeave={()=>sHR(null)} style={{color:pl<0?"var(--rd)":pl>0?"var(--gn)":"var(--tx)"}}>{pl?fm(pl):""}</div>})}</div>
-</div></div>}
-{/* PFAB Actual */}
-<div className="sum-hdr sum-hdr-a" onClick={()=>sAcO(!acO)}>{acO?"▾":"▸"} <b>ACTUAL</b> <span className="tog">{acO?"collapse":"expand"}</span></div>
-{acO&&<div className="sum-body ss" onScroll={syncScroll}><div className="g" style={{gridTemplateColumns:gC}}>
-<div className="sr"><div className="slbl" style={{fontWeight:700,fontSize:9}}></div>{vis.map(m=><div key={m} style={{fontWeight:700,fontSize:9,color:"var(--tx)",textAlign:"center",padding:"4px 2px",background:"var(--s2)",borderBottom:"2px solid var(--bd)"}}>{m}</div>)}</div>
-<div className="sr sr-c"><div className={"slbl"+(hovOn&&hovR==="fpsal"?" rh":"")} onMouseEnter={()=>sHR("fpsal")} onMouseLeave={()=>sHR(null)} style={{fontWeight:700}}>Actual PFAB Sales</div>{vis.map(m=>{const lk=isLk(m);return<div key={m} className={hovOn&&hovR==="fpsal"?"rh":""} onMouseEnter={()=>sHR("fpsal")} onMouseLeave={()=>sHR(null)} style={{color:"var(--ac)"}}>{lk?fm(sumM[m]?.p||0):""}</div>})}</div>
-{pfASR.map(row=><div className="sr sr-e" key={row.k}><div className={"slbl"+(hovOn&&hovR===row.g?" rh":"")} onMouseEnter={()=>sHR(row.g)} onMouseLeave={()=>sHR(null)} style={row.cl?{color:row.cl}:{}}>{row.n}</div>{vis.map(m=><div key={m} className={hovOn&&hovR===row.g?"rh":""} onMouseEnter={()=>{sHR(row.g)}} onMouseLeave={()=>{sHR(null)}}><EC value={gv(row.k,m,"Sales")} onChange={v=>uC(row.k,m,"Sales",v)} cls="cl ce"/></div>)}</div>)}
-<div className="sr-t"><div className={"slbl"+(hovOn&&hovR==="fpnl"?" rh":"")} onMouseEnter={()=>sHR("fpnl")} onMouseLeave={()=>sHR(null)} style={{color:"var(--gn)"}}>PFAB Profit (Loss)</div>{vis.map(m=>{const lk=isLk(m);if(!lk)return<div key={m} className={hovOn&&hovR==="fpnl"?"rh":""} onMouseEnter={()=>sHR("fpnl")} onMouseLeave={()=>sHR(null)}/>;const sales=sumM[m]?.p||0;const costs=pfASR.filter(r=>!r.nc).reduce((a,r)=>a+gv(r.k,m,"Sales"),0);const pl=sales-costs;return<div key={m} className={hovOn&&hovR==="fpnl"?"rh":""} onMouseEnter={()=>sHR("fpnl")} onMouseLeave={()=>sHR(null)} style={{color:pl<0?"var(--rd)":"var(--gn)"}}>{pl?fm(pl):""}</div>})}</div>
-</div></div>}
-<div className="scroll-ctrl ss" onScroll={syncScroll}><div style={{height:1,minWidth:568+vis.length*72}}/></div>
-</>}
- 
-{/* VO REGISTER */}
-{vw==="vos"&&<div className="vw-fx">
-<datalist id="vo-projects-list">{pjOpts.map(p=><option key={p.nm} value={p.nm}/>)}</datalist>
-<div className="vo-cards"><div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div><div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>{fK(voFilt.reduce((t,v)=>t+v.pr,0))}</div></div><div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.em,0))}</div></div><div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>{fK(voFilt.reduce((t,v)=>t+v.pf,0))}</div></div><div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>{fK(voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0))}</div></div></div>
-<div className="vhd" style={{justifyContent:"flex-end"}}><div style={{display:"flex",gap:4,alignItems:"center"}}>
-<span style={{fontSize:10,color:"var(--t2)"}}>{vo.length} · Approved: {fK(Object.values(voP).reduce((s,v)=>s+v,0))}</span>
-</div></div>
-<div style={{padding:"6px 10px",display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",borderBottom:"1px solid var(--bd)"}}>
-<input value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..." style={{padding:"3px 8px",border:"1px solid var(--bd)",borderRadius:4,fontSize:10,outline:"none",width:160,fontFamily:"var(--ft)",background:"var(--bg)",color:"var(--tx)"}}/>
-<div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setVoFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:voFiltTy===t?"var(--ac)":"var(--bd)",background:voFiltTy===t?"var(--ac)":"transparent",color:voFiltTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
-<div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=masterStCnt[s.v]||0;return<button key={s.v} onClick={()=>setVoFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:voFiltSt.includes(s.v)?s.c:"var(--bd)",background:voFiltSt.includes(s.v)?s.c:"transparent",color:voFiltSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
-<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length}</span>
-</div>
-{voFilt.length===0?<div className="em">No entries match filter.</div>:
-<div className="vsc-fx"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
-{["","Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes"].map((h,ci)=><th key={h} className={ci===0?"":ci<10?"tg":ci<13?"ty":ci<18?"tp":"tg"} style={{width:colW[ci],minWidth:40,...(ci<6?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===5?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/></th>)}
-</tr></thead><tbody>{voFilt.map(v=><VORow key={v.i} v={v} colW={colW} uV={uV} dVO={dVO} onOpenNote={setNoteEdit}/>)}</tbody></table></div>}
-</div>}
- 
-{/* COORDINATOR VO VIEW (read-only, styled to match vo.html) */}
-{vw==="coord"&&<div className="vw-fx">
 <div className="vo-cards">
-<div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{coordFilt.length}</div></div>
-<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${coordFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
-<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
-<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${coordFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
-<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${coordFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">Total VOs</div><div className="vl" style={{color:"var(--ac)"}}>{voFilt.length}</div></div>
+<div className="vo-card"><div className="lb">Total Price</div><div className="vl" style={{color:"var(--ac)"}}>${voFilt.reduce((t,v)=>t+v.pr,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">Ext. Materials</div><div className="vl" style={{color:"var(--rd)"}}>${voFilt.reduce((t,v)=>t+v.em,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">PFAB Materials</div><div className="vl" style={{color:"var(--rd)"}}>${voFilt.reduce((t,v)=>t+v.pf,0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
+<div className="vo-card"><div className="lb">Margin</div><div className="vl" style={{color:"var(--gn)"}}>${voFilt.reduce((t,v)=>t+(v.pr-v.em-v.pf),0).toLocaleString("en-AU",{maximumFractionDigits:0})}</div></div>
 </div>
-<div className="br" style={{padding:"6px 10px",margin:0,borderBottom:"1px solid var(--bd)"}}>
-<div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setVoFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:voFiltTy===t?"var(--ac)":"var(--bd)",background:voFiltTy===t?"var(--ac)":"transparent",color:voFiltTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
-<div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=coordStCnt[s.v]||0;return<button key={s.v} onClick={()=>setVoFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:voFiltSt.includes(s.v)?s.c:"var(--bd)",background:voFiltSt.includes(s.v)?s.c:"transparent",color:voFiltSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
-<input className="sx" value={voFiltPj} onChange={e=>setVoFiltPj(e.target.value)} placeholder="Search project..."/>
-<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{coordFilt.length} of {coordVO.length} · Read only · Approved: {coordVO.filter(v=>{const u=String(v.st).toLowerCase();return u.includes("fully claimed")||u.includes("partially claimed")||u.includes("accepted")}).length}</span>
+<div className="br">
+<button className="pl gn" onClick={()=>sSa(!sa)}>{sa?"Cancel":"+ Add"}</button>
+<div style={{display:"flex",gap:2}}>{["all","VO","DL"].map(t=><button key={t} onClick={()=>setFiltTy(t)} style={{padding:"2px 10px",borderRadius:10,border:"1px solid",borderColor:filtTy===t?"var(--ac)":"var(--bd)",background:filtTy===t?"var(--ac)":"transparent",color:filtTy===t?"#fff":"var(--t2)",fontSize:9,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{t==="all"?"All":t}</button>)}</div>
+<div style={{display:"flex",gap:2}}>{VO_ST.map(s=>{const cnt=vo.filter(v=>{const pjM=!filtPj||v.pj.toLowerCase().includes(filtPj.toLowerCase());const tyM=filtTy==="all"||v.ty===filtTy;return pjM&&tyM&&v.st.toLowerCase().includes(s.v.toLowerCase().split(" - ")[0].split(" ")[0])}).length;return<button key={s.v} onClick={()=>setFiltSt(p=>p.includes(s.v)?p.filter(x=>x!==s.v):[...p,s.v])} style={{padding:"2px 6px",borderRadius:10,border:"1px solid",borderColor:filtSt.includes(s.v)?s.c:"var(--bd)",background:filtSt.includes(s.v)?s.c:"transparent",color:filtSt.includes(s.v)?"#fff":s.c,fontSize:8,fontWeight:600,cursor:"pointer",fontFamily:"var(--ft)"}}>{s.v.split(" - ")[0].split(" ").slice(0,2).join(" ")} ({cnt})</button>})}</div>
+<input className="sx" placeholder="Search project..." value={filtPj} onChange={e=>setFiltPj(e.target.value)}/>
+<span style={{fontSize:9,color:"var(--t2)",marginLeft:"auto"}}>{voFilt.length} of {vo.length} · Approved: {apCount}</span>{selRows.size>0&&<button className="pl gn" onClick={async()=>{if(!confirm("Push "+selRows.size+" selected VOs to Master?"))return;sSv(true);for(const r of selRows){const v=vo.find(x=>x._r===r);if(v){sVo(prev=>prev.map(x=>(v.vid?x.vid===v.vid:x._r===r)?{...x,pushed:new Date().toLocaleString("en-AU")}:x));await enq(()=>aP({action:"pushToMaster",user,voId:v.vid,project:v.pj,varNo:v.vn,varName:v.vnm,row:v._r}))}}setSelRows(new Set());sSv(false)}}>{selRows.size} Push Selected</button>}
 </div>
-<div className="vsc-fx"><table className="vt vt-ro" style={{width:coordColW.reduce((a,b)=>a+b,0)+"px",minWidth:coordColW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{coordColW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
-{["Project","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Pushed"].map((h,ci)=><th key={h} className={ci<9?"tg":ci<12?"ty":ci<17?"tp":"tg"} style={{width:coordColW[ci],...(ci<5?{position:"sticky",left:coordColW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===4?"2px solid var(--bd)":undefined}}>{h}<div className="col-resize" onMouseDown={e=>startCoordResize(ci,e)}/></th>)}
+
+{/* Add form */}
+{sa&&<div style={{padding:8,background:"var(--s2)",borderRadius:4,marginBottom:6,display:"flex",gap:4,flexWrap:"wrap",alignItems:"center"}}>
+<select value={nvo.project} onChange={e=>sNvo({...nvo,project:e.target.value})} style={{padding:"3px 6px",fontSize:10}}><option value="">Project...</option>{pj.map(p=><option key={p.nm} value={p.nm}>{p.nm}</option>)}</select>
+<select value={nvo.type} onChange={e=>sNvo({...nvo,type:e.target.value})} style={{padding:"3px 6px",fontSize:10}}><option>VO</option><option>DL</option></select>
+<input placeholder="Var No." value={nvo.varNo} onChange={e=>sNvo({...nvo,varNo:e.target.value})} style={{width:60,padding:"3px 6px",fontSize:10}}/>
+<input placeholder="Name" value={nvo.varName} onChange={e=>sNvo({...nvo,varName:e.target.value})} style={{width:140,padding:"3px 6px",fontSize:10}}/>
+<button className="pl gn" onClick={addV}>Add</button>
+</div>}
+
+{/* Table */}
+<div className="vw"><datalist id="vo-projects-list">{pj.map(p=><option key={p.nm} value={p.nm}/>)}</datalist><div className="vsc"><table className="vt" style={{width:colW.reduce((a,b)=>a+b,0)+"px",minWidth:colW.reduce((a,b)=>a+b,0)+"px"}}><colgroup>{colW.map((w,i)=><col key={i} style={{width:w+"px"}}/>)}</colgroup><thead><tr>
+{["","☐","Project","Area on Job","Type","Var No.","Sub Ref No.","Name","Date Sub.","Date Appr.","Price","Claim %","Status","Ext.Mat","PFAB","Margin","#Men","NHrs","NRate","OTHrs","OTRate","Notes","Push"].map((h,ci)=><th key={h+ci} className={ci<2?"":ci<12?"tg":ci<15?"ty":ci<20?"tp":"tg"} style={{width:colW[ci],minWidth:30,...(ci<8?{position:"sticky",left:colW.slice(0,ci).reduce((a,b)=>a+b,0),zIndex:5}:{}),borderRight:ci===7?"2px solid var(--bd)":undefined}}>{h==="☐"?<input type="checkbox" checked={voFilt.length>0&&voFilt.every(v2=>selRows.has(v2._r))} onChange={e=>{if(e.target.checked){const n=new Set(selRows);voFilt.forEach(v2=>n.add(v2._r));setSelRows(n)}else{setSelRows(new Set())}}} style={{cursor:"pointer"}}/>:h}{ci>0&&<div className="col-resize" onMouseDown={e=>startResize(ci,e)}/>}</th>)}
 </tr></thead><tbody>
-{coordFilt.length===0?<tr><td colSpan={19} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries match filter.</td></tr>:
-coordFilt.map((v,vi)=><CoordRow key={vi} v={v} vi={vi} coordColW={coordColW} onOpenNote={setCoordNoteView}/>)}
-</tbody></table></div>
-</div>}
- 
-{noteEdit!==null&&<NoteEditModal initial={vo[noteEdit]?.notes||""} title={vo[noteEdit]?.vnm||vo[noteEdit]?.pj||"Entry"} onSave={t=>{uV(noteEdit,"notes",t);setNoteEdit(null)}} onCancel={()=>setNoteEdit(null)}/>}
-{coordNoteView!==null&&coordFilt[coordNoteView]&&<div className="notes-modal" onClick={()=>setCoordNoteView(null)}>
+{voFilt.length===0?<tr><td colSpan={23} style={{textAlign:"center",padding:20,color:"var(--t2)"}}>No entries.</td></tr>:
+voFilt.map((v,vi)=>{const mg=v.pr-v.em-v.pf;const rc=voRowColor(v.st);return<tr key={v.i} style={{color:rc,opacity:v._pending?0.55:1}} title={v._pending?"Saving... please wait before editing":editTip(v.eb,v.ea)}>
+<td style={{textAlign:"center",padding:0,width:24,position:"sticky",left:0,zIndex:2}}><button onClick={()=>dVO(v)} style={{background:"none",border:"none",color:"var(--rd)",cursor:"pointer",fontSize:14,fontWeight:700,opacity:.4}} onMouseEnter={e=>e.target.style.opacity=1} onMouseLeave={e=>e.target.style.opacity=.4} title="Delete">×</button></td>
+<td style={{textAlign:"center",padding:0,position:"sticky",left:colW[0],zIndex:2}}><input type="checkbox" checked={selRows.has(v._r)} onChange={e=>{const n=new Set(selRows);if(e.target.checked)n.add(v._r);else n.delete(v._r);setSelRows(n)}} style={{cursor:"pointer"}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1],zIndex:2}}><DebInput list="vo-projects-list" value={v.pj} onSave={val=>uV(v.i,"pj",val)} style={{color:rc,width:"100%"}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2],zIndex:2}}><DebInput value={v.area||""} onSave={val=>uV(v.i,"area",val)} style={{color:rc,width:"100%"}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3],zIndex:2}}><select value={v.ty} onChange={e=>uV(v.i,"ty",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,width:"100%"}}><option>VO</option><option>DL</option></select></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4],zIndex:2}}><DebInput value={v.vn} onSave={val=>uV(v.i,"vn",val)} style={{color:rc}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4]+colW[5],zIndex:2}}><DebInput value={v.srn||""} onSave={val=>uV(v.i,"srn",val)} style={{color:rc}}/></td>
+<td style={{position:"sticky",left:colW[0]+colW[1]+colW[2]+colW[3]+colW[4]+colW[5]+colW[6],zIndex:2,borderRight:"2px solid var(--bd)"}}><DebInput value={v.vnm} onSave={val=>uV(v.i,"vnm",val)} maxLen={100} style={{color:rc}}/></td>
+<td><DebInput value={v.ds} onSave={val=>uV(v.i,"ds",val)} format={fmD} placeholder="dd-mm-yy" style={{color:rc}}/></td>
+<td><DebInput value={v.da} onSave={val=>uV(v.i,"da",val)} format={fmD} placeholder="dd-mm-yy" style={{color:rc}}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pr} onChange={val=>uV(v.i,"pr",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
+<td><DebInput value={v.claim||""} onSave={val=>uV(v.i,"claim",val)} style={{color:rc,width:"100%"}}/></td>
+<td><select value={v.st} onChange={e=>uV(v.i,"st",e.target.value)} style={{background:"transparent",border:"none",color:rc,fontSize:10,fontWeight:600,width:"100%"}}><option value="">—</option>{VO_ST.map(s=><option key={s.v} value={s.v}>{s.v}</option>)}</select></td>
+<td style={{textAlign:"right"}}><EC value={v.em} onChange={val=>uV(v.i,"em",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
+<td style={{textAlign:"right"}}><EC value={v.pf} onChange={val=>uV(v.i,"pf",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
+<td style={{textAlign:"right",color:rc,fontFamily:"var(--mn)"}}>{mg?fmP(mg):""}</td>
+<td style={{textAlign:"right"}}><EC value={v.nmn} onChange={val=>uV(v.i,"nmn",val)} cls="cl" style={{color:rc}} fmt={fmN}/></td>
+<td style={{textAlign:"right"}}><EC value={v.nh} onChange={val=>uV(v.i,"nh",val)} cls="cl" style={{color:rc}} fmt={fm2}/></td>
+<td style={{textAlign:"right"}}><EC value={v.nr} onChange={val=>uV(v.i,"nr",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
+<td style={{textAlign:"right"}}><EC value={v.oh} onChange={val=>uV(v.i,"oh",val)} cls="cl" style={{color:rc}} fmt={fm2}/></td>
+<td style={{textAlign:"right"}}><EC value={v.or2} onChange={val=>uV(v.i,"or2",val)} cls="cl" style={{color:rc}} fmt={fmP}/></td>
+<td style={{textAlign:"center"}} onClick={()=>{setNoteEdit(v.i);setNoteText(v.notes||"")}}>{v.notes?<span title={v.notes} style={{cursor:"pointer",fontSize:14}}>💬</span>:<span style={{cursor:"pointer",color:"var(--t2)",fontSize:12}}>+</span>}</td>
+<td style={{textAlign:"center"}}>{v.pushed==="from master"?<span style={{fontSize:8,color:"var(--t2)",fontStyle:"italic"}}>Master</span>:v.pushed?<button className="push-btn" onClick={()=>pushVO(v)} title={"Last pushed: "+v.pushed} style={{background:"var(--ac)"}}>Update</button>:<button className="push-btn" onClick={()=>pushVO(v)}>Push</button>}</td>
+</tr>})}
+</tbody></table></div></div>
+
+{/* Notes modal */}
+{noteEdit!==null&&<div className="notes-modal" onClick={()=>setNoteEdit(null)}>
 <div className="notes-box" onClick={e=>e.stopPropagation()}>
-<h4>Notes — {coordFilt[coordNoteView].vnm||coordFilt[coordNoteView].pj||"Entry"} <span style={{fontSize:9,color:"var(--t2)",fontWeight:400,marginLeft:8}}>(read only)</span></h4>
-<textarea readOnly value={coordFilt[coordNoteView].notes||""} style={{cursor:"default",background:"var(--s2)"}}/>
+<h4>Notes — {vo[noteEdit]?.vnm||vo[noteEdit]?.pj||"Entry"}</h4>
+<textarea value={noteText} onChange={e=>setNoteText(e.target.value)} autoFocus placeholder="Type notes here..."/>
 <div className="nbtn">
-<button className="pl" onClick={()=>setCoordNoteView(null)}>Close</button>
+<button className="pl" onClick={()=>setNoteEdit(null)}>Cancel</button>
+<button className="pl gn" onClick={()=>{uV(noteEdit,"notes",noteText);setNoteEdit(null)}}>Save</button>
 </div></div></div>}
-{selCells.length>0&&<div className="stat-bar" onClick={clearSel}>
-<span className="stat-lbl">Click to clear · {selCells.length} cell{selCells.length>1?"s":""}</span>
-<span className="stat-lbl">Sum: </span><span>{fm(selCells.reduce((a,b)=>a+b,0))}</span>
-<span className="stat-lbl">Avg: </span><span>{fm(Math.round(selCells.reduce((a,b)=>a+b,0)/selCells.length))}</span>
-<span className="stat-lbl">Count: </span><span>{selCells.length}</span>
-</div>}
 </>}
 </div>}
+
 ReactDOM.render(<App/>,document.getElementById("root"));
 </script></body></html>
